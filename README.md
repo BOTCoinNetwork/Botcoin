@@ -33,6 +33,7 @@ For the impatient, we recommend you start here:
 
 
 build monetd:
+need linux environment
 ```shell
 go mod tidy
 cd cmd/monetd
