@@ -34,6 +34,7 @@ For the impatient, we recommend you start here:
 
 build monetd:
 ```shell
+go mod tidy
 cd cmd/monetd
 go build -o monetd
 ```
