@@ -32,7 +32,7 @@ For the impatient, we recommend you start here:
     Start](https://botcoin.network/docs/html/quickstart.html#quickstart-rst)
 
 
-build monetd:
+## Build monetd
 need linux environment
 ```shell
 go mod tidy
