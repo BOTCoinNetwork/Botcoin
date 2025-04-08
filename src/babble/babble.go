@@ -4,8 +4,8 @@ package babble
 import (
 	"github.com/mosaicnetworks/babble/src/babble"
 	babble_config "github.com/mosaicnetworks/babble/src/config"
-	"github.com/mosaicnetworks/evm-lite/src/service"
-	"github.com/mosaicnetworks/evm-lite/src/state"
+	"github.com/BOTCoinNetwork/BVM/src/service"
+	"github.com/BOTCoinNetwork/BVM/src/state"
 	"github.com/sirupsen/logrus"
 )
 

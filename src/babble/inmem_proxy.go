@@ -7,8 +7,8 @@ import (
 	"github.com/mosaicnetworks/babble/src/crypto/keys"
 	"github.com/mosaicnetworks/babble/src/hashgraph"
 	"github.com/mosaicnetworks/babble/src/proxy"
-	"github.com/mosaicnetworks/evm-lite/src/service"
-	"github.com/mosaicnetworks/evm-lite/src/state"
+	"github.com/BOTCoinNetwork/BVM/src/service"
+	"github.com/BOTCoinNetwork/BVM/src/state"
 	"github.com/sirupsen/logrus"
 )
 

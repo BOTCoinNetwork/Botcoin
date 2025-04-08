@@ -8,7 +8,6 @@ require (
 	github.com/ethereum/go-ethereum v1.8.27
 	github.com/fatih/color v1.18.0
 	github.com/mosaicnetworks/babble v0.6.0
-	github.com/mosaicnetworks/evm-lite v0.3.7
 	github.com/pelletier/go-toml v1.9.5
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.9.1
@@ -19,6 +18,7 @@ require (
 require (
 	github.com/AdaLogics/go-fuzz-headers v0.0.0-20240806141605-e8a1dd7889d6 // indirect
 	github.com/AndreasBriese/bbloom v0.0.0-20190306092124-e2d15f34fcf9 // indirect
+	github.com/BOTCoinNetwork/BVM v0.0.0-20250401060412-27ab00fff40d // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/StackExchange/wmi v1.2.1 // indirect
 	github.com/VictoriaMetrics/fastcache v1.12.2 // indirect

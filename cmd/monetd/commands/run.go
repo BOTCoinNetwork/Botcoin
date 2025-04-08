@@ -6,8 +6,8 @@ import (
 	"github.com/mosaicnetworks/monetd/src/genesis"
 
 	bvers "github.com/mosaicnetworks/babble/src/version"
-	"github.com/mosaicnetworks/evm-lite/src/engine"
-	evers "github.com/mosaicnetworks/evm-lite/src/version"
+	"github.com/BOTCoinNetwork/BVM/src/engine"
+	evers "github.com/BOTCoinNetwork/BVM/src/version"
 	"github.com/mosaicnetworks/monetd/src/babble"
 	"github.com/mosaicnetworks/monetd/src/common"
 	"github.com/mosaicnetworks/monetd/src/configuration"

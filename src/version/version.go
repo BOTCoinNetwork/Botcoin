@@ -6,7 +6,7 @@ import (
 
 	geth "github.com/ethereum/go-ethereum/params"
 	_babble "github.com/mosaicnetworks/babble/src/version"
-	evm "github.com/mosaicnetworks/evm-lite/src/version"
+	evm "github.com/BOTCoinNetwork/BVM/src/version"
 )
 
 var (

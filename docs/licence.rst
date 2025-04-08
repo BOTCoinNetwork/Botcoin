@@ -42,7 +42,7 @@ tables are for information only and are not legal advice.
     | github.com/mgutz/ansi                       | https://github.com/mgutz/ansi                       | MIT          |
     | github.com/mitchellh/mapstructure           | https://github.com/mitchellh/mapstructure           | MIT          |
     | github.com/mosaicnetworks/babble            | https://github.com/mosaicnetworks/babble            | MIT          |
-    | github.com/mosaicnetworks/evm-lite          | https://github.com/mosaicnetworks/evm-lite          | MIT          |
+    | github.com/BOTCoinNetwork/BVM               | https://github.com/BOTCoinNetwork/BVM          | MIT          |
     | github.com/pelletier/go-toml                | https://github.com/pelletier/go-toml                | MIT          |
     | github.com/pkg/errors                       | https://github.com/pkg/errors                       | bsd-2-clause |
     | github.com/sirupsen/logrus                  | https://github.com/sirupsen/logrus                  | MIT          |

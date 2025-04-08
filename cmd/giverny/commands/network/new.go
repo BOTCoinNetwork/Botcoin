@@ -13,7 +13,7 @@ import (
 	"github.com/pelletier/go-toml"
 
 	ecrypto "github.com/ethereum/go-ethereum/crypto"
-	"github.com/mosaicnetworks/evm-lite/src/currency"
+	"github.com/BOTCoinNetwork/BVM/src/currency"
 	"github.com/mosaicnetworks/monetd/cmd/giverny/configuration"
 	"github.com/mosaicnetworks/monetd/src/common"
 
