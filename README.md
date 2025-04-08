@@ -31,6 +31,13 @@ For the impatient, we recommend you start here:
 -   [Quick
     Start](https://botcoin.network/docs/html/quickstart.html#quickstart-rst)
 
+
+build monetd:
+```shell
+cd cmd/monetd
+go build -o monetd
+```
+
 ## License
 
 BOTCoin is released under the MIT license. See [LICENSE](LICENSE).
