@@ -1,14 +1,14 @@
 package babble
 
 import (
-	ethCommon "github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/mosaicnetworks/babble/src/babble"
-	"github.com/mosaicnetworks/babble/src/crypto/keys"
-	"github.com/mosaicnetworks/babble/src/hashgraph"
-	"github.com/mosaicnetworks/babble/src/proxy"
 	"github.com/BOTCoinNetwork/BVM/src/service"
 	"github.com/BOTCoinNetwork/BVM/src/state"
+	"github.com/BOTCoinNetwork/babble/src/babble"
+	"github.com/BOTCoinNetwork/babble/src/crypto/keys"
+	"github.com/BOTCoinNetwork/babble/src/hashgraph"
+	"github.com/BOTCoinNetwork/babble/src/proxy"
+	ethCommon "github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/sirupsen/logrus"
 )
 
@@ -210,12 +210,12 @@ func (p *InmemProxy) processEvictions(block hashgraph.Block) []hashgraph.Interna
 
 //TODO - Implement these two functions
 
-//GetSnapshot will generate a snapshot
+// GetSnapshot will generate a snapshot
 func (p *InmemProxy) GetSnapshot(blockIndex int) ([]byte, error) {
 	return []byte{}, nil
 }
 
-//Restore will restore a snapshot
+// Restore will restore a snapshot
 func (p *InmemProxy) Restore(snapshot []byte) error {
 	return nil
 }

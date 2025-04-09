@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	bpeers "github.com/mosaicnetworks/babble/src/peers"
+	bpeers "github.com/BOTCoinNetwork/babble/src/peers"
 	"github.com/mosaicnetworks/monetd/src/genesis"
 
 	"github.com/mosaicnetworks/monetd/cmd/giverny/configuration"

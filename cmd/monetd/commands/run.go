@@ -5,9 +5,9 @@ import (
 
 	"github.com/mosaicnetworks/monetd/src/genesis"
 
-	bvers "github.com/mosaicnetworks/babble/src/version"
 	"github.com/BOTCoinNetwork/BVM/src/engine"
 	evers "github.com/BOTCoinNetwork/BVM/src/version"
+	bvers "github.com/BOTCoinNetwork/babble/src/version"
 	"github.com/mosaicnetworks/monetd/src/babble"
 	"github.com/mosaicnetworks/monetd/src/common"
 	"github.com/mosaicnetworks/monetd/src/configuration"
@@ -19,7 +19,7 @@ import (
 RunCmd
 *******************************************************************************/
 
-//newRunCmd returns the command that starts the daemon
+// newRunCmd returns the command that starts the daemon
 func newRunCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "run",

@@ -35,7 +35,7 @@ testevml:
 	@echo "\nEVM-Lite Tests\n\n" ; cd vendor/github.com/BOTCoinNetwork/BVM ; go test ./src/... -count=1 -tags=unit | sed -e 's?github.com/mosaicnetworks/monetd/vendor/github.com/mosaicnetworks/?.../vendor/.../?g'
 
 testbabble:
-	@echo "\nBabble Tests\n\n" ; cd vendor/github.com/mosaicnetworks/babble ;   go test ./src/... -count=1 -tags=unit | sed -e 's?github.com/mosaicnetworks/monetd/vendor/github.com/mosaicnetworks/?.../vendor/.../?g'
+	@echo "\nBabble Tests\n\n" ; cd vendor/github.com/BOTCoinNetwork/babble ;   go test ./src/... -count=1 -tags=unit | sed -e 's?github.com/mosaicnetworks/monetd/vendor/github.com/mosaicnetworks/?.../vendor/.../?g'
 
 dist:
 	xgo --targets=*/amd64 --dest=build/  ./cmd/monetd/ 

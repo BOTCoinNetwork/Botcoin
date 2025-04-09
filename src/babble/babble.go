@@ -2,10 +2,10 @@
 package babble
 
 import (
-	"github.com/mosaicnetworks/babble/src/babble"
-	babble_config "github.com/mosaicnetworks/babble/src/config"
 	"github.com/BOTCoinNetwork/BVM/src/service"
 	"github.com/BOTCoinNetwork/BVM/src/state"
+	"github.com/BOTCoinNetwork/babble/src/babble"
+	babble_config "github.com/BOTCoinNetwork/babble/src/config"
 	"github.com/sirupsen/logrus"
 )
 
