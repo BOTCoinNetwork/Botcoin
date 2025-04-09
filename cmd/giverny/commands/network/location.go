@@ -6,12 +6,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/mosaicnetworks/monetd/src/files"
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
 
-	"github.com/mosaicnetworks/monetd/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
 
-	"github.com/mosaicnetworks/monetd/cmd/giverny/configuration"
-	mconfiguration "github.com/mosaicnetworks/monetd/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/giverny/configuration"
+	mconfiguration "github.com/BOTCoinNetwork/Botcoin/src/configuration"
 
 	"github.com/spf13/cobra"
 )

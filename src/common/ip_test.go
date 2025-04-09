@@ -3,7 +3,7 @@ package common_test
 import (
 	"testing"
 
-	"github.com/mosaicnetworks/monetd/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
 )
 
 func TestGetMyIP(t *testing.T) {

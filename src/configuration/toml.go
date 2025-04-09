@@ -6,7 +6,7 @@ import (
 	"html/template"
 	"path/filepath"
 
-	"github.com/mosaicnetworks/monetd/src/files"
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
 )
 
 const configTOML = `

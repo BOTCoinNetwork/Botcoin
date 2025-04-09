@@ -12,14 +12,14 @@ import (
 
 	"github.com/pelletier/go-toml"
 
-	ecrypto "github.com/ethereum/go-ethereum/crypto"
 	"github.com/BOTCoinNetwork/BVM/src/currency"
-	"github.com/mosaicnetworks/monetd/cmd/giverny/configuration"
-	"github.com/mosaicnetworks/monetd/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/giverny/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
+	ecrypto "github.com/ethereum/go-ethereum/crypto"
 
-	mconfiguration "github.com/mosaicnetworks/monetd/src/configuration"
-	"github.com/mosaicnetworks/monetd/src/crypto"
-	"github.com/mosaicnetworks/monetd/src/files"
+	mconfiguration "github.com/BOTCoinNetwork/Botcoin/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/crypto"
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

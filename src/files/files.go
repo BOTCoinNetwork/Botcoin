@@ -1,4 +1,4 @@
-//Package files provides standard file functions
+// Package files provides standard file functions
 package files
 
 import (
@@ -13,7 +13,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mosaicnetworks/monetd/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
 )
 
 // Bits is used to hold bitwise options
@@ -97,7 +97,7 @@ func CreateDirsIfNotExists(d []string) error {
 	return nil
 }
 
-//CheckIfExists checks if a file / directory exists
+// CheckIfExists checks if a file / directory exists
 func CheckIfExists(dir string) bool {
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		return false
@@ -159,7 +159,7 @@ func SafeRename(origDir string) error {
 	return errors.New("you have reached the maximum number of automatic backups. Try removing the .monet.~n~ files")
 }
 
-//DownloadFile downs a file from a URL and writes it to disk
+// DownloadFile downs a file from a URL and writes it to disk
 func DownloadFile(url string, writefile string, interactive bool) error {
 	b, err := getRequest(url)
 	if err != nil {
@@ -181,7 +181,7 @@ func DownloadFile(url string, writefile string, interactive bool) error {
 	return nil
 }
 
-//GetRequest gets a request from a URL
+// GetRequest gets a request from a URL
 func getRequest(url string) ([]byte, error) {
 	resp, err := http.Get(url)
 	if err != nil {

@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 
 	evml_config "github.com/BOTCoinNetwork/BVM/src/config"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
 	babble_config "github.com/BOTCoinNetwork/babble/src/config"
-	"github.com/mosaicnetworks/monetd/src/common"
 	"github.com/sirupsen/logrus"
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 )

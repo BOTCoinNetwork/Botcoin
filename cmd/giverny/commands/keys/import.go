@@ -1,14 +1,14 @@
 package keys
 
 import (
-	monetcrypto "github.com/mosaicnetworks/monetd/src/crypto"
+	monetcrypto "github.com/BOTCoinNetwork/Botcoin/src/crypto"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var _passwordFile string
 
-//newImportCmd returns the command that creates a Ethereum keyfile
+// newImportCmd returns the command that creates a Ethereum keyfile
 func newImportCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "import [moniker] [keyfile]",

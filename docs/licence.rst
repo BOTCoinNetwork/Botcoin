@@ -11,7 +11,7 @@ section presents the output of `Glice <https://github.com/ribice/glice>`__ for
 the Monet Toolchain. Glice reports on the licences used within a golang
 project.
 
-The 3 tables are for the `monetd <https://github.com/mosaicnetworks/monetd>`__,
+The 3 tables are for the `monetd <https://github.com/BOTCoinNetwork/Botcoin>`__,
 `EVM-Lite <https://github.com/BOTCoinNetwork/BVM>`__ and `Babble
 <https://github.com/BOTCoinNetwork/babble>`__ repositories respectively. These
 tables are the output from ``glice -r``, which only looks one level deep. These

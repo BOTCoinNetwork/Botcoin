@@ -1,4 +1,4 @@
-module github.com/mosaicnetworks/monetd
+module github.com/BOTCoinNetwork/Botcoin
 
 go 1.23.4
 

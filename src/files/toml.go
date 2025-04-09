@@ -1,11 +1,11 @@
 package files
 
 import (
-	"github.com/mosaicnetworks/monetd/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
 	"github.com/pelletier/go-toml"
 )
 
-//LoadToml loads a Toml file and returns a tree object.
+// LoadToml loads a Toml file and returns a tree object.
 func LoadToml(tomlFile string) (*toml.Tree, error) {
 	config, err := toml.LoadFile(tomlFile)
 
@@ -17,7 +17,7 @@ func LoadToml(tomlFile string) (*toml.Tree, error) {
 	return config, nil
 }
 
-//SaveToml writes a tree object (back) to a toml file
+// SaveToml writes a tree object (back) to a toml file
 func SaveToml(tree *toml.Tree, tomlFile string) error {
 
 	// Open Writer

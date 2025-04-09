@@ -1,7 +1,7 @@
 package keys
 
 import (
-	"github.com/mosaicnetworks/monetd/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/configuration"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -10,7 +10,7 @@ var (
 	_keystore = configuration.DefaultKeystoreDir()
 )
 
-//KeysCmd is an Ethereum key manager
+// KeysCmd is an Ethereum key manager
 var KeysCmd = &cobra.Command{
 	Use:              "keys",
 	Short:            "monet key manager",

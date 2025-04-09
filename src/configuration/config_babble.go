@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/mosaicnetworks/monetd/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
 )
 
 var (

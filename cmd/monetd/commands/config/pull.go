@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/mosaicnetworks/monetd/src/common"
-	"github.com/mosaicnetworks/monetd/src/configuration"
-	"github.com/mosaicnetworks/monetd/src/files"
-	"github.com/mosaicnetworks/monetd/src/keystore"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
+	"github.com/BOTCoinNetwork/Botcoin/src/keystore"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

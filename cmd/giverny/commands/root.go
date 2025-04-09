@@ -1,17 +1,17 @@
 package commands
 
 import (
-	"github.com/mosaicnetworks/monetd/cmd/giverny/commands/keys"
-	"github.com/mosaicnetworks/monetd/cmd/giverny/commands/network"
-	"github.com/mosaicnetworks/monetd/cmd/giverny/commands/parse"
-	"github.com/mosaicnetworks/monetd/cmd/giverny/commands/transactions"
-	"github.com/mosaicnetworks/monetd/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/giverny/commands/keys"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/giverny/commands/network"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/giverny/commands/parse"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/giverny/commands/transactions"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-//RootCmd is the root command for giverny
+// RootCmd is the root command for giverny
 var RootCmd = &cobra.Command{
 	Use:   "giverny",
 	Short: "Giverny",

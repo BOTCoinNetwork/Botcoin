@@ -6,9 +6,9 @@ import (
 	"io/ioutil"
 	"path/filepath"
 
+	"github.com/BOTCoinNetwork/Botcoin/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/crypto"
 	eth_crypto "github.com/ethereum/go-ethereum/crypto"
-	"github.com/mosaicnetworks/monetd/src/configuration"
-	"github.com/mosaicnetworks/monetd/src/crypto"
 )
 
 // GetKey looks in the keystore for a keyfile corresponding to the provided

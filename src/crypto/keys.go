@@ -11,14 +11,14 @@ import (
 	"path/filepath"
 	"strings"
 
-	//	"github.com/mosaicnetworks/monetd/src/common"
+	//	"github.com/BOTCoinNetwork/Botcoin/src/common"
 
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	ethcommon "github.com/ethereum/go-ethereum/common"
 	eth_crypto "github.com/ethereum/go-ethereum/crypto"
-	"github.com/mosaicnetworks/monetd/src/common"
-	"github.com/mosaicnetworks/monetd/src/configuration"
-	"github.com/mosaicnetworks/monetd/src/files"
 )
 
 type outputGenerate struct {
@@ -92,15 +92,18 @@ GenerateKeyfile generates an Ethereum keyfile and writes it.
 
 keyfilepath: path to write the new keyfile to.
 passwordFile: plain text file containing the passphrase to use for the
-              keyfile.
+
+	keyfile.
 
 privateKeyfile: the path to an unencrypted private key. If specified, this
-                function does not generate a new keyfile, it instead
-                generates a keyfile from the unencrypted private key.
+
+	function does not generate a new keyfile, it instead
+	generates a keyfile from the unencrypted private key.
 
 outputJSON: controls whether the output to stdio is in JSON format or not.
-            The function returns a key object which can be used to retrieve
-            public or private keys or the address.
+
+	The function returns a key object which can be used to retrieve
+	public or private keys or the address.
 */
 func GenerateKeyfile(keyfilepath, passwordFile, privateKeyfile string, outputJSON bool) (*keystore.Key, error) {
 	if keyfilepath == "" {
