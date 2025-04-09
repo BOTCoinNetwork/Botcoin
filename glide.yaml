@@ -2,7 +2,7 @@ package: github.com/mosaicnetworks/monetd
 import:
 - package: github.com/mosaicnetworks/babble
   version: =0.6.0
-- package: github.com/mosaicnetworks/evm-lite
+- package: github.com/BOTCoinNetwork/BVM
   version: =0.3.7
 - package: github.com/ethereum/go-ethereum
   version: =1.8.27
