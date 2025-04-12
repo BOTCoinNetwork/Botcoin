@@ -6,7 +6,7 @@ Getting Started
 In this document we explain how to run a single node and how to use
 ``botcoincli`` to interact with it. In another section, we will explain how to
 join an existing network. For details about any command, please refer to the
-:ref:`specification<monetd_commands_rst>`.
+:ref:`specification<botcoin_commands_rst>`.
 
 Creating A Single Node Network
 ------------------------------
@@ -27,7 +27,7 @@ The ``config build`` command takes our key, and generates a minimal network
 configuration with a single validator node, and a prefunded account. Again, the
 configuration is written to ``~/.monet``. [1]_
 
-Finally, the ``run`` command starts a monetd node, which will default to using
+Finally, the ``run`` command starts a botcoin node, which will default to using
 the configuration files in ``~/.monet``. [1]_
 
 Using monetcli
@@ -36,7 +36,7 @@ Using monetcli
 Let's use ``monetcli`` to query the newly created node. First of all, install
 ``monetcli`` with ``npm install -g monetcli``.
 
-While ``monetd`` is still running, open another terminal and start ``monetcli``
+While ``botcoin`` is still running, open another terminal and start ``monetcli``
 in interactive mode:
 
 .. code:: bash
@@ -156,7 +156,7 @@ Now, let's create a new key using ``monetcli``, and transfer some tokens to it.
         }
     }
 
-Like ``monetd keys new`` this command created a new key and wrote the encrypted
+Like ``botcoin keys new`` this command created a new key and wrote the encrypted
 keyfile in ~/.monet/keystore. Let's double check that the key was created:
 
 .. code:: bash
@@ -211,4 +211,4 @@ transfer:
 
 .. [1] This location is for Linux instances. Mac and Windows uses a different
        path. The path for your instance can be ascertain with this command:
-       ``monetd config location``
+       ``botcoin config location``

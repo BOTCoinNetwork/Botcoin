@@ -2,7 +2,7 @@
 
 The POA contract in a monet network is included in the ``genesis.json`` file in
 the POA section. The bytecode for the standard release is precompiled within
-the ``monetd`` and ``giverny apps``. 
+the ``botcoin`` and ``giverny apps``. 
 
 The tools in this folder generate that embedded byte code. 
 

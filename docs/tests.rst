@@ -3,7 +3,7 @@
 Tests
 =====
 
-Included in the monetd distribution are numerous tests. There are unit tests,
+Included in the botcoin distribution are numerous tests. There are unit tests,
 which test individual components, and end to end tests.
 
 Unit Tests
@@ -104,7 +104,7 @@ This allows you to interrogate the network after the test has completed:
     [...]/botcoin/e2e$ make test TEST=transfer_03_10 NOSTOP=nostop
 
 
-Tests output logs to ``...monetd/e2e/tests/<TESTNAME>.out``
+Tests output logs to ``...botcoin/e2e/tests/<TESTNAME>.out``
 
 
 Transfer Tests

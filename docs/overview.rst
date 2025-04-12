@@ -14,7 +14,7 @@ Tools
 BOTCoin
 ~~~~~~
 
-**monetd** is the server process that connects to other nodes, participates in
+**botcoin** is the server process that connects to other nodes, participates in
 the consensus algorithm, and maintains its own copy of the application state.
 Additionaly, the **giverny** program facilitates the creation of local BOTCoin
 Tools networks for testing purposes. We don't expect most people to use

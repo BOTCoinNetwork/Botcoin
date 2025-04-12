@@ -1,4 +1,4 @@
-<img width="75px" height="75px" align="right" alt="BOTCoin Logo" src="docs/_static/Botcoin_logo.png" title="Monetd"/>
+<img width="75px" height="75px" align="right" alt="BOTCoin Logo" src="docs/_static/Botcoin_logo.png" title="Botcoin"/>
 
 # BOTCoin
 

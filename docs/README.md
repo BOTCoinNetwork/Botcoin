@@ -11,12 +11,12 @@ easiest to access the docs directly from there.
 To build help type:
 
 ```bash
-[...]/botcoin/docs$ make html
+[...]/Botcoin/docs$ make html
 ```
 
 To refresh the included screen outputs:
 
 ```bash
-[...]/botcoin/docs$ make screenshots
+[...]/Botcoin/docs$ make screenshots
 ```
  

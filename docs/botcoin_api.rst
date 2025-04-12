@@ -1,7 +1,7 @@
 .. _botcoin_api_rst:
 
 Botcoin API
-==========
+====================
 
 ``botcoin`` exposes an HTTP API at the address specified by the ``--api-listen``
 flag. This document contains the API specification with some basic examples

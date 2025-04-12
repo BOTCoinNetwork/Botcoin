@@ -16,22 +16,22 @@ function generatedocinsert() {
 
  #   echo ".. code:: bash"> $outfile
  #   echo ""  >> $outfile
-    echo "[..monetd] \$ $cmd"  > $outfile
+    echo "[..botcoin] \$ $cmd"  > $outfile
     $cmd | sed -e"s?$HOME?/home/user?g" >> $outfile
 }
 
 
-generatedocinsert monetd_version.txt "monetd version"
-generatedocinsert monetd_help.txt "monetd help"
-generatedocinsert monetd_keys_help.txt "monetd keys help"
-generatedocinsert monetd_help_keys_new.txt "monetd help keys new"
-generatedocinsert monetd_help_keys_inspect.txt "monetd help keys inspect"
-generatedocinsert monetd_help_keys_update.txt "monetd help keys update"
-generatedocinsert monetd_help_keys_list.txt "monetd help keys list"
-generatedocinsert monetd_help_config_location.txt "monetd help config location"
-generatedocinsert monetd_help_config_build.txt "monetd help config build"
-generatedocinsert monetd_help_config_pull.txt "monetd help config pull"
-generatedocinsert monetd_help_run.txt "monetd help run"
+generatedocinsert botcoin_version.txt "botcoin version"
+generatedocinsert botcoin_help.txt "botcoin help"
+generatedocinsert botcoin_keys_help.txt "botcoin keys help"
+generatedocinsert botcoin_help_keys_new.txt "botcoin help keys new"
+generatedocinsert botcoin_help_keys_inspect.txt "botcoin help keys inspect"
+generatedocinsert botcoin_help_keys_update.txt "botcoin help keys update"
+generatedocinsert botcoin_help_keys_list.txt "botcoin help keys list"
+generatedocinsert botcoin_help_config_location.txt "botcoin help config location"
+generatedocinsert botcoin_help_config_build.txt "botcoin help config build"
+generatedocinsert botcoin_help_config_pull.txt "botcoin help config pull"
+generatedocinsert botcoin_help_run.txt "botcoin help run"
 
 
 generatedocinsert giverny_help_network_new.txt "giverny help network new"

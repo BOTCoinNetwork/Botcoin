@@ -19,7 +19,7 @@ Distribution Among Validators
 -----------------------------
 
 Every transaction applied to the BVM is associated with a coinbase address 
-(possibly empty), which receives the transaction fee. In monetd, we have 
+(possibly empty), which receives the transaction fee. In botcoin, we have 
 implemented a system that fairly and securily distributes fees among validators.
 
 Upon committing a Babble block, we fetch the corresponding validator-set from
@@ -32,7 +32,7 @@ validators to game it by manipulating the block hash.
 Minimum Gas Price
 -----------------
 
-Validators running a monetd node can set a minimum gas price, via the 
+Validators running a botcoin node can set a minimum gas price, via the 
 ``eth.min-gas-price`` configuration flag, to refuse broadcasting transactions 
 with lower gas-prices. To send a transaction via a node, the transaction creator 
 must set the gas price to a value greater or equal to that node's minimum gas

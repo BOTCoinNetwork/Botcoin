@@ -1,7 +1,7 @@
 .. _botcoin_commands_rst:
 
 Botcoin Reference
-================
+==========================
 
 ``botcoin`` provides the core commands needed to configure and run a node. It
 has context sensitive help accessed either by running ``botcoin help`` or by
@@ -98,7 +98,7 @@ attempt to create a duplicate, the command will abort with an error.
 Inspect
 ~~~~~~~
 
-.. include:: _static/includes/monetd_help_keys_inspect.txt
+.. include:: _static/includes/botcoin_help_keys_inspect.txt
     :code: bash
 
 
@@ -132,7 +132,7 @@ supply the current passphrase and ``--new-passphrase`` to supply the new
 passphrase.
 
 
-.. include:: _static/includes/monetd_help_keys_update.txt
+.. include:: _static/includes/botcoin_help_keys_update.txt
     :code: bash
 
 An example session updating the passphrase for a key:

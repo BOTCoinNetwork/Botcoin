@@ -31,7 +31,7 @@ fi
 
 
 echo "Killing node 3"
-# monetd is always process 1. 
+# botcoin is always process 1. 
 docker exec node3 kill 1
 
 

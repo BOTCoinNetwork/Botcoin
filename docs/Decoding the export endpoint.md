@@ -128,9 +128,9 @@ POA Address:  0x0xaBBAABbaaBbAABbaABbAABbAABbaAbbaaBbaaBBa
 0xbca3ec820659ff257c0cc134bce65b2c429017d9  martin_arrivets
 
 Contract does not match the POA bytecode
-This may not be an issue if a different release of Monetd was used to generate the genesis.json file.
-Your version of Monetd is:
-Monetd Version: 0.3.3-develop-93a1e090
+This may not be an issue if a different release of Botcoin was used to generate the genesis.json file.
+Your version of Botcoin is:
+Botcoin Version: 0.3.3-develop-93a1e090
      EVM-Lite Version: 0.3.6-develop
      Babble Version: 0.5.10-develop
      Geth Version: 1.8.27

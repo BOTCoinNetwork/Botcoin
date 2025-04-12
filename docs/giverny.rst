@@ -33,7 +33,7 @@ Help
 Version
 *******
 
-The ``version`` subcommand outputs the version number for ``monetd``,
+The ``version`` subcommand outputs the version number for ``botcoin``,
 ``EVM-Lite``, ``Babble`` and ``Geth``.
 
 If you compile your own tools, the suffices are the GIT branch and the GIT
@@ -61,7 +61,7 @@ Import
 ======
 
 The ``import`` subcommand is used to import a pre-existing key pair into the
-``monetd`` keystore, assigning the given moniker and setting a passphrase.
+``botcoin`` keystore, assigning the given moniker and setting a passphrase.
 
 .. include:: _static/includes/giverny_help_keys_import.txt
     :code: bash
@@ -89,7 +89,7 @@ the ``build`` command which generates and builds ``genesis.json`` and
 ``peers.json`` files. You can adjust the network by editting the
 ``network.toml`` file. The ``location`` command outputs the relevant paths.
 The ``push`` command is used to push a giverny network node configuration to a
-docker or actual node so it can be used by ``monetd``. ``start``, ``stop`` and
+docker or actual node so it can be used by ``botcoin``. ``start``, ``stop`` and
 ``status`` are used to manage the docker instance.
 
 
