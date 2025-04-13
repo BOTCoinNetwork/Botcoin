@@ -8,7 +8,7 @@ The BOTCoin Tools is an open source project, licensed under the `MIT License
 <https://tldrlegal.com/license/mit-license>`__). The software is provided as-is
 and we are not liable. We use many other libraries to build the Toolchain. This
 section presents the output of `Glice <https://github.com/ribice/glice>`__ for
-the Monet Toolchain. Glice reports on the licences used within a golang
+the Botcoin. Glice reports on the licences used within a golang
 project.
 
 The 3 tables are for the `botcoin <https://github.com/BOTCoinNetwork/Botcoin>`__,

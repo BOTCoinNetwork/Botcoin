@@ -4,7 +4,7 @@ POA Smart Contract
 ==================
 
 This document describes the requirements for a smart-contract to implement POA
-in a Monet Toolchain hub. The default contract supplied with ``botcoincli`` already
+in a Botcoin hub. The default contract supplied with ``botcoincli`` already
 meets these requirements.
 
 Solidity

@@ -45,7 +45,7 @@ commit hash.
 Keys
 ----
 
-The ``keys`` subcommand is used to manage Monet Toolchain keys. There are 4
+The ``keys`` subcommand is used to manage Botcoin keys. There are 4
 subcommands, each described in a seperate section below:
 
 - **inspect** --- inspect a keyfile
@@ -194,7 +194,7 @@ The two most common scenarios are:
                 :ref:`join_rst`.
 
 For more complex scenarios, please refer to :ref:`giverny_rst`, which is a
-specialised Monet Toolchain configuration tool.
+specialised Botcoin configuration tool.
 
 Clear
 ~~~~~

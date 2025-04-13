@@ -4,7 +4,7 @@
 Giverny Reference
 #################
 
-``giverny`` is the advanced configuration tool for the Monet Toolchain.
+``giverny`` is the advanced configuration tool for the Botcoin.
 
 The current subcommands are:
 
