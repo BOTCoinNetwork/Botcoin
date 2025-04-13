@@ -19,7 +19,7 @@ The directory must respect the following stucture:
   │   └── priv_key
   ├── eth
   │   ├── genesis.json
-  └── monetd.toml
+  └── botcoin.toml
 
 You would not normally need to access these configuration files directly. The
 ``botcoin config`` tool provides a CLI interfaces to set up a network. The
@@ -66,7 +66,7 @@ Run Options
 -----------
 
 Options pertaining to the operation of the node are read from the 
-<config>/monetd.toml file, or overwritten by the following flags:
+<config>/botcoin.toml file, or overwritten by the following flags:
 
 ::
 
@@ -83,8 +83,8 @@ Options pertaining to the operation of the node are read from the
           --babble.suspend-limit int    number of undetermined-events since last run that will trigger automatic suspension (default 300)
           --babble.sync-limit int       max number of Events per sync (default 1000)
           --babble.timeout duration     TCP timeout milliseconds (default 1s)
-      -c, --config string               configuration directory (default "/home/martin/.monet/monetd-config")
-      -d, --data string                 data directory (default "/home/martin/.monet/monetd-data")
+      -c, --config string               configuration directory (default "/home/martin/.monet/botcoin-config")
+      -d, --data string                 data directory (default "/home/martin/.monet/botcoin-data")
           --eth.cache int               megabytes of memory allocated to internal caching (min 16MB / database forced) (default 128)
           --eth.min-gas-price string    minimum gasprice of transactions submitted through this node (ex 1K, 1M, 1G, etc.) (default "0")
       -h, --help                        help for run

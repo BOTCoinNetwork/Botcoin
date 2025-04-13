@@ -22,7 +22,7 @@ var RootCmd = &cobra.Command{
 	Use:   "botcoin",
 	Short: "monet daemon",
 	Long: `
-Monetd is the daemon component of the Monet Toolchain; a distributed
+Botcoin is the daemon component of the Monet Toolchain; a distributed
 smart-contract platform based on the Ethereum Virtual Machine and Babble 
 consensus.  
 	

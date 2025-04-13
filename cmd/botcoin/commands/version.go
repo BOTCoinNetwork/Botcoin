@@ -11,7 +11,7 @@ import (
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "show version info",
-	Long: `Monetd Version information
+	Long: `Botcoin Version information
 	
 The version command outputs the version number for Monet, EVM-Lite, 
 Babble and Geth. 

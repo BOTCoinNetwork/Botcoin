@@ -98,14 +98,14 @@ giverny network new $NET \
 
 
 if [ "$VERBOSE" != "" ] ; then
-    sed --in-place "s/verbose = \"false\"/verbose = \"true\"/g" $HOME/.giverny/networks/$NET/monetd.toml
+    sed --in-place "s/verbose = \"false\"/verbose = \"true\"/g" $HOME/.giverny/networks/$NET/botcoin.toml
 fi
  
 sed --in-place "s/bootstrap = .*$/bootstrap = $BOOTSTRAP/g;s/cache-size = .*$/cache-size = $CACHESIZE/g; \
 s/heartbeat = .*$/heartbeat = \"$HEARTBEAT\"/g;s/max-pool = .*$/max-pool = $MAXPOOL/g; \
 s/sync-limit = .*$/sync-limit = $SYNCLIMIT/g;s/timeout = .*$/timeout = \"$TIMEOUT\"/g; \
 s/cache = .*$/cache = $CACHE/g;s/min-gas-price = .*$/min-gas-price = $MINGASPRICE/g;" \
-$HOME/.giverny/networks/$NET/monetd.toml 
+$HOME/.giverny/networks/$NET/botcoin.toml 
 
 giverny network build $NET -v
 

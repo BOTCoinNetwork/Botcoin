@@ -1,7 +1,7 @@
 FROM alpine
 ADD solc /bin
-ADD monetd /bin
+ADD botcoin /bin
 EXPOSE 1337 8080
 ENV HOME=/
-ENTRYPOINT ["monetd"]
+ENTRYPOINT ["botcoin"]
 CMD [] 

@@ -105,9 +105,9 @@ NODE0IP=$(docker inspect --format="{{.NetworkSettings.Networks.$NET.IPAddress}}"
 
 echo "Node 0 IP is $NODE0IP"
 
-docker cp node0:/.monet/monetd-config/monetd.toml $TMP_DIR/orig.monetd.toml
-sed -e 's/maintenance-mode = "false"/maintenance-mode = "true"/g;s/bootstrap = false/bootstrap = true/g' $TMP_DIR/orig.monetd.toml > $TMP_DIR/maint.monetd.toml
-docker cp $TMP_DIR/maint.monetd.toml node0:/.monet/monetd-config/monetd.toml 
+docker cp node0:/.monet/botcoin-config/botcoin.toml $TMP_DIR/orig.botcoin.toml
+sed -e 's/maintenance-mode = "false"/maintenance-mode = "true"/g;s/bootstrap = false/bootstrap = true/g' $TMP_DIR/orig.botcoin.toml > $TMP_DIR/maint.botcoin.toml
+docker cp $TMP_DIR/maint.botcoin.toml node0:/.monet/botcoin-config/botcoin.toml 
 
 # Stop Node0
 

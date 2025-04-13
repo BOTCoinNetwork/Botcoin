@@ -222,13 +222,13 @@ The ``location`` subcommand displays the path to the configuration folder.
 
 .. code:: bash
 
-    Botcoin Config        : /home/user/.monet/monetd-config/monetd.toml
-    Babble Peers         : /home/user/.monet/monetd-config/babble/peers.json
-    Babble Genesis Peers : /home/user/.monet/monetd-config/babble/peers.genesis.json
-    Babble Private Key   : /home/user/.monet/monetd-config/babble/priv_key
-    EVM-Lite Genesis     : /home/user/.monet/monetd-config/eth/genesis.json
-    Babble Database      : /home/user/.monet/monetd-data/babble-db
-    EVM-Lite Database    : /home/user/.monet/monetd-data/eth-db
+    Botcoin Config        : /home/user/.monet/botcoin-config/botcoin.toml
+    Babble Peers         : /home/user/.monet/botcoin-config/babble/peers.json
+    Babble Genesis Peers : /home/user/.monet/botcoin-config/babble/peers.genesis.json
+    Babble Private Key   : /home/user/.monet/botcoin-config/babble/priv_key
+    EVM-Lite Genesis     : /home/user/.monet/botcoin-config/eth/genesis.json
+    Babble Database      : /home/user/.monet/botcoin-data/babble-db
+    EVM-Lite Database    : /home/user/.monet/botcoin-data/eth-db
     Keystore        : /home/user/.monet/keystore
 
 Build
@@ -243,7 +243,7 @@ of tokens in the genesis file. This command is mostly used for testing.
 If the ``--address`` flag is omitted, the first non-loopback address for this
 instance is used.
 
-.. include:: _static/includes/monetd_help_config_build.txt
+.. include:: _static/includes/botcoin_help_config_build.txt
     :code: bash
 
 Pull
@@ -257,19 +257,19 @@ configuration directory <config>:
 - babble/peers.genesis.json : The initial validator-set
 - eth/genesis.json          : The genesis file
 
-It also builds all the other configuration files required to run a monetd node.
+It also builds all the other configuration files required to run a botcoin node.
 If the peer specified does not include a port, the default gossip port (1337)
 is used.
 
-.. include:: _static/includes/monetd_help_config_pull.txt
+.. include:: _static/includes/botcoin_help_config_pull.txt
     :code: bash
 
 Run
 ---
 
-The ``run`` subcommands starts the monetd node running. Whilst there are legacy
+The ``run`` subcommands starts the botcoin node running. Whilst there are legacy
 parameters ``--babble.*`` and ``--eth.*``, we strongly recommend that they are
 not used. The equivalent changes can be made in the configuration files.
 
-.. include:: _static/includes/monetd_help_run.txt
+.. include:: _static/includes/botcoin_help_run.txt
     :code: bash

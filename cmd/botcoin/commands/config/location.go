@@ -22,7 +22,7 @@ func newLocationCmd() *cobra.Command {
 
 func locationConfig(cmd *cobra.Command, args []string) error {
 
-	fmt.Println("Monetd Config        : " + filepath.Join(configuration.DefaultConfigDir(), configuration.MonetTomlFile))
+	fmt.Println("Botcoin Config        : " + filepath.Join(configuration.DefaultConfigDir(), configuration.MonetTomlFile))
 
 	fmt.Println("Babble Peers         : " + filepath.Join(configuration.DefaultConfigDir(), configuration.BabbleDir, configuration.PeersJSON))
 	fmt.Println("Babble Genesis Peers : " + filepath.Join(configuration.DefaultConfigDir(), configuration.BabbleDir, configuration.PeersGenesisJSON))

@@ -28,7 +28,7 @@ func ShowIPWarnings() {
 	advertise := configuration.Global.Babble.AdvertiseAddr
 
 	if common.CheckIP(api, true) {
-		common.MessageWithType(common.MsgWarning, fmt.Sprintf("Monetd service API address in botcoin.toml may be internal: %s", api))
+		common.MessageWithType(common.MsgWarning, fmt.Sprintf("Botcoin service API address in botcoin.toml may be internal: %s", api))
 	}
 
 	if advertise != "" && common.CheckIP(advertise, false) {

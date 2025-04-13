@@ -71,9 +71,9 @@ func parseGenesis(cmd *cobra.Command, args []string) error {
 		fmt.Println("POA bytecode matches the standard contract")
 	} else {
 		fmt.Println("Contract does not match the POA bytecode")
-		fmt.Println("This may not be an issue if a different release of Monetd " +
+		fmt.Println("This may not be an issue if a different release of Botcoin " +
 			"was used to generate the genesis.json file.")
-		fmt.Println("Your version of Monetd is:")
+		fmt.Println("Your version of Botcoin is:")
 		fmt.Print(version.FullVersion())
 		fmt.Printf("Solc: %s \n      %s\n", genesis.SolcCompilerVersion, genesis.SolcOSVersion)
 		fmt.Printf("      %s\n", genesis.GitVersion)
