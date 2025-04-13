@@ -30,18 +30,18 @@ configuration is written to ``~/.monet``. [1]_
 Finally, the ``run`` command starts a botcoin node, which will default to using
 the configuration files in ``~/.monet``. [1]_
 
-Using monetcli
+Using botcoincli
 --------------
 
-Let's use ``monetcli`` to query the newly created node. First of all, install
-``monetcli`` with ``npm install -g monetcli``.
+Let's use ``botcoincli`` to query the newly created node. First of all, install
+``botcoincli`` with ``npm install -g botcoincli``.
 
-While ``botcoin`` is still running, open another terminal and start ``monetcli``
+While ``botcoin`` is still running, open another terminal and start ``botcoincli``
 in interactive mode:
 
 .. code:: bash
 
-    $monetcli i
+    $botcoincli i
      __  __                          _        ____   _       ___ 
     |  \/  |   ___    _ __     ___  | |_     / ___| | |     |_ _|
     | |\/| |  / _ \  | '_ \   / _ \ | __|   | |     | |      | | 
@@ -50,10 +50,10 @@ in interactive mode:
                                                                  
     Mode:        Interactive
     Data Dir:    /home/user/.monet
-    Config File: /home/user/.monet/monetcli.toml
+    Config File: /home/user/.monet/botcoincli.toml
     Keystore:    /home/user/.monet/keystore
    
-     Change datadir by: $ monetcli --datadir [path] [command]
+     Change datadir by: $ botcoincli --datadir [path] [command]
    
      Commands:
    
@@ -83,8 +83,8 @@ Type ``info`` to check the status of the node:
 
 .. code::
 
-    monetcli$ info
-    monetcli http GET localhost:8080/info
+    botcoincli$ info
+    botcoincli http GET localhost:8080/info
     ┌────────────────────────┬────────────┐
     │ consensus_events       │ 0          │
     │ consensus_transactions │ 0          │
@@ -110,9 +110,9 @@ balance associated with them.
 
 .. code::
 
-    monetcli$ accounts list
-    monetcli info keystore /home/user/.monet/keystore
-    monetcli info node localhost:8080
+    botcoincli$ accounts list
+    botcoincli info keystore /home/user/.monet/keystore
+    botcoincli info node localhost:8080
     ┌─────────┬────────────────────────────────────────────┬─────────────┬───────┐
     │ Moniker │ Address                                    │ Balance     │ Nonce │
     ├─────────┼────────────────────────────────────────────┼─────────────┼───────┤
@@ -124,16 +124,16 @@ Babble, and as a Tenom-holding account in the ledger. This is the same account,
 node0, that we created in the previous steps, with the encrypted private key
 residing in ``~/.monet/keystore``.
 
-Now, let's create a new key using ``monetcli``, and transfer some tokens to it.
+Now, let's create a new key using ``botcoincli``, and transfer some tokens to it.
 
 .. code:: bash
 
-    monetcli$ accounts create
+    botcoincli$ accounts create
     ? Moniker:  node1
     ? Output Path:  /home/user/.monet/keystore
     ? Passphrase:  [hidden]
     ? Re-enter passphrase:  [hidden]
-    monetcli info keystore /home/user/.monet/keystore
+    botcoincli info keystore /home/user/.monet/keystore
     {
         "version":3,
         "id":"89970faf-8754-468e-903c-c9d3248a08cc",
@@ -161,9 +161,9 @@ keyfile in ~/.monet/keystore. Let's double check that the key was created:
 
 .. code:: bash
 
-    monetcli$ accounts list
-    monetcli info keystore /home/user/.monet/keystore
-    monetcli info node localhost:8080
+    botcoincli$ accounts list
+    botcoincli info keystore /home/user/.monet/keystore
+    botcoincli info node localhost:8080
     ┌─────────┬────────────────────────────────────────────┬─────────────┬───────┐
     │ Moniker │ Address                                    │ Balance     │ Nonce │
     ├─────────┼────────────────────────────────────────────┼─────────────┼───────┤
@@ -176,7 +176,7 @@ Now, let's transfer 100 tokens to it.
 
 .. code:: bash
 
-    monetcli$ transfer
+    botcoincli$ transfer
     ? From:  node0 (1,234,567,890,000,000,000,000)
     ? Enter password:  [hidden]
     ? To 0x960c13654c477ac1d2d7f8fc7ae84d93a2225257
@@ -198,9 +198,9 @@ transfer:
 
 .. code:: bash
 
-    monetcli$ accounts list --exact
-    monetcli info keystore /home/user/.monet/keystore
-    monetcli info node localhost:8080
+    botcoincli$ accounts list --exact
+    botcoincli info keystore /home/user/.monet/keystore
+    botcoincli info node localhost:8080
     ┌─────────┬────────────────────────────────────────────┬─────────────┬───────┐
     │ Moniker │ Address                                    │ Balance     │ Nonce │
     ├─────────┼────────────────────────────────────────────┼─────────────┼───────┤

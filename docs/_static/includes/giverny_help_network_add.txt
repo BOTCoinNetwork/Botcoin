@@ -1,4 +1,4 @@
-[..monetd] $ giverny help network add
+[..botcoin] $ giverny help network add
 Network
 	
 Advanced Network Config Manager.
@@ -8,7 +8,7 @@ Usage:
 
 Available Commands:
   aws         write aws configuration files
-  build       build monetd configuration files based on a giverny network file
+  build       build botcoin configuration files based on a giverny network file
   dump        Dump the network settings
   list        list configured networks
   location    show the location of the configuration files

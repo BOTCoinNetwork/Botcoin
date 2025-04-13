@@ -1,4 +1,4 @@
-[..monetd] $ monetd help keys inspect
+[..botcoin] $ botcoin help keys inspect
 
 Display the contents of a keyfile.
 
@@ -8,7 +8,7 @@ key will also be returned. If --passfile is not specified, the user will be
 prompted to enter the passphrase manually.
 
 Usage:
-  monetd keys inspect [moniker] [flags]
+  botcoin keys inspect [moniker] [flags]
 
 Flags:
   -h, --help      help for inspect

@@ -1,4 +1,4 @@
-[..monetd] $ giverny help keys generate
+[..botcoin] $ giverny help keys generate
 
 The generate sub command is intended only for tests. It generates a number of
 keys and writes them to <keystore>. The keyfiles are named <prefix><suffix> 

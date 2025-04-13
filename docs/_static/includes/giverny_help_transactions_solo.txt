@@ -1,4 +1,4 @@
-[..monetd] $ giverny help transactions solo
+[..botcoin] $ giverny help transactions solo
 
 Solo transactions generate a transaction set without needing access 
 to the network toml file. You just need a well funded faucet account.

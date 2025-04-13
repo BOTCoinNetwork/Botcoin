@@ -1,4 +1,4 @@
-[..monetd] $ giverny help keys import
+[..botcoin] $ giverny help keys import
 create an encrypted keyfile from an existing private key
 
 Usage:

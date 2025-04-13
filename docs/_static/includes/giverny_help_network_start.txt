@@ -1,4 +1,4 @@
-[..monetd] $ giverny help network start
+[..botcoin] $ giverny help network start
 
 giverny network start
 
