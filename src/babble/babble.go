@@ -51,7 +51,7 @@ func (ib *InmemBabble) Init(state *state.State, service *service.Service) error 
 		service,
 		babble,
 		service.GetSubmitCh(),
-		ib.logger)
+		ib.logger, ib.rewardRule)
 
 	ib.config.Proxy = inmemProxy
 

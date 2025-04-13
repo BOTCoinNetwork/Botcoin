@@ -27,14 +27,16 @@ func NewInmemProxy(state *state.State,
 	service *service.Service,
 	babble *babble.Babble,
 	submitCh chan []byte,
-	logger *logrus.Entry) *InmemProxy {
+	logger *logrus.Entry,
+	rule *RewardRule) *InmemProxy {
 
 	return &InmemProxy{
-		service:  service,
-		state:    state,
-		babble:   babble,
-		submitCh: submitCh,
-		logger:   logger,
+		service:    service,
+		state:      state,
+		babble:     babble,
+		submitCh:   submitCh,
+		logger:     logger,
+		rewardRule: rule,
 	}
 }
 
