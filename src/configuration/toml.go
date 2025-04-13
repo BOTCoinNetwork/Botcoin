@@ -69,15 +69,15 @@ validator-halving-round = "{{.ValidatorHalvingRound}}"
 
 // GlobalTOML converts the global Config object into a TOML string
 func GlobalTOML() (string, error) {
-	configTmpl, err := template.New("botcoin.toml").Parse(configTOML)
+	configTmpl, err := template.New("monetd.toml").Parse(configTOML)
 	if err != nil {
-		return "", fmt.Errorf("Error parsing botcoin.toml template: %v", err)
+		return "", fmt.Errorf("Error parsing monetd.toml template: %v", err)
 	}
 
 	var buf bytes.Buffer
 	err = configTmpl.Execute(&buf, Global)
 	if err != nil {
-		return "", fmt.Errorf("Error executing botcoin.toml template: %v", err)
+		return "", fmt.Errorf("Error executing monetd.toml template: %v", err)
 	}
 
 	return buf.String(), nil
