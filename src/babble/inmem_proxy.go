@@ -10,16 +10,16 @@ import (
 	ethCommon "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/sirupsen/logrus"
-	"math/big"
 )
 
 // InmemProxy implements the Babble AppProxy interface
 type InmemProxy struct {
-	service  *service.Service
-	state    *state.State
-	babble   *babble.Babble
-	submitCh chan []byte
-	logger   *logrus.Entry
+	service    *service.Service
+	state      *state.State
+	babble     *babble.Babble
+	submitCh   chan []byte
+	logger     *logrus.Entry
+	rewardRule *RewardRule
 }
 
 // NewInmemProxy initializes and return a new InmemProxy
@@ -99,10 +99,6 @@ func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, e
 
 	return res, nil
 }
-
-var (
-	totalRewardPool = new(big.Int).Mul(big.NewInt(10000), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil))
-)
 
 // getCoinbase returns the coinbase address which will receive all the
 // transaction fees from the block. It is meant to be a safe and fair selection

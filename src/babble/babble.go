@@ -17,13 +17,15 @@ type InmemBabble struct {
 	ethService *service.Service
 	ethState   *state.State
 	logger     *logrus.Entry
+	rewardRule *RewardRule
 }
 
 // NewInmemBabble instantiates a new InmemBabble consensus system
-func NewInmemBabble(config *babble_config.Config, logger *logrus.Entry) *InmemBabble {
+func NewInmemBabble(config *babble_config.Config, logger *logrus.Entry, rewardRule *RewardRule) *InmemBabble {
 	return &InmemBabble{
-		config: config,
-		logger: logger,
+		config:     config,
+		logger:     logger,
+		rewardRule: rewardRule,
 	}
 }
 

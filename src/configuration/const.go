@@ -24,7 +24,7 @@ const (
 
 // Monetd Configuration Directory
 const (
-	MonetdTomlDirDot  = ".monet"
+	MonetdTomlDirDot  = ".botcoin"
 	MonetdTomlDirCaps = "Monet"
 )
 
@@ -58,6 +58,9 @@ const (
 	DefaultAccountBalance            = "1234567890000000000000"
 	DefaultContractAddress           = "abbaabbaabbaabbaabbaabbaabbaabbaabbaabba"
 	DefaultControllerContractAddress = "aabbaabbaabbaabbaabbaabbaabbaabbaabbaabb"
+	DefaultValidatorRewardPool       = 2880000
+	DefaultValidatorRewardRound      = 28800
+	DefaultValidatorHalvingRound     = 30000000
 	GenesisContract                  = "contract0.sol"
 	GenesisABI                       = "contract0.abi"
 	ControllerContract               = "contract1.sol"

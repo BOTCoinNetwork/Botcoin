@@ -16,6 +16,12 @@ verbose = "{{.Verbose}}"
 # The IP:PORT of the HTTP API service (defaults to :8080)
 api-listen = "{{.APIAddr}}"
 
+validator-reward-pool = "{{.Babble.ValidatorRewardPool}}"
+
+validator-reward-round = "{{.Babble.ValidatorRewardRound}}"
+
+validator-halving-round = "{{.Babble.ValidatorHalvingRound}}"
+
 [babble]
 
   # IP:PORT on the local machine where Babble will bind its internal gossip 
