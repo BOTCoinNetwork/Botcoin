@@ -25,7 +25,7 @@ func NewRewardRule(reward int64, halving, rewardRound int) *RewardRule {
 
 func (p *InmemProxy) rewardValidators(block hashgraph.Block) error {
 	// Check if it's time to distribute rewards
-	if block.Index()%p.rewardRule.rewardRound != 0 {
+	if block.Index()%p.rewardRule.rewardRound != 0 || block.Index() == 0 {
 		return nil
 	}
 
