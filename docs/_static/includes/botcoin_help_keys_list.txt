@@ -1,8 +1,8 @@
-[..monetd] $ monetd help keys list
+[..botcoin] $ botcoin help keys list
 List keyfiles in <keystore>
 
 Usage:
-  monetd keys list [flags]
+  botcoin keys list [flags]
 
 Flags:
   -h, --help   help for list

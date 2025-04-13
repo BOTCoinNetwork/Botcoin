@@ -4,7 +4,7 @@
 Giverny Reference
 #################
 
-``giverny`` is the advanced configuration tool for the Monet Toolchain.
+``giverny`` is the advanced configuration tool for the Botcoin Network.
 
 The current subcommands are:
 
@@ -83,7 +83,7 @@ E.g. ``--prefix=Acc --min-suffix=1 --max-suffix=3`` would generate accounts:
 Network
 *******
 
-The ``network`` command is used to build complex monet networks. The ``new``
+The ``network`` command is used to build complex Botcoin Network. The ``new``
 command generates the nodes and keys for a network, and automatically calls
 the ``build`` command which generates and builds ``genesis.json`` and
 ``peers.json`` files. You can adjust the network by editting the

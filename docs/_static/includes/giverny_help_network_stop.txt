@@ -1,4 +1,4 @@
-[..monetd] $ giverny help network stop
+[..botcoin] $ giverny help network stop
 
 giverny network stop
 

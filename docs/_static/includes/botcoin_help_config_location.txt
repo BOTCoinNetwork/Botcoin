@@ -1,0 +1,11 @@
+[..botcoin] $ botcoin help config location
+Show the default locations of botcoin configuration files.
+
+Usage:
+  botcoin config location [flags]
+
+Flags:
+  -h, --help   help for location
+
+Global Flags:
+  -v, --verbose   verbose output

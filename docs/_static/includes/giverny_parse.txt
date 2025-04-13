@@ -1,4 +1,4 @@
-[..monetd] $ giverny help parse
+[..botcoin] $ giverny help parse
 
 The parse command parses a genesis file.
 

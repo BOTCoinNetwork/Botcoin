@@ -1,4 +1,4 @@
-[..monetd] $ giverny help network new
+[..botcoin] $ giverny help network new
 new configuration for a multi-node network
 
 Usage:

@@ -1,4 +1,4 @@
-[..monetd] $ monetd help config build
+[..botcoin] $ botcoin help config build
 
 Create the configuration for a single-node network.
 
@@ -8,11 +8,11 @@ amount of tokens in the genesis file. This command is mostly used for testing.
 If the --address flag is omitted, the first non-loopback address is used.
 
 Usage:
-  monetd config build [moniker] [flags]
+  botcoin config build [moniker] [flags]
 
 Flags:
       --address string    IP/hostname of this node (default "192.168.0.13")
-      --config string     output directory (default "/home/user/.monet/monetd-config")
+      --config string     output directory (default "/home/user/.monet/botcoin-config")
   -h, --help              help for build
       --keystore string   keystore directory (default "/home/user/.monet/keystore")
       --passfile string   file containing the passphrase
