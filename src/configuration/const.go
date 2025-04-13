@@ -24,7 +24,7 @@ const (
 
 // Monetd Configuration Directory
 const (
-	MonetdTomlDirDot  = ".botcoin"
+	MonetdTomlDirDot  = ".monet"
 	MonetdTomlDirCaps = "Monet"
 )
 
@@ -97,7 +97,7 @@ func DefaultMonetDir() string {
 		} else if runtime.GOOS == "windows" {
 			return filepath.Join(home, "AppData", "Roaming", "Monet")
 		} else {
-			return filepath.Join(home, ".botcoin")
+			return filepath.Join(home, ".monet")
 		}
 	}
 	return ""
