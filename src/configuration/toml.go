@@ -16,11 +16,11 @@ verbose = "{{.Verbose}}"
 # The IP:PORT of the HTTP API service (defaults to :8080)
 api-listen = "{{.APIAddr}}"
 
-validator-reward-pool = "{{.Babble.ValidatorRewardPool}}"
+validator-reward-pool = "{{.ValidatorRewardPool}}"
 
-validator-reward-round = "{{.Babble.ValidatorRewardRound}}"
+validator-reward-round = "{{.ValidatorRewardRound}}"
 
-validator-halving-round = "{{.Babble.ValidatorHalvingRound}}"
+validator-halving-round = "{{.ValidatorHalvingRound}}"
 
 [babble]
 
