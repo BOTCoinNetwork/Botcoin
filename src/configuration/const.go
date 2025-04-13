@@ -10,13 +10,13 @@ import (
 // Directory Constants
 const (
 	// config
-	ConfigDir = "botcoin-config"
+	ConfigDir = "monetd-config"
 	BabbleDir = "babble"
 	EthDir    = "eth"
 	POADir    = "poa"
 
 	// data
-	DatabaseDir = "botcoin-data"
+	DatabaseDir = "monetd-data"
 
 	// keystore
 	KeyStoreDir = "keystore"
@@ -33,7 +33,7 @@ const (
 	PeersJSON        = "peers.json"
 	PeersGenesisJSON = "peers.genesis.json"
 	GenesisJSON      = "genesis.json"
-	MonetTomlFile    = "botcoin.toml"
+	MonetTomlFile    = "monetd.toml"
 	EthDB            = "eth-db"
 	BabbleDB         = "babble-db"
 	WalletTomlFile   = "wallet.toml"
