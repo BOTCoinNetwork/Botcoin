@@ -1,4 +1,4 @@
-// Package commands implements the CLI commands for monetd
+// Package commands implements the CLI commands for botcoin
 package commands
 
 import (
@@ -6,8 +6,8 @@ import (
 
 	"github.com/BOTCoinNetwork/Botcoin/src/common"
 
-	"github.com/BOTCoinNetwork/Botcoin/cmd/monetd/commands/config"
-	"github.com/BOTCoinNetwork/Botcoin/cmd/monetd/commands/keys"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/botcoin/commands/config"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/botcoin/commands/keys"
 	"github.com/BOTCoinNetwork/Botcoin/src/configuration"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -17,9 +17,9 @@ import (
 RootCmd
 *******************************************************************************/
 
-// RootCmd is the root command for monetd
+// RootCmd is the root command for botcoin
 var RootCmd = &cobra.Command{
-	Use:   "monetd",
+	Use:   "botcoin",
 	Short: "monet daemon",
 	Long: `
 Monetd is the daemon component of the Monet Toolchain; a distributed
@@ -75,14 +75,14 @@ func readConfig(cmd *cobra.Command) error {
 	}
 
 	// Read from configuration file if there is one.
-	viper.SetConfigName("monetd")                       // name of config file (without extension)
+	viper.SetConfigName("botcoin")                      // name of config file (without extension)
 	viper.AddConfigPath(configuration.Global.ConfigDir) // search config directory
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		common.DebugMessage(fmt.Sprintf("Using config file: %s", viper.ConfigFileUsed()))
 	} else if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-		common.DebugMessage(fmt.Sprintf("No config file monetd.toml found in %s\n", configuration.Global.DataDir))
+		common.DebugMessage(fmt.Sprintf("No config file botcoin.toml found in %s\n", configuration.Global.DataDir))
 	} else {
 		return err
 	}

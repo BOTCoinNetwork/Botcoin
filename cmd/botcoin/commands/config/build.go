@@ -18,7 +18,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-// newBuildCmd initialises a bare-bones configuration for monetd
+// newBuildCmd initialises a bare-bones configuration for botcoin
 func newBuildCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "build [moniker]",
@@ -102,7 +102,7 @@ func buildConfig(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	// Write TOML file for monetd based on global config object
+	// Write TOML file for botcoin based on global config object
 	err = configuration.DumpGlobalTOML(
 		_configDir,
 		configuration.MonetTomlFile,

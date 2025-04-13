@@ -13,11 +13,11 @@ import (
 
 var (
 	// VerboseLogging is a globals that controls debug message output. It is
-	// Controlled by the --verbose option in monetd.
+	// Controlled by the --verbose option in botcoin.
 	VerboseLogging bool
 )
 
-//Colour definitions as used in the Message functions in this unit.
+// Colour definitions as used in the Message functions in this unit.
 const (
 	ColourInfo    = color.FgGreen
 	ColourWarning = color.FgHiMagenta
@@ -28,7 +28,7 @@ const (
 	ColourDebug   = color.FgCyan
 )
 
-//Log level constants
+// Log level constants
 const (
 	MsgInformation = 0
 	MsgWarning     = 1
@@ -38,18 +38,18 @@ const (
 	MsgOther       = 5
 )
 
-//InfoMessage is a simple wrapper for stdout logging of Information Messages
+// InfoMessage is a simple wrapper for stdout logging of Information Messages
 func InfoMessage(a ...interface{}) (n int, err error) {
 	return MessageWithType(MsgInformation, a...)
 }
 
-//ErrorMessage is a simple wrapper for stdout logging for Error Messages.
+// ErrorMessage is a simple wrapper for stdout logging for Error Messages.
 func ErrorMessage(a ...interface{}) (n int, err error) {
 	n, err = MessageWithType(MsgError, a...)
 	return n, err
 }
 
-//DebugMessage is a simple wrapper for stdout logging. Setting VerboseLayout to
+// DebugMessage is a simple wrapper for stdout logging. Setting VerboseLayout to
 // false disables its output
 func DebugMessage(a ...interface{}) (n int, err error) {
 	if VerboseLogging {
@@ -64,8 +64,8 @@ func PromptMessage(a ...interface{}) (n int, err error) {
 	return MessageWithType(MsgPrompt, a...)
 }
 
-//MessageWithType is a central point for cli logging messages
-//It colour codes the output, suppressing Debug messages if VerboseLogging is false
+// MessageWithType is a central point for cli logging messages
+// It colour codes the output, suppressing Debug messages if VerboseLogging is false
 func MessageWithType(msgType int, a ...interface{}) (n int, err error) {
 
 	color.Set(ColourOther)
@@ -104,7 +104,7 @@ func MessageWithType(msgType int, a ...interface{}) (n int, err error) {
 	return n, err
 }
 
-//ClearScreen clears the CLI screen. Implementation is OS-specific
+// ClearScreen clears the CLI screen. Implementation is OS-specific
 func ClearScreen() {
 	// Attempt to clear cli screen.
 	switch runtime.GOOS {

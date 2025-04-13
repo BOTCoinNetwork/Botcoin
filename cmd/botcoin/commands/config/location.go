@@ -13,7 +13,7 @@ func newLocationCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "location",
 		Short: "show default configuration files",
-		Long:  "Show the default locations of monetd configuration files.",
+		Long:  "Show the default locations of botcoin configuration files.",
 		RunE:  locationConfig,
 	}
 

@@ -23,7 +23,7 @@
 package main
 
 import (
-	cmd "github.com/BOTCoinNetwork/Botcoin/cmd/monetd/commands"
+	cmd "github.com/BOTCoinNetwork/Botcoin/cmd/botcoin/commands"
 )
 
 func main() {

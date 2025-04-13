@@ -10,13 +10,13 @@ import (
 // Directory Constants
 const (
 	// config
-	ConfigDir = "monetd-config"
+	ConfigDir = "botcoin-config"
 	BabbleDir = "babble"
 	EthDir    = "eth"
 	POADir    = "poa"
 
 	// data
-	DatabaseDir = "monetd-data"
+	DatabaseDir = "botcoin-data"
 
 	// keystore
 	KeyStoreDir = "keystore"
@@ -33,7 +33,7 @@ const (
 	PeersJSON        = "peers.json"
 	PeersGenesisJSON = "peers.genesis.json"
 	GenesisJSON      = "genesis.json"
-	MonetTomlFile    = "monetd.toml"
+	MonetTomlFile    = "botcoin.toml"
 	EthDB            = "eth-db"
 	BabbleDB         = "babble-db"
 	WalletTomlFile   = "wallet.toml"
@@ -47,7 +47,7 @@ const (
 	DefaultAPIAddr    = ":8080"
 )
 
-//Keys constants
+// Keys constants
 const (
 	DefaultKeyfile        = "keyfile.json"
 	DefaultPrivateKeyFile = "priv_key"

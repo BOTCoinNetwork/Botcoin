@@ -19,10 +19,10 @@ var (
 	defaultSuspendLimit    = 300
 )
 
-// BabbleConfig contains the configuration for the Babble node used by monetd.
-// It only presents a subset of the options Babble can accept, because monetd
+// BabbleConfig contains the configuration for the Babble node used by botcoin.
+// It only presents a subset of the options Babble can accept, because botcoin
 // forces some configurations values. In particular, the --fast-sync and
-// --store flags are disabled because monetd does not support the FastSync
+// --store flags are disabled because botcoin does not support the FastSync
 // protocol, and it requires a persistant database.
 type BabbleConfig struct {
 

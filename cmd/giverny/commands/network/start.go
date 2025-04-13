@@ -191,7 +191,7 @@ func exportDockerNodeConfig(networkDir, dockerDir string, n *node) error {
 		}
 
 		copying := []copyRecord{
-			{ // monetd.toml
+			{ // botcoin.toml
 				from: filepath.Join(networkDir, monetconfig.MonetTomlFile),
 				to:   filepath.Join(configDir, monetconfig.MonetTomlFile),
 			},
@@ -240,7 +240,7 @@ func exportDockerNodeConfig(networkDir, dockerDir string, n *node) error {
 			return err
 		}
 
-		// edit monetd.toml and set babble.listen appropriately
+		// edit botcoin.toml and set babble.listen appropriately
 		err = setListenAddressInToml(
 			filepath.Join(configDir, monetconfig.MonetTomlFile),
 			netaddr)

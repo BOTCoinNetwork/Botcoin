@@ -32,12 +32,12 @@ For the impatient, we recommend you start here:
     Start](https://botcoin.network/docs/html/quickstart.html#quickstart-rst)
 
 
-## Build monetd
+## Build botcoin
 need linux environment
 ```shell
 go mod tidy
-cd cmd/monetd
-go build -o monetd
+cd cmd/botcoin
+go build -o botcoin
 ```
 
 ## License

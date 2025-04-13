@@ -113,7 +113,7 @@ func networkNew(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	// Write default monetd.toml file
+	// Write default botcoin.toml file
 	mconfiguration.DumpGlobalTOML(networkDir, mconfiguration.MonetTomlFile, false)
 
 	if _noBuild {

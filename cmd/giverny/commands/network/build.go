@@ -22,7 +22,7 @@ import (
 func newBuildCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "build [network_name]",
-		Short: "build monetd configuration files based on a giverny network file",
+		Short: "build botcoin configuration files based on a giverny network file",
 		Args:  cobra.ExactArgs(1),
 		RunE:  networkBuild,
 	}

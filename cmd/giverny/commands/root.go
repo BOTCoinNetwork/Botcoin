@@ -18,7 +18,7 @@ var RootCmd = &cobra.Command{
 	Long: `Giverny
 	
 Giverny is the swiss army knife of advanced tools for the Monet Hub. For most users, 
-you should not need to use this command. The inbuild commands in monetd will suffice for
+you should not need to use this command. The inbuild commands in botcoin will suffice for
 most use cases.`,
 }
 

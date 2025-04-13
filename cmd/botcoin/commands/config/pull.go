@@ -36,7 +36,7 @@ the <keystore>. If --passfile is not specified, the user will be prompted to
 enter the passphrase manually. If the --address flag is omitted, the first 
 non-loopback address is used.
 `,
-		Example: `  monetd config pull "192.168.5.1:8080"`,
+		Example: `  botcoin config pull "192.168.5.1:8080"`,
 		Args:    cobra.ExactArgs(1),
 		RunE:    pullConfig,
 	}
@@ -114,7 +114,7 @@ func pullConfig(cmd *cobra.Command, args []string) error {
 		common.DebugMessage("Downloaded ", item.Dest)
 	}
 
-	// Write TOML file for monetd based on global config object
+	// Write TOML file for botcoin based on global config object
 	err = configuration.DumpGlobalTOML(
 		_configDir,
 		configuration.MonetTomlFile,

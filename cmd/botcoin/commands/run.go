@@ -76,7 +76,7 @@ func runMonet(cmd *cobra.Command, args []string) error {
 
 	// Set component versions in EVM-Lite version files that the endpoint read
 	evers.JSONVersion["babble"] = bvers.Version
-	evers.JSONVersion["monetd"] = mvers.Version
+	evers.JSONVersion["botcoin"] = mvers.Version
 
 	evers.JSONVersion["solc"] = genesis.SolcCompilerVersion
 	evers.JSONVersion["solc-os"] = genesis.SolcOSVersion

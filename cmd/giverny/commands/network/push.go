@@ -18,7 +18,7 @@ import (
 
 // Parameters for docker client
 const (
-	imgName     = "mosaicnetworks/monetd:latest"
+	imgName     = "botcoinNetwork/botcoin:latest"
 	imgIsRemote = false
 )
 
@@ -31,7 +31,7 @@ giverny network push
 
 This command is called after 'giverny network start'. It builds a node based on
 the configation files found for <node>, attaches it to the docker network, and
-starts monetd.
+starts botcoin.
 		`,
 		Args: cobra.ExactArgs(2),
 		RunE: networkPush,
