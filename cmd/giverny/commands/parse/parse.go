@@ -12,19 +12,19 @@ import (
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 
-	"github.com/mosaicnetworks/monetd/src/version"
+	"github.com/BOTCoinNetwork/Botcoin/src/version"
 
 	"github.com/ethereum/go-ethereum/common"
 
-	"github.com/mosaicnetworks/monetd/src/genesis"
+	"github.com/BOTCoinNetwork/Botcoin/src/genesis"
 
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
 	eth_crypto "github.com/ethereum/go-ethereum/crypto"
-	"github.com/mosaicnetworks/monetd/src/files"
 
 	"github.com/spf13/cobra"
 )
 
-//ParseCmd is an Ethereum key manager
+// ParseCmd is an Ethereum key manager
 var ParseCmd = &cobra.Command{
 	Use:   "parse [genesis file]",
 	Short: "parse genesis file",

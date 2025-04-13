@@ -10,8 +10,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/mosaicnetworks/monetd/src/common"
-	"github.com/mosaicnetworks/monetd/src/files"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -33,7 +33,7 @@ type soloTransaction struct {
 	Amount *big.Int
 }
 
-//CLI params
+// CLI params
 var accounts string
 var outputfile = "trans.json"
 var maxTransValue = 10

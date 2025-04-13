@@ -1,14 +1,14 @@
-//Package commands implements the CLI commands for monetd
+// Package commands implements the CLI commands for monetd
 package commands
 
 import (
 	"fmt"
 
-	"github.com/mosaicnetworks/monetd/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
 
-	"github.com/mosaicnetworks/monetd/cmd/monetd/commands/config"
-	"github.com/mosaicnetworks/monetd/cmd/monetd/commands/keys"
-	"github.com/mosaicnetworks/monetd/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/monetd/commands/config"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/monetd/commands/keys"
+	"github.com/BOTCoinNetwork/Botcoin/src/configuration"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -17,7 +17,7 @@ import (
 RootCmd
 *******************************************************************************/
 
-//RootCmd is the root command for monetd
+// RootCmd is the root command for monetd
 var RootCmd = &cobra.Command{
 	Use:   "monetd",
 	Short: "monet daemon",

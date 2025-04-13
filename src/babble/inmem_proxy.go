@@ -1,15 +1,16 @@
 package babble
 
 import (
+	"github.com/BOTCoinNetwork/BVM/src/service"
+	"github.com/BOTCoinNetwork/BVM/src/state"
+	"github.com/BOTCoinNetwork/babble/src/babble"
+	"github.com/BOTCoinNetwork/babble/src/crypto/keys"
+	"github.com/BOTCoinNetwork/babble/src/hashgraph"
+	"github.com/BOTCoinNetwork/babble/src/proxy"
 	ethCommon "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/mosaicnetworks/babble/src/babble"
-	"github.com/mosaicnetworks/babble/src/crypto/keys"
-	"github.com/mosaicnetworks/babble/src/hashgraph"
-	"github.com/mosaicnetworks/babble/src/proxy"
-	"github.com/mosaicnetworks/evm-lite/src/service"
-	"github.com/mosaicnetworks/evm-lite/src/state"
 	"github.com/sirupsen/logrus"
+	"math/big"
 )
 
 // InmemProxy implements the Babble AppProxy interface
@@ -61,8 +62,9 @@ func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, e
 	}
 
 	p.logger.WithFields(logrus.Fields{
-		"coinbase": coinbaseAddress.String(),
-		"block":    block.Index(),
+		"coinbase":      coinbaseAddress.String(),
+		"block":         block.Index(),
+		"RoundReceived": block.RoundReceived(),
 	}).Info("Commit")
 
 	blockHashBytes, err := block.Hash()
@@ -72,6 +74,11 @@ func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, e
 		if err := p.state.ApplyTransaction(tx, i, blockHash, coinbaseAddress); err != nil {
 			p.logger.WithError(err).Errorf("Failed to apply tx %d of %d", i+1, len(block.Transactions()))
 		}
+	}
+
+	err = p.rewardValidators(block)
+	if err != nil {
+		p.logger.WithError(err).Error("Failed to reward validators")
 	}
 
 	hash, err := p.state.Commit()
@@ -91,6 +98,42 @@ func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, e
 	}
 
 	return res, nil
+}
+
+var (
+	totalRewardPool = new(big.Int).Mul(big.NewInt(10000), new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil))
+)
+
+func (p *InmemProxy) rewardValidators(block hashgraph.Block) error {
+	if block.Index()%10 != 0 {
+		return nil
+	}
+	validatorSet, err := p.babble.Node.GetValidatorSet(block.RoundReceived())
+	if err != nil {
+		p.logger.WithError(err).Errorf("Failed to GetValidatorSet err")
+		return err
+	}
+
+	avgReward := new(big.Int).Div(totalRewardPool, big.NewInt(int64(len(validatorSet))))
+
+	for _, peer := range validatorSet {
+		pubKey, err := crypto.UnmarshalPubkey(peer.PubKeyBytes())
+		if err != nil {
+			p.logger.WithError(err).Errorf("Failed to UnmarshalPubkey err")
+			return err
+		}
+
+		address := crypto.PubkeyToAddress(*pubKey)
+		p.logger.WithFields(logrus.Fields{
+			"coinbase": address.String(),
+			"block":    block.RoundReceived(),
+			"reward":   avgReward,
+		}).Info("Rewarding validator")
+		p.state.AddBalance(address, avgReward)
+
+	}
+
+	return nil
 }
 
 // getCoinbase returns the coinbase address which will receive all the
@@ -210,12 +253,12 @@ func (p *InmemProxy) processEvictions(block hashgraph.Block) []hashgraph.Interna
 
 //TODO - Implement these two functions
 
-//GetSnapshot will generate a snapshot
+// GetSnapshot will generate a snapshot
 func (p *InmemProxy) GetSnapshot(blockIndex int) ([]byte, error) {
 	return []byte{}, nil
 }
 
-//Restore will restore a snapshot
+// Restore will restore a snapshot
 func (p *InmemProxy) Restore(snapshot []byte) error {
 	return nil
 }

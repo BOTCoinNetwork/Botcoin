@@ -8,13 +8,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	bpeers "github.com/mosaicnetworks/babble/src/peers"
-	"github.com/mosaicnetworks/monetd/src/genesis"
+	"github.com/BOTCoinNetwork/Botcoin/src/genesis"
+	bpeers "github.com/BOTCoinNetwork/babble/src/peers"
 
-	"github.com/mosaicnetworks/monetd/cmd/giverny/configuration"
-	"github.com/mosaicnetworks/monetd/src/common"
-	monetconfig "github.com/mosaicnetworks/monetd/src/configuration"
-	"github.com/mosaicnetworks/monetd/src/files"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/giverny/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
+	monetconfig "github.com/BOTCoinNetwork/Botcoin/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
 	"github.com/pelletier/go-toml"
 	"github.com/spf13/cobra"
 )

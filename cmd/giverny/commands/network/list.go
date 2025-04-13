@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"path/filepath"
 
-	"github.com/mosaicnetworks/monetd/cmd/giverny/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/giverny/configuration"
 	"github.com/spf13/cobra"
 )
 

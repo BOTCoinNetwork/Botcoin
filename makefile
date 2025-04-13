@@ -11,12 +11,12 @@ install: installd installgiv
 
 installd:
 	go install \
-		--ldflags "-X github.com/mosaicnetworks/monetd/src/version.GitCommit=`git rev-parse HEAD` -X github.com/mosaicnetworks/monetd/src/version.GitBranch=`git symbolic-ref --short HEAD`" \
+		--ldflags "-X github.com/BOTCoinNetwork/Botcoin/src/version.GitCommit=`git rev-parse HEAD` -X github.com/BOTCoinNetwork/Botcoin/src/version.GitBranch=`git symbolic-ref --short HEAD`" \
 		./cmd/monetd
 
 installgiv:
 	go install \
-		--ldflags "-X github.com/mosaicnetworks/monetd/src/version.GitCommit=`git rev-parse HEAD` -X github.com/mosaicnetworks/monetd/src/version.GitBranch=`git symbolic-ref --short HEAD`" \
+		--ldflags "-X github.com/BOTCoinNetwork/Botcoin/src/version.GitCommit=`git rev-parse HEAD` -X github.com/BOTCoinNetwork/Botcoin/src/version.GitBranch=`git symbolic-ref --short HEAD`" \
 		./cmd/giverny
 
 docker:
@@ -32,10 +32,10 @@ testmonetd:
 	@echo "\nMonetd Tests\n\n" ; glide novendor | xargs go test | sed -e 's?github.com/mosaicnetworks/?.../?g'
 
 testevml:
-	@echo "\nEVM-Lite Tests\n\n" ; cd vendor/github.com/mosaicnetworks/evm-lite ; go test ./src/... -count=1 -tags=unit | sed -e 's?github.com/mosaicnetworks/monetd/vendor/github.com/mosaicnetworks/?.../vendor/.../?g'
+	@echo "\nEVM-Lite Tests\n\n" ; cd vendor/github.com/BOTCoinNetwork/BVM ; go test ./src/... -count=1 -tags=unit | sed -e 's?github.com/BOTCoinNetwork/Botcoin/vendor/github.com/mosaicnetworks/?.../vendor/.../?g'
 
 testbabble:
-	@echo "\nBabble Tests\n\n" ; cd vendor/github.com/mosaicnetworks/babble ;   go test ./src/... -count=1 -tags=unit | sed -e 's?github.com/mosaicnetworks/monetd/vendor/github.com/mosaicnetworks/?.../vendor/.../?g'
+	@echo "\nBabble Tests\n\n" ; cd vendor/github.com/BOTCoinNetwork/babble ;   go test ./src/... -count=1 -tags=unit | sed -e 's?github.com/BOTCoinNetwork/Botcoin/vendor/github.com/mosaicnetworks/?.../vendor/.../?g'
 
 dist:
 	xgo --targets=*/amd64 --dest=build/  ./cmd/monetd/ 

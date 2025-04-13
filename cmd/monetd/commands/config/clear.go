@@ -1,8 +1,8 @@
 package config
 
 import (
-	"github.com/mosaicnetworks/monetd/src/configuration"
-	"github.com/mosaicnetworks/monetd/src/files"
+	"github.com/BOTCoinNetwork/Botcoin/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
 	"github.com/spf13/cobra"
 )
 

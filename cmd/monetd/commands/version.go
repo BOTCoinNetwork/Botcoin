@@ -3,7 +3,7 @@ package commands
 import (
 	"fmt"
 
-	monet "github.com/mosaicnetworks/monetd/src/version"
+	monet "github.com/BOTCoinNetwork/Botcoin/src/version"
 	"github.com/spf13/cobra"
 )
 

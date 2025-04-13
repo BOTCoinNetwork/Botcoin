@@ -13,12 +13,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mosaicnetworks/monetd/cmd/giverny/commands/network"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/giverny/commands/network"
 
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
+	monetconfig "github.com/BOTCoinNetwork/Botcoin/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
 	"github.com/BurntSushi/toml"
-	"github.com/mosaicnetworks/monetd/src/common"
-	monetconfig "github.com/mosaicnetworks/monetd/src/configuration"
-	"github.com/mosaicnetworks/monetd/src/files"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

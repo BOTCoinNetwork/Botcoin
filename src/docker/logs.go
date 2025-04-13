@@ -2,11 +2,11 @@ package docker
 
 import (
 	"context"
+	"github.com/docker/docker/api/types/container"
 	"io"
 	"os"
 	"time"
 
-	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 )
 
@@ -15,7 +15,7 @@ func ShowLogs(client *client.Client, containerID string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	reader, err := client.ContainerLogs(ctx, containerID, types.ContainerLogsOptions{ShowStdout: true, ShowStderr: false})
+	reader, err := client.ContainerLogs(ctx, containerID, container.LogsOptions{ShowStdout: true, ShowStderr: false})
 	if err != nil {
 		return err
 	}

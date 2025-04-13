@@ -3,11 +3,11 @@ package docker
 import (
 	"context"
 	"fmt"
+	"github.com/docker/docker/api/types/image"
 	"io"
 	"os"
 	"strings"
 
-	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/network"
 	"github.com/docker/docker/api/types/strslice"
@@ -15,14 +15,14 @@ import (
 	"github.com/docker/docker/client"
 )
 
-//CreateContainerFromImage creates a container, returning its ID
+// CreateContainerFromImage creates a container, returning its ID
 func CreateContainerFromImage(cli *client.Client, imageName string, isImageRemote bool,
 	nodeName string, cmd strslice.StrSlice, start bool) (string, error) {
 
 	ctx := context.Background()
 
 	if isImageRemote {
-		out, err := cli.ImagePull(ctx, imageName, types.ImagePullOptions{})
+		out, err := cli.ImagePull(ctx, imageName, image.PullOptions{})
 		if err != nil {
 			return "", err
 		}
@@ -32,13 +32,13 @@ func CreateContainerFromImage(cli *client.Client, imageName string, isImageRemot
 	resp, err := cli.ContainerCreate(ctx, &container.Config{
 		Cmd:   cmd,
 		Image: imageName,
-	}, nil, nil, nodeName)
+	}, nil, nil, nil, nodeName)
 	if err != nil {
 		return "", err
 	}
 
 	if start {
-		if err := cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
+		if err := cli.ContainerStart(ctx, resp.ID, container.StartOptions{}); err != nil {
 			return "", err
 		}
 	}
@@ -46,20 +46,20 @@ func CreateContainerFromImage(cli *client.Client, imageName string, isImageRemot
 	return resp.ID, nil
 }
 
-//StartContainer starts a container previously created by CreateContainerFromImage
+// StartContainer starts a container previously created by CreateContainerFromImage
 func StartContainer(cli *client.Client, containerID string) error {
 
 	ctx := context.Background()
-	return cli.ContainerStart(ctx, containerID, types.ContainerStartOptions{})
+	return cli.ContainerStart(ctx, containerID, container.StartOptions{})
 }
 
-//GetContainers lists containers.
+// GetContainers lists containers.
 func GetContainers(cli *client.Client, output bool) (map[string]string, error) {
 
 	rtn := make(map[string]string)
 
 	ctx := context.Background()
-	arrRes, err := cli.ContainerList(ctx, types.ContainerListOptions{All: true})
+	arrRes, err := cli.ContainerList(ctx, container.ListOptions{All: true})
 	if err != nil {
 		fmt.Println(err.Error())
 		return rtn, err
@@ -80,7 +80,7 @@ func GetContainers(cli *client.Client, output bool) (map[string]string, error) {
 // StopContainer stops a container
 func StopContainer(cli *client.Client, containerID string) error {
 	ctx := context.Background()
-	if err := cli.ContainerStop(ctx, containerID, nil); err != nil {
+	if err := cli.ContainerStop(ctx, containerID, container.StopOptions{}); err != nil {
 		return err
 	}
 	return nil
@@ -89,7 +89,7 @@ func StopContainer(cli *client.Client, containerID string) error {
 // RemoveContainer removes a container
 func RemoveContainer(cli *client.Client, containerID string, force, removelinks, removevolumes bool) error {
 	ctx := context.Background()
-	if err := cli.ContainerRemove(ctx, containerID, types.ContainerRemoveOptions{
+	if err := cli.ContainerRemove(ctx, containerID, container.RemoveOptions{
 		Force:         force,
 		RemoveLinks:   removelinks,
 		RemoveVolumes: removevolumes,
@@ -110,4 +110,3 @@ func ConnectContainerToNetwork(cli *client.Client, networkID string, containerID
 			IPAddress:  ip,
 		})
 }
-

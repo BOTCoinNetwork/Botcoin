@@ -5,12 +5,12 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/mosaicnetworks/babble/src/hashgraph"
-	"github.com/mosaicnetworks/babble/src/peers"
-	"github.com/mosaicnetworks/evm-lite/src/state"
+	"github.com/BOTCoinNetwork/BVM/src/state"
+	"github.com/BOTCoinNetwork/babble/src/hashgraph"
+	"github.com/BOTCoinNetwork/babble/src/peers"
 	"github.com/sirupsen/logrus"
 
-	bcommon "github.com/mosaicnetworks/evm-lite/src/common"
+	bcommon "github.com/BOTCoinNetwork/BVM/src/common"
 )
 
 /*

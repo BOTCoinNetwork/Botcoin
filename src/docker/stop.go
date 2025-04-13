@@ -4,10 +4,10 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/mosaicnetworks/monetd/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
 )
 
-//StopNetwork stops a network. Force removes nodes too.
+// StopNetwork stops a network. Force removes nodes too.
 func StopNetwork(networkName string, force bool) error {
 
 	cli, err := GetDockerClient()
@@ -65,7 +65,7 @@ func StopNetwork(networkName string, force bool) error {
 	return nil
 }
 
-//StopNode stops a node. If force is set the container is removed too.
+// StopNode stops a node. If force is set the container is removed too.
 func StopNode(networkName, nodeName string, force bool) error {
 
 	cli, err := GetDockerClient()

@@ -3,9 +3,9 @@ package docker
 import (
 	"context"
 	"fmt"
+	"github.com/docker/docker/api/types/image"
 	"strings"
 
-	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 )
 
@@ -19,7 +19,7 @@ func ListImages(cli *client.Client) error {
 func GetImages(cli *client.Client, showOutput bool) (map[string]string, error) {
 
 	rtn := make(map[string]string)
-	images, err := cli.ImageList(context.Background(), types.ImageListOptions{})
+	images, err := cli.ImageList(context.Background(), image.ListOptions{})
 	if err != nil {
 		return rtn, err
 	}

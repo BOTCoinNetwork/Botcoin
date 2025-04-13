@@ -7,3 +7,4 @@ node_modules/
 npm_modules
 trans.json
 .DS_Store
+go.sum

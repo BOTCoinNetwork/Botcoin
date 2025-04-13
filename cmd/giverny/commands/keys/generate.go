@@ -4,23 +4,23 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"github.com/mosaicnetworks/monetd/src/files"
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
 
-	"github.com/mosaicnetworks/monetd/src/crypto"
+	"github.com/BOTCoinNetwork/Botcoin/src/crypto"
 
-	"github.com/mosaicnetworks/monetd/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-//CLI Params
+// CLI Params
 var prefix = "Account"
 var minSuffix = 1
 var maxSuffix = 5
 
 const defaultPassword = "test"
 
-//newGenerateCmd returns the command that creates a Ethereum keyfile
+// newGenerateCmd returns the command that creates a Ethereum keyfile
 func newGenerateCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "generate",

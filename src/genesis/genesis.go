@@ -7,12 +7,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/mosaicnetworks/babble/src/peers"
-	"github.com/mosaicnetworks/monetd/src/configuration"
-	"github.com/mosaicnetworks/monetd/src/crypto"
-	"github.com/mosaicnetworks/monetd/src/files"
+	"github.com/BOTCoinNetwork/Botcoin/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/crypto"
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
+	"github.com/BOTCoinNetwork/babble/src/peers"
 
-	"github.com/mosaicnetworks/monetd/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
 )
 
 // AllocRecord is an object that contains information about a pre-funded acount.

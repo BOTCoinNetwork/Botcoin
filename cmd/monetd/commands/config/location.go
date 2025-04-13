@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/mosaicnetworks/monetd/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/configuration"
 	"github.com/spf13/cobra"
 )
 

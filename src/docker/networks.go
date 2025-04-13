@@ -5,19 +5,18 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/docker/docker/api/types"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
 	"github.com/docker/docker/api/types/network"
 	"github.com/docker/docker/client"
-	"github.com/mosaicnetworks/monetd/src/common"
 )
 
-//GetNetworks lists networks
+// GetNetworks lists networks
 func GetNetworks(cli *client.Client, output bool) (map[string]string, error) {
 
 	rtn := make(map[string]string)
 
 	ctx := context.Background()
-	arrRes, err := cli.NetworkList(ctx, types.NetworkListOptions{})
+	arrRes, err := cli.NetworkList(ctx, network.ListOptions{})
 	if err != nil {
 		return rtn, err
 	}
@@ -37,9 +36,8 @@ func CreateNetwork(cli *client.Client, networkName, subnet, iprange, gateway str
 	ctx := context.Background()
 
 	common.DebugMessage("Creating options")
-	opts := types.NetworkCreate{
-		CheckDuplicate: true,
-		Driver:         "bridge",
+	opts := network.CreateOptions{
+		Driver: "bridge",
 		IPAM: &network.IPAM{
 			//			Driver: "bridge",
 			Options: make(map[string]string),
@@ -74,8 +72,8 @@ func RemoveNetwork(cli *client.Client, networkID string) error {
 	return cli.NetworkRemove(ctx, networkID)
 }
 
-//SafeCreateNetwork provides a wrapper to CreateNetwork, but first ensures that the
-//network does not already exist.
+// SafeCreateNetwork provides a wrapper to CreateNetwork, but first ensures that the
+// network does not already exist.
 func SafeCreateNetwork(cli *client.Client, networkName, subnet, iprange, gateway string, force, useExisting bool) (string, error) {
 
 	// First we get a list of networks

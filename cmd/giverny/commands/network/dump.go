@@ -8,11 +8,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mosaicnetworks/monetd/src/common"
-	"github.com/mosaicnetworks/monetd/src/files"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
 	"github.com/pelletier/go-toml"
 
-	"github.com/mosaicnetworks/monetd/cmd/giverny/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/giverny/configuration"
 
 	"github.com/spf13/cobra"
 )

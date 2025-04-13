@@ -7,20 +7,20 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/BOTCoinNetwork/Botcoin/cmd/giverny/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
+	monetconfig "github.com/BOTCoinNetwork/Botcoin/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/crypto"
+	"github.com/BOTCoinNetwork/Botcoin/src/docker"
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
+	"github.com/BOTCoinNetwork/Botcoin/src/keystore"
 	eth_keystore "github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/mosaicnetworks/monetd/cmd/giverny/configuration"
-	"github.com/mosaicnetworks/monetd/src/common"
-	monetconfig "github.com/mosaicnetworks/monetd/src/configuration"
-	"github.com/mosaicnetworks/monetd/src/crypto"
-	"github.com/mosaicnetworks/monetd/src/docker"
-	"github.com/mosaicnetworks/monetd/src/files"
-	"github.com/mosaicnetworks/monetd/src/keystore"
 	"github.com/pelletier/go-toml"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-//CLI flags
+// CLI flags
 var forceNetwork = false
 var useExisting = false
 var startNodes = false

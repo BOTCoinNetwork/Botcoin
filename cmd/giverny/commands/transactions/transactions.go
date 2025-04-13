@@ -1,8 +1,8 @@
 package transactions
 
 import (
-	"github.com/mosaicnetworks/monetd/cmd/giverny/configuration"
-	monetconfig "github.com/mosaicnetworks/monetd/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/giverny/configuration"
+	monetconfig "github.com/BOTCoinNetwork/Botcoin/src/configuration"
 	"github.com/spf13/cobra"
 )
 
@@ -11,8 +11,8 @@ var (
 	_giverny  = configuration.GivernyConfigDir
 )
 
-//TODO duplicates the definition in networks package.
-//Probably better to publish them and use them directly.
+// TODO duplicates the definition in networks package.
+// Probably better to publish them and use them directly.
 const (
 	givernyNetworksDir     = "networks"
 	givernyKeystoreDir     = "keystore"
@@ -20,7 +20,7 @@ const (
 	networkTomlFileName    = "network.toml"
 )
 
-//TransCmd implements the transactions subcommand
+// TransCmd implements the transactions subcommand
 var TransCmd = &cobra.Command{
 	Use:   "transactions",
 	Short: "giverny transactions",

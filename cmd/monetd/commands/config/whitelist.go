@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/mosaicnetworks/monetd/src/configuration"
-	"github.com/mosaicnetworks/monetd/src/crypto"
-	"github.com/mosaicnetworks/monetd/src/genesis"
+	"github.com/BOTCoinNetwork/Botcoin/src/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/crypto"
+	"github.com/BOTCoinNetwork/Botcoin/src/genesis"
 
 	"github.com/spf13/cobra"
 )

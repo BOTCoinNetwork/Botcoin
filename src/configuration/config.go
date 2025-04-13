@@ -4,9 +4,9 @@ package configuration
 import (
 	"path/filepath"
 
-	babble_config "github.com/mosaicnetworks/babble/src/config"
-	evml_config "github.com/mosaicnetworks/evm-lite/src/config"
-	"github.com/mosaicnetworks/monetd/src/common"
+	evml_config "github.com/BOTCoinNetwork/BVM/src/config"
+	"github.com/BOTCoinNetwork/Botcoin/src/common"
+	babble_config "github.com/BOTCoinNetwork/babble/src/config"
 	"github.com/sirupsen/logrus"
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 )

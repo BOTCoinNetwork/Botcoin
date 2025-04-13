@@ -5,17 +5,17 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"github.com/docker/docker/api/types/container"
 	"io"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
 )
 
-//CopyToContainer copies a directory / file to a container
+// CopyToContainer copies a directory / file to a container
 func CopyToContainer(cli *client.Client, containerID, localSrcPath, containerDestPath string) error {
 	ctx := context.Background()
 
@@ -24,7 +24,7 @@ func CopyToContainer(cli *client.Client, containerID, localSrcPath, containerDes
 		return err
 	}
 
-	err = cli.CopyToContainer(ctx, containerID, containerDestPath, archive, types.CopyToContainerOptions{})
+	err = cli.CopyToContainer(ctx, containerID, containerDestPath, archive, container.CopyToContainerOptions{})
 	if err != nil {
 		return err
 	}
@@ -32,7 +32,7 @@ func CopyToContainer(cli *client.Client, containerID, localSrcPath, containerDes
 	return nil
 }
 
-//CopyFromContainer copies a file / directory from a container
+// CopyFromContainer copies a file / directory from a container
 func CopyFromContainer(cli *client.Client, containerID, containerSrcPath, localDestPath string) error {
 
 	ctx := context.Background()

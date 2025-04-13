@@ -1,12 +1,12 @@
-//Package version provides version information for the application
+// Package version provides version information for the application
 package version
 
 import (
 	"fmt"
 
+	evm "github.com/BOTCoinNetwork/BVM/src/version"
+	_babble "github.com/BOTCoinNetwork/babble/src/version"
 	geth "github.com/ethereum/go-ethereum/params"
-	_babble "github.com/mosaicnetworks/babble/src/version"
-	evm "github.com/mosaicnetworks/evm-lite/src/version"
 )
 
 var (
@@ -30,7 +30,7 @@ func init() {
 	}
 }
 
-//FullVersion outputs version information for Monet, EVM-Lite, Babble and Geth
+// FullVersion outputs version information for Monet, EVM-Lite, Babble and Geth
 func FullVersion() string {
 	return fmt.Sprintln("Monetd Version: "+Version) +
 		fmt.Sprintln("     EVM-Lite Version: "+evm.Version) +

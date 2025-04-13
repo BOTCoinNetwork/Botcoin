@@ -3,8 +3,8 @@ package network
 import (
 	"path/filepath"
 
-	"github.com/mosaicnetworks/monetd/cmd/giverny/configuration"
-	"github.com/mosaicnetworks/monetd/src/files"
+	"github.com/BOTCoinNetwork/Botcoin/cmd/giverny/configuration"
+	"github.com/BOTCoinNetwork/Botcoin/src/files"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -22,7 +22,7 @@ var (
 	networkName = "network0"
 )
 
-//NetworkCmd is the CLI subcommand
+// NetworkCmd is the CLI subcommand
 var NetworkCmd = &cobra.Command{
 	Use:   "network",
 	Short: "Advanced Network Configuration",

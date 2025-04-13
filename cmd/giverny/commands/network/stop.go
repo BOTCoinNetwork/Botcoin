@@ -1,7 +1,7 @@
 package network
 
 import (
-	"github.com/mosaicnetworks/monetd/src/docker"
+	"github.com/BOTCoinNetwork/Botcoin/src/docker"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
