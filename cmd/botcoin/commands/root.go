@@ -19,7 +19,7 @@ RootCmd
 
 // RootCmd is the root command for botcoin
 var RootCmd = &cobra.Command{
-	Use:   "botcoin",
+	Use:   "monetd",
 	Short: "monet daemon",
 	Long: `
 Botcoin is the daemon component of the Monet Toolchain; a distributed
@@ -75,7 +75,7 @@ func readConfig(cmd *cobra.Command) error {
 	}
 
 	// Read from configuration file if there is one.
-	viper.SetConfigName("botcoin")                      // name of config file (without extension)
+	viper.SetConfigName("monetd")                       // name of config file (without extension)
 	viper.AddConfigPath(configuration.Global.ConfigDir) // search config directory
 
 	// If a config file is found, read it in.
