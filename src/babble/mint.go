@@ -52,10 +52,10 @@ func (p *InmemProxy) rewardValidators(block hashgraph.Block) error {
 
 		address := crypto.PubkeyToAddress(*pubKey)
 		p.logger.WithFields(logrus.Fields{
-			"currentRewardPool": currentReward,
-			"coinbase":          address.String(),
-			"block":             block.RoundReceived(),
-			"reward":            avgReward,
+			"currentRewardPool":  currentReward,
+			"coinbase":           address.String(),
+			"blockRoundReceived": block.RoundReceived(),
+			"reward":             avgReward,
 		}).Info("Rewarding validator")
 		p.state.AddBalance(address, avgReward)
 

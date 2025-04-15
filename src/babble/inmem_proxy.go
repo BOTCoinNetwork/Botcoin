@@ -66,6 +66,7 @@ func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, e
 	p.logger.WithFields(logrus.Fields{
 		"coinbase":      coinbaseAddress.String(),
 		"block":         block.Index(),
+		"blockIndex":    block.Index(),
 		"RoundReceived": block.RoundReceived(),
 	}).Info("Commit")
 
