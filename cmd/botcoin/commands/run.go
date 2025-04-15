@@ -45,6 +45,9 @@ func bindFlags(cmd *cobra.Command) {
 	// Config and data directories
 	cmd.Flags().StringP("config", "c", configuration.Global.ConfigDir, "configuration directory")
 	cmd.Flags().StringP("data", "d", configuration.Global.DataDir, "data directory")
+	cmd.Flags().Int("validator-reward-pool", configuration.Global.ValidatorRewardPool, "validator reward pool")
+	cmd.Flags().Int("validator-reward-round", configuration.Global.ValidatorRewardRound, "validator reward round")
+	cmd.Flags().Int("validator-halving-round", configuration.Global.ValidatorHalvingRound, "validator halving round")
 
 	// EVM-Lite and Babble share the same API address
 	cmd.Flags().String("api-listen", configuration.Global.APIAddr, "IP:PORT of HTTP API service")
@@ -84,7 +87,8 @@ func runMonet(cmd *cobra.Command, args []string) error {
 
 	babble := babble.NewInmemBabble(
 		configuration.Global.ToBabbleConfig(),
-		configuration.Global.Logger("babble-proxy"))
+		configuration.Global.Logger("babble-proxy"),
+		babble.NewRewardRule(int64(configuration.Global.ValidatorRewardPool), configuration.Global.ValidatorHalvingRound, configuration.Global.ValidatorRewardRound))
 
 	engine, err := engine.NewEngine(*configuration.Global.ToEVMLConfig(), babble)
 	if err != nil {

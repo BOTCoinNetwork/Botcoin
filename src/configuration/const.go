@@ -10,13 +10,13 @@ import (
 // Directory Constants
 const (
 	// config
-	ConfigDir = "botcoin-config"
+	ConfigDir = "monetd-config"
 	BabbleDir = "babble"
 	EthDir    = "eth"
 	POADir    = "poa"
 
 	// data
-	DatabaseDir = "botcoin-data"
+	DatabaseDir = "monetd-data"
 
 	// keystore
 	KeyStoreDir = "keystore"
@@ -33,7 +33,7 @@ const (
 	PeersJSON        = "peers.json"
 	PeersGenesisJSON = "peers.genesis.json"
 	GenesisJSON      = "genesis.json"
-	MonetTomlFile    = "botcoin.toml"
+	MonetTomlFile    = "monetd.toml"
 	EthDB            = "eth-db"
 	BabbleDB         = "babble-db"
 	WalletTomlFile   = "wallet.toml"
@@ -58,6 +58,9 @@ const (
 	DefaultAccountBalance            = "1234567890000000000000"
 	DefaultContractAddress           = "abbaabbaabbaabbaabbaabbaabbaabbaabbaabba"
 	DefaultControllerContractAddress = "aabbaabbaabbaabbaabbaabbaabbaabbaabbaabb"
+	DefaultValidatorRewardPool       = 2880000
+	DefaultValidatorRewardRound      = 28800
+	DefaultValidatorHalvingRound     = 30000000
 	GenesisContract                  = "contract0.sol"
 	GenesisABI                       = "contract0.abi"
 	ControllerContract               = "contract1.sol"

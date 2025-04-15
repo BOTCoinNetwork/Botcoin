@@ -28,15 +28,15 @@ func ShowIPWarnings() {
 	advertise := configuration.Global.Babble.AdvertiseAddr
 
 	if common.CheckIP(api, true) {
-		common.MessageWithType(common.MsgWarning, fmt.Sprintf("Botcoin service API address in botcoin.toml may be internal: %s", api))
+		common.MessageWithType(common.MsgWarning, fmt.Sprintf("Botcoin service API address in monetd.toml may be internal: %s", api))
 	}
 
 	if advertise != "" && common.CheckIP(advertise, false) {
-		common.MessageWithType(common.MsgWarning, fmt.Sprintf("babble.advertise address in botcoin.toml may be internal: %s \n", listen))
+		common.MessageWithType(common.MsgWarning, fmt.Sprintf("babble.advertise address in monetd.toml may be internal: %s \n", listen))
 	} else if common.CheckIP(listen, false) {
 		common.MessageWithType(
 			common.MsgWarning,
-			fmt.Sprintf("babble.listen address in botcoin.toml may be internal: %s. Consider setting an advertise address.", listen),
+			fmt.Sprintf("babble.listen address in monetd.toml may be internal: %s. Consider setting an advertise address.", listen),
 		)
 	}
 }

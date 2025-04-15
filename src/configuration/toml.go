@@ -16,6 +16,12 @@ verbose = "{{.Verbose}}"
 # The IP:PORT of the HTTP API service (defaults to :8080)
 api-listen = "{{.APIAddr}}"
 
+validator-reward-pool = "{{.ValidatorRewardPool}}"
+
+validator-reward-round = "{{.ValidatorRewardRound}}"
+
+validator-halving-round = "{{.ValidatorHalvingRound}}"
+
 [babble]
 
   # IP:PORT on the local machine where Babble will bind its internal gossip 
@@ -63,15 +69,15 @@ api-listen = "{{.APIAddr}}"
 
 // GlobalTOML converts the global Config object into a TOML string
 func GlobalTOML() (string, error) {
-	configTmpl, err := template.New("botcoin.toml").Parse(configTOML)
+	configTmpl, err := template.New("monetd.toml").Parse(configTOML)
 	if err != nil {
-		return "", fmt.Errorf("Error parsing botcoin.toml template: %v", err)
+		return "", fmt.Errorf("Error parsing monetd.toml template: %v", err)
 	}
 
 	var buf bytes.Buffer
 	err = configTmpl.Execute(&buf, Global)
 	if err != nil {
-		return "", fmt.Errorf("Error executing botcoin.toml template: %v", err)
+		return "", fmt.Errorf("Error executing monetd.toml template: %v", err)
 	}
 
 	return buf.String(), nil

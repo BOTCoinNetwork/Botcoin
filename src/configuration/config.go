@@ -127,13 +127,25 @@ type BaseConfig struct {
 	APIAddr string `mapstructure:"api-listen"`
 
 	logger *logrus.Logger
+
+	// Validator reward pool
+	ValidatorRewardPool int `mapstructure:"validator-reward-pool"`
+
+	// Validator reward round
+	ValidatorRewardRound int `mapstructure:"validator-reward-round"`
+
+	// Validator halving round
+	ValidatorHalvingRound int `mapstructure:"validator-halving-round"`
 }
 
 // DefaultBaseConfig returns the default top-level configuration for EVM-Babble
 func DefaultBaseConfig() BaseConfig {
 	return BaseConfig{
-		ConfigDir: DefaultConfigDir(),
-		DataDir:   DefaultDataDir(),
-		APIAddr:   DefaultAPIAddr,
+		ConfigDir:             DefaultConfigDir(),
+		DataDir:               DefaultDataDir(),
+		APIAddr:               DefaultAPIAddr,
+		ValidatorRewardPool:   DefaultValidatorRewardPool,
+		ValidatorRewardRound:  DefaultValidatorRewardRound,
+		ValidatorHalvingRound: DefaultValidatorHalvingRound,
 	}
 }

@@ -18,7 +18,7 @@ import (
 
 // Parameters for docker client
 const (
-	imgName     = "botcoinNetwork/botcoin:latest"
+	imgName     = "botcoinnetwork/botcoin:latest"
 	imgIsRemote = false
 )
 
