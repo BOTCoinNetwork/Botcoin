@@ -15,8 +15,7 @@ echo "Found solc $SOLCVERSION"
 
 mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )"
 
-
-solc --bin-runtime --abi -o . --overwrite --optimize $mydir/poa.sol
+solc --bin-runtime --abi -o . --overwrite --optimize "$mydir"/poa.sol
 ret=$?
 
 if [ $ret -ne 0 ] ; then
@@ -26,9 +25,9 @@ fi
 
 BYTECODE="$(sed -r 's/(.{72})/   "\1" +\n/g' POA_Genesis.bin-runtime | sed '$s/    "//;$s/" +\n//;$s/^/    "/;$s/$/"/')"
 
-ABI="$(cat POA_Genesis.abi  | json_pp | sed -e 's/"/\\"/g;s/   /\\t/g' | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n" +\n    "/g'   )" 
+ABI="$(json_pp < POA_Genesis.abi  | json_pp | sed -e 's/"/\\"/g;s/   /\\t/g' | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n" +\n    "/g'   )" 
 
-cat <<! > $mydir/bytecode.go
+cat <<! > "$mydir"/bytecode.go
 package genesis
 
 // This code is generated externally as part of each release.

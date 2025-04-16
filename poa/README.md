@@ -15,6 +15,13 @@ The solidity source code for the standard contracts are in the following files:
 
 ``solc`` installed and working
 
+In Ubuntu.
+
+```bash
+    sudo add-apt-repository ppa:ethereum/ethereum
+    sudo apt-get update
+    sudo apt-get install solc
+```
 
 ## poa.sol
 
