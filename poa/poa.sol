@@ -375,21 +375,17 @@ function isWhitelisted(address _address) private view returns (bool)
      voteresult = false;
 
 
-     if (election.noVotes > 0)  // Someone Voted No
+     if (election.noVotes * 3 > whiteListCount * 1)  // Someone Voted No
      {
          declineNominee(election.nominee);
          decided = true;
          voteresult = false;
      }
-     else
+     else if(election.yesVotes * 3 >= whiteListCount * 2) // Requires unanimous approval
      {
-         // Requires unanimous approval
-         if(election.yesVotes >= whiteListCount)
-         {
-             acceptNominee(election.nominee);
-             decided = true;
-             voteresult = true;
-         }
+         acceptNominee(election.nominee);
+         decided = true;
+         voteresult = true;
      }
 
      if (decided)
@@ -411,21 +407,17 @@ function isWhitelisted(address _address) private view returns (bool)
      voteresult = false;
 
 
-     if (election.noVotes > 0)  // Someone Voted No
+     if (election.noVotes * 3 > whiteListCount * 1)  // Someone Voted No
      {
          declineEviction(election.nominee);
          decided = true;
          voteresult = false;
      }
-     else
+     else if(election.yesVotes * 3 >= (whiteListCount * 2 - 1)) // Requires unanimous approval
      {
-         // Requires unanimous approval
-         if(election.yesVotes >= (whiteListCount - 1 ))
-         {
-             acceptEviction(election.nominee);
-             decided = true;
-             voteresult = true;
-         }
+         acceptEviction(election.nominee);
+         decided = true;
+         voteresult = true;
      }
 
      if (decided)
@@ -547,8 +539,6 @@ function removeEvicteeVote(address _nomineeAddress) private
     for (uint j = 0 ; j < evictionList[_nomineeAddress].noArray.length; j++) {
         evictionList[_nomineeAddress].vote[evictionList[_nomineeAddress].noArray[j]].voter = address(0);
     }
-
-
 }
 
 
@@ -722,9 +712,9 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
      return (evictionList[_address].yesVotes,evictionList[_address].noVotes);
  }
 
- /// @notice stake ETH
+ /// @notice stake BOC
  function stake() public payable {
-    require(msg.value > 0, "Must stake some ETH");
+    require(msg.value > 100000 * 1e18, "Must stake some BOC");
     
     if (stakeList[msg.sender].amount > 0) {
         stakeList[msg.sender].amount += msg.value;
@@ -768,7 +758,9 @@ function checkStakeList() public view returns (string memory) {
 
 /// @notice Withdrawing and pledging BOC
 function withdraw(uint256 value) public {
-    require(stakeList[msg.sender].amount >= value, "Insufficient stake");
+    uint256 currentStake = stakeList[msg.sender].amount;
+    require(currentStake >= value, "Insufficient stake");
+    require(currentStake - value >= 100000 * 1e18 || value == currentStake, "Withdrawal would leave stake below minimum or is invalid");
     
     stakeList[msg.sender].amount -= value;
     
@@ -814,12 +806,14 @@ function addressToString(address _addr) private pure returns (string memory) {
 }
 
 // Auxiliary function: convert uint to string
+// Auxiliary function: convert uint to string
 function uint2str(uint256 _i) private pure returns (string memory str) {
     if (_i == 0) {
-        return "0000";
+        return "0";
     }
     uint256 j = _i;
     uint256 length;
+    // 计算数字的位数
     while (j != 0) {
         length++;
         j /= 10;
@@ -827,16 +821,12 @@ function uint2str(uint256 _i) private pure returns (string memory str) {
     bytes memory bstr = new bytes(length);
     uint256 k = length;
     j = _i;
+    // 将每一位数字转换为对应的 ASCII 码并存入字节数组
     while (j != 0) {
         bstr[--k] = bytes1(uint8(48 + j % 10));
         j /= 10;
     }
-    str = string(bstr);
-    // Fill in 4 decimal places
-    while (bytes(str).length < 4) {
-        str = string(abi.encodePacked("0", str));
-    }
-    return str;
+    return string(bstr);
 }
 
 /// @notice Query the total pledged amount
