@@ -112,18 +112,7 @@ pragma solidity ^0.5.11;
           address[] yesArray;
           address[] noArray;
         }
-        // add stake info
-        struct StakeInfo {
-            uint256 amount;
-            uint256 timestamp;
-        }
-
-        mapping(address => StakeInfo) public stakeList;
-        address[] public stakerArray;
-
-        event Staked(address indexed staker, uint256 amount);
-        event Withdrawn(address indexed staker, uint256 amount);
-
+        
         mapping (address => WhitelistPerson) whiteList;
         uint whiteListCount;
         address[] whiteListArray;
@@ -132,6 +121,17 @@ pragma solidity ^0.5.11;
         mapping (address => bytes32) monikerList;
         mapping (address => NomineeElection) evictionList;
         address[] evictionArray;
+
+        struct StakeInfo {
+            uint256 amount;
+            uint256 timestamp;
+        }
+
+        mapping (address => StakeInfo) public stakeList;
+        address[] public stakerArray;
+
+        event Staked(address indexed staker, uint256 amount);
+        event Withdrawn(address indexed staker, uint256 amount);
 
 
 /// @notice This is no longer required, but an empty function prevents older monetcli versions with the poa init command erroring
@@ -780,7 +780,7 @@ function checkStake(address _staker) public view returns (uint256) {
     return stakeList[_staker].amount;
 }
 
-// Auxiliary function: Remove address from pledger array
+/// @notice Auxiliary function: Remove address from pledger array
 function removeFromStakerArray(address staker) private {
     for (uint i = 0; i < stakerArray.length; i++) {
         if (stakerArray[i] == staker) {
@@ -791,7 +791,7 @@ function removeFromStakerArray(address staker) private {
     }
 }
 
-// Auxiliary function: Convert address to string
+/// @notice Auxiliary function: Convert address to string
 function addressToString(address _addr) private pure returns (string memory) {
     bytes32 value = bytes32(uint256(_addr));
     bytes memory alphabet = "0123456789abcdef";
@@ -805,15 +805,14 @@ function addressToString(address _addr) private pure returns (string memory) {
     return string(str);
 }
 
-// Auxiliary function: convert uint to string
-// Auxiliary function: convert uint to string
+/// @notice Auxiliary function: convert uint to string
 function uint2str(uint256 _i) private pure returns (string memory str) {
     if (_i == 0) {
         return "0";
     }
     uint256 j = _i;
     uint256 length;
-    // 计算数字的位数
+    // Calculate the number of digits in a number
     while (j != 0) {
         length++;
         j /= 10;
@@ -821,7 +820,7 @@ function uint2str(uint256 _i) private pure returns (string memory str) {
     bytes memory bstr = new bytes(length);
     uint256 k = length;
     j = _i;
-    // 将每一位数字转换为对应的 ASCII 码并存入字节数组
+    // Convert each digit into its corresponding ASCII code and store it in a byte array
     while (j != 0) {
         bstr[--k] = bytes1(uint8(48 + j % 10));
         j /= 10;
