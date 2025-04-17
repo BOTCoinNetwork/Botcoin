@@ -21,6 +21,15 @@ In Ubuntu.
     sudo add-apt-repository ppa:ethereum/ethereum
     sudo apt-get update
     sudo apt-get install solc
+
+    # If you get errors with line endings, install dos2unix
+    sudo apt-get install dos2unix
+    dos2unix ./compile-poa.sh
+
+    # If you get errors with shellcheck, install shellcheck
+    sudo apt-get install shellcheck
+    shellcheck ./compile-poa.sh
+
 ```
 
 ## poa.sol
