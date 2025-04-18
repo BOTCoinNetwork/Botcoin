@@ -129,6 +129,7 @@ pragma solidity ^0.5.11;
 
         mapping (address => StakeInfo) public stakeList;
         address[] public stakerArray;
+        uint256 public totalStaked;
 
         event Staked(address indexed staker, uint256 amount);
         event Withdrawn(address indexed staker, uint256 amount);
@@ -718,6 +719,7 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
     
     if (stakeList[msg.sender].amount > 0) {
         stakeList[msg.sender].amount += msg.value;
+        totalStaked += msg.value;
     } else {
         stakeList[msg.sender] = StakeInfo({
             amount: msg.value,
@@ -729,32 +731,16 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
     emit Staked(msg.sender, msg.value);
 }
 
-/// @notice checkStakeList 
-function checkStakeList() public view returns (string memory) {
-    require(stakerArray.length > 0, "No stakers found");
-    
-    bytes memory result = abi.encodePacked('{"addrs":[');
-    
-    for (uint i = 0; i < stakerArray.length; i++) {
-        address staker = stakerArray[i];
-        uint256 amount = stakeList[staker].amount;
-        
-        // rate
-        uint256 totalStaked = address(this).balance;
-        string memory rate = uint2str((amount * 10000) / totalStaked);
-        
-        // build JSON
-        if (i > 0) {
-            result = abi.encodePacked(result, ',');
-        }
-        result = abi.encodePacked(result, 
-            '{"addr":"', addressToString(staker), 
-            '","rate":"0.', rate, '"}');
-    }
-    
-    result = abi.encodePacked(result, ']}');
-    return string(result);
-}
+ function getStakeListCount() public view returns (uint count)
+ {
+     return (stakerArray.length);
+ }
+
+  function getStakeListAddressFromIdx(uint idx) public view returns (address StakeAddress)
+ {
+     require (idx < stakerArray.length, "Requested address is out of range.");
+     return (stakerArray[idx]);
+ }
 
 /// @notice Withdrawing and pledging BOC
 function withdraw(uint256 value) public {
@@ -763,14 +749,15 @@ function withdraw(uint256 value) public {
     require(currentStake - value >= 100000 * 1e18 || value == currentStake, "Withdrawal would leave stake below minimum or is invalid");
     
     stakeList[msg.sender].amount -= value;
-    
+    totalStaked -= value;
+
+    (bool success, ) = msg.sender.call.value(value)("");
+    require(success, "Transfer failed");
+
     // If all withdrawals are made, remove them from the array
     if (stakeList[msg.sender].amount == 0) {
         removeFromStakerArray(msg.sender);
     }
-    
-    (bool success, ) = msg.sender.call.value(value)("");
-    require(success, "Transfer failed");
     
     emit Withdrawn(msg.sender, value);
 }
@@ -789,53 +776,6 @@ function removeFromStakerArray(address staker) private {
             break;
         }
     }
-}
-
-/// @notice Auxiliary function: Convert address to string
-function addressToString(address _addr) private pure returns (string memory) {
-    bytes32 value = bytes32(uint256(_addr));
-    bytes memory alphabet = "0123456789abcdef";
-    bytes memory str = new bytes(42);
-    str[0] = '0';
-    str[1] = 'x';
-    for (uint256 i = 0; i < 20; i++) {
-        str[2+i*2] = alphabet[uint8(value[i + 12] >> 4)];
-        str[3+i*2] = alphabet[uint8(value[i + 12] & 0x0f)];
-    }
-    return string(str);
-}
-
-/// @notice Auxiliary function: convert uint to string
-function uint2str(uint256 _i) private pure returns (string memory str) {
-    if (_i == 0) {
-        return "0";
-    }
-    uint256 j = _i;
-    uint256 length;
-    // Calculate the number of digits in a number
-    while (j != 0) {
-        length++;
-        j /= 10;
-    }
-    bytes memory bstr = new bytes(length);
-    uint256 k = length;
-    j = _i;
-    // Convert each digit into its corresponding ASCII code and store it in a byte array
-    while (j != 0) {
-        bstr[--k] = bytes1(uint8(48 + j % 10));
-        j /= 10;
-    }
-    return string(bstr);
-}
-
-/// @notice Query the total pledged amount
-function checkTotalStaked() public view returns (uint256) {
-    uint256 totalStaked = 0;
-    for (uint i = 0; i < stakerArray.length; i++) {
-        address staker = stakerArray[i];
-        totalStaked += stakeList[staker].amount;
-    }
-    return totalStaked;
 }
 
 }
