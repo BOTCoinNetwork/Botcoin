@@ -64,14 +64,14 @@ func (p *InmemProxy) getStakeList(staker common.Address) (*big.Int, error) {
 		return nil, err
 	}
 
-	// 解包结果
-	result := new(big.Int)
+	var result interface{}
 	err = state.POAABI.Unpack(&result, "getStakeList", res)
 	if err != nil {
 		p.logger.WithError(err).Errorf("Failed to getStakeList err")
 		return nil, err
 	}
 
+	rate := result.(*big.Int)
 
-	return result, nil
+	return rate, nil
 }
