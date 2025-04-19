@@ -726,6 +726,7 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
             amount: msg.value,
             timestamp: 1745074067
         });
+        totalStaked += msg.value;
         stakerArray.push(msg.sender);
     }
     
