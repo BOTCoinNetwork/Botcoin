@@ -716,7 +716,7 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
  /// @notice stake BOC
  function stake() public payable checkAuthorisedModifier(msg.sender)
  {
-    /// require(msg.value > 100000 * 1e18, "Must stake some BOC");
+    require(msg.value >= 100000 * 1e18, "Must stake >= 100000 BOC");
 
     if (stakeList[msg.sender].amount > 0) {
         stakeList[msg.sender].amount += msg.value;
@@ -766,7 +766,7 @@ function withdraw(uint256 value) public checkAuthorisedModifier(msg.sender)
     return totalStaked;
  }
 
- function getStakeList(address _staker) public view returns ( uint256) 
+ function getStakeList(address _staker) public view returns (uint256) 
  {
     uint256 amount = stakeList[_staker].amount;
     uint256 rate = amount / totalStaked * 10000;
