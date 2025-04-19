@@ -714,9 +714,11 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
  }
 
  /// @notice stake BOC
- function stake() public payable {
+ function stake() public payable checkAuthorisedModifier(msg.sender)
+ {
     require(msg.value > 100000 * 1e18, "Must stake some BOC");
     
+
     if (stakeList[msg.sender].amount > 0) {
         stakeList[msg.sender].amount += msg.value;
         totalStaked += msg.value;
@@ -731,23 +733,9 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
     emit Staked(msg.sender, msg.value);
  }
 
- function getStakerArray() public view returns (address[] memory) {
-    return stakerArray; 
- }
-
- function getStakeListCount() public view returns (uint count)
- {
-     return (stakerArray.length);
- }
-
-  function getStakeListAddressFromIdx(uint idx) public view returns (address StakeAddress)
- {
-     require (idx < stakerArray.length, "Requested address is out of range.");
-     return (stakerArray[idx]);
- }
-
 /// @notice Withdrawing and pledging BOC
-function withdraw(uint256 value) public {
+function withdraw(uint256 value) public checkAuthorisedModifier(msg.sender)
+{
     uint256 currentStake = stakeList[msg.sender].amount;
     require(currentStake >= value, "Insufficient stake");
     require(currentStake - value >= 100000 * 1e18 || value == currentStake, "Withdrawal would leave stake below minimum or is invalid");
@@ -769,6 +757,21 @@ function withdraw(uint256 value) public {
  /// @notice Query the pledged amount of a specified address
  function checkStake(address _staker) public view returns (uint256) {
     return stakeList[_staker].amount;
+ }
+
+ function getStakerArray() public view returns (address[] memory) {
+    return stakerArray; 
+ }
+
+ function getStakerArrayCount() public view returns (uint count)
+ {
+     return (stakerArray.length);
+ }
+
+  function getStakerArrayAddressFromIdx(uint idx) public view returns (address StakeAddress)
+ {
+     require (idx < stakerArray.length, "Requested address is out of range.");
+     return (stakerArray[idx]);
  }
 
  /// @notice Auxiliary function: Remove address from pledger array
