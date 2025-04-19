@@ -136,6 +136,15 @@ type BaseConfig struct {
 
 	// Validator halving round
 	ValidatorHalvingRound int `mapstructure:"validator-halving-round"`
+
+	// validator rate
+	ValidatorRate int `mapstructure:"validator-rate"`
+
+	// staker rate
+	StakerRate int `mapstructure:"staker-rate"`
+
+	// stable rate
+	StableRate int `mapstructure:"stable-rate"`
 }
 
 // DefaultBaseConfig returns the default top-level configuration for EVM-Babble
@@ -147,5 +156,8 @@ func DefaultBaseConfig() BaseConfig {
 		ValidatorRewardPool:   DefaultValidatorRewardPool,
 		ValidatorRewardRound:  DefaultValidatorRewardRound,
 		ValidatorHalvingRound: DefaultValidatorHalvingRound,
+		ValidatorRate:         DefaultValidatorRate,
+		StakerRate:            DefaultStakerRate,
+		StableRate:            DefaultStableRate,
 	}
 }

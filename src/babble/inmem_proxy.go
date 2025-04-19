@@ -83,6 +83,11 @@ func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, e
 		p.logger.WithError(err).Error("Failed to reward validators")
 	}
 
+	err = p.rewardStakers(block)
+	if err != nil {
+		p.logger.WithError(err).Error("Failed to reward stakers")
+	}
+
 	hash, err := p.state.Commit()
 	if err != nil {
 		return proxy.CommitResponse{}, err

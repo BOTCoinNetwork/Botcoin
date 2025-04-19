@@ -1,6 +1,7 @@
 package babble
 
 import (
+	"github.com/BOTCoinNetwork/Botcoin/src/configuration"
 	"github.com/BOTCoinNetwork/babble/src/hashgraph"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/sirupsen/logrus"
@@ -8,38 +9,55 @@ import (
 )
 
 type RewardRule struct {
-	halving     int
-	rewardRound int
-	rewardPool  *big.Int
+	halving       int
+	rewardRound   int
+	rewardPool    *big.Int
+	validatorRate int
+	stakerRate    int
+	stableRate    int
 }
 
-func NewRewardRule(reward int64, halving, rewardRound int) *RewardRule {
+func NewRewardRule(config *configuration.BaseConfig) *RewardRule {
 	return &RewardRule{
-		halving:     halving,
-		rewardRound: rewardRound,
+		halving:     config.ValidatorHalvingRound,
+		rewardRound: config.ValidatorRewardRound,
 		rewardPool: new(big.Int).Mul(
-			big.NewInt(reward),
+			big.NewInt(int64(config.ValidatorRewardPool)),
 			new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)),
+		validatorRate: config.ValidatorRate,
+		stakerRate:    config.StakerRate,
+		stableRate:    config.StableRate,
 	}
 }
 
-func (p *InmemProxy) rewardValidators(block hashgraph.Block) error {
-	// Check if it's time to distribute rewards
-	if block.Index()%p.rewardRule.rewardRound != 0 || block.Index() == 0 {
-		return nil
-	}
+func (p *InmemProxy) checkRound(block hashgraph.Block) bool {
+	return block.Index()%p.rewardRule.rewardRound != 0 || block.Index() == 0
+}
 
-	// Calculate the current reward amount
+func (p *InmemProxy) getTotalRewardPool(block hashgraph.Block) *big.Int {
 	halvingCount := block.Index() / p.rewardRule.halving
 	currentReward := new(big.Int).Set(p.rewardRule.rewardPool)
 	for i := 0; i < halvingCount; i++ {
 		currentReward.Div(currentReward, big.NewInt(2))
 	}
+
+	return currentReward
+}
+
+func (p *InmemProxy) rewardValidators(block hashgraph.Block) error {
+	// Check if it's time to distribute rewards
+	if p.checkRound(block) {
+		return nil
+	}
+
+	currentRewardPool := p.getTotalRewardPool(block)
 	validatorSet, err := p.babble.Node.GetValidatorSet(block.RoundReceived())
 	if err != nil {
 		p.logger.WithError(err).Errorf("Failed to GetValidatorSet err")
 		return err
 	}
+
+	currentReward := new(big.Int).Div(new(big.Int).Mul(currentRewardPool, big.NewInt(int64(p.rewardRule.validatorRate))), big.NewInt(100))
 
 	avgReward := new(big.Int).Div(currentReward, big.NewInt(int64(len(validatorSet))))
 
@@ -59,6 +77,44 @@ func (p *InmemProxy) rewardValidators(block hashgraph.Block) error {
 		}).Info("Rewarding validator")
 		p.state.AddBalance(address, avgReward)
 
+	}
+
+	return nil
+}
+
+func (p *InmemProxy) rewardStakers(block hashgraph.Block) error {
+	if p.checkRound(block) {
+		return nil
+	}
+
+	stakerArray, err := p.getStakerArray()
+	if err != nil {
+		p.logger.WithError(err).Errorf("Failed to getStakerArray err")
+		return err
+	}
+
+	totalRewardPool := p.getTotalRewardPool(block)
+
+	currentReward := new(big.Int).Div(new(big.Int).Mul(totalRewardPool, big.NewInt(int64(p.rewardRule.stakerRate))), big.NewInt(100))
+
+	for _, staker := range stakerArray {
+		amount, _, rate, err := p.getStakeList(staker)
+		if err != nil {
+			p.logger.WithError(err).Errorf("Failed to getStakeList err")
+			return err
+		}
+
+		stakerReward := new(big.Int).Div(new(big.Int).Mul(currentReward, rate), big.NewInt(10000))
+
+		p.logger.WithFields(logrus.Fields{
+			"currentRewardPool":  currentReward,
+			"coinbase":           staker.String(),
+			"blockRoundReceived": block.RoundReceived(),
+			"reward":             stakerReward,
+			"stakerRate":         rate,
+			"stakeAmount":        amount,
+		}).Info("Rewarding staker")
+		p.state.AddBalance(staker, stakerReward)
 	}
 
 	return nil

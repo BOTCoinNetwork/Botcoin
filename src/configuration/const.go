@@ -61,6 +61,9 @@ const (
 	DefaultValidatorRewardPool       = 2880000
 	DefaultValidatorRewardRound      = 28800
 	DefaultValidatorHalvingRound     = 30000000
+	DefaultValidatorRate             = 60
+	DefaultStakerRate                = 35
+	DefaultStableRate                = 5
 	GenesisContract                  = "contract0.sol"
 	GenesisABI                       = "contract0.abi"
 	ControllerContract               = "contract1.sol"

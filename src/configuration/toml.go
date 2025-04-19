@@ -22,6 +22,12 @@ validator-reward-round = "{{.ValidatorRewardRound}}"
 
 validator-halving-round = "{{.ValidatorHalvingRound}}"
 
+validator-rate = "{{.ValidatorRate}}"
+
+staker-rate = "{{.StakerRate}}"
+
+stable-rate = "{{.StableRate}}"
+
 [babble]
 
   # IP:PORT on the local machine where Babble will bind its internal gossip 

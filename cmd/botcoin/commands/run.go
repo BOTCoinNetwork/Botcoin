@@ -88,7 +88,7 @@ func runMonet(cmd *cobra.Command, args []string) error {
 	babble := babble.NewInmemBabble(
 		configuration.Global.ToBabbleConfig(),
 		configuration.Global.Logger("babble-proxy"),
-		babble.NewRewardRule(int64(configuration.Global.ValidatorRewardPool), configuration.Global.ValidatorHalvingRound, configuration.Global.ValidatorRewardRound))
+		babble.NewRewardRule(&configuration.Global.BaseConfig))
 
 	engine, err := engine.NewEngine(*configuration.Global.ToEVMLConfig(), babble)
 	if err != nil {
