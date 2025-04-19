@@ -763,6 +763,17 @@ function withdraw(uint256 value) public checkAuthorisedModifier(msg.sender)
     return stakerArray; 
  }
 
+ function gettotalStaked() public view returns (uint256) {
+    return totalStaked;
+ }
+
+ function getStakeList(address _staker) public view returns (uint256, uint256, uint256) 
+ {
+    uint256 amount = stakeList[_staker].amount;
+    uint256 rate = amount / totalStaked * 10000;
+    return (amount, stakeList[_staker].timestamp, rate); 
+ }
+
  function getStakerArrayCount() public view returns (uint count)
  {
      return (stakerArray.length);
