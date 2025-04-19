@@ -716,8 +716,7 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
  /// @notice stake BOC
  function stake() public payable checkAuthorisedModifier(msg.sender)
  {
-    require(msg.value > 100000 * 1e18, "Must stake some BOC");
-    
+    /// require(msg.value > 100000 * 1e18, "Must stake some BOC");
 
     if (stakeList[msg.sender].amount > 0) {
         stakeList[msg.sender].amount += msg.value;
@@ -725,7 +724,7 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
     } else {
         stakeList[msg.sender] = StakeInfo({
             amount: msg.value,
-            timestamp: block.timestamp
+            timestamp: 1745074067
         });
         stakerArray.push(msg.sender);
     }
@@ -767,11 +766,11 @@ function withdraw(uint256 value) public checkAuthorisedModifier(msg.sender)
     return totalStaked;
  }
 
- function getStakeList(address _staker) public view returns (uint256, uint256, uint256) 
+ function getStakeList(address _staker) public view returns ( uint256) 
  {
     uint256 amount = stakeList[_staker].amount;
     uint256 rate = amount / totalStaked * 10000;
-    return (amount, stakeList[_staker].timestamp, rate); 
+    return rate; 
  }
 
  function getStakerArrayCount() public view returns (uint count)
