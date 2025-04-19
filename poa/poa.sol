@@ -729,7 +729,11 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
     }
     
     emit Staked(msg.sender, msg.value);
-}
+ }
+
+ function getStakerArray() public view returns (address[] memory) {
+    return stakerArray; 
+ }
 
  function getStakeListCount() public view returns (uint count)
  {
@@ -760,15 +764,15 @@ function withdraw(uint256 value) public {
     }
     
     emit Withdrawn(msg.sender, value);
-}
+ }
 
-/// @notice Query the pledged amount of a specified address
-function checkStake(address _staker) public view returns (uint256) {
+ /// @notice Query the pledged amount of a specified address
+ function checkStake(address _staker) public view returns (uint256) {
     return stakeList[_staker].amount;
-}
+ }
 
-/// @notice Auxiliary function: Remove address from pledger array
-function removeFromStakerArray(address staker) private {
+ /// @notice Auxiliary function: Remove address from pledger array
+ function removeFromStakerArray(address staker) private {
     for (uint i = 0; i < stakerArray.length; i++) {
         if (stakerArray[i] == staker) {
             stakerArray[i] = stakerArray[stakerArray.length - 1];
@@ -776,6 +780,6 @@ function removeFromStakerArray(address staker) private {
             break;
         }
     }
-}
+ }
 
 }
