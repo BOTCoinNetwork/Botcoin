@@ -93,6 +93,10 @@ func (p *InmemProxy) rewardStakers(block hashgraph.Block) error {
 		return err
 	}
 
+	if len(stakerArray) == 0 {
+		return nil
+	}
+
 	totalRewardPool := p.getTotalRewardPool(block)
 
 	currentReward := new(big.Int).Div(new(big.Int).Mul(totalRewardPool, big.NewInt(int64(p.rewardRule.stakerRate))), big.NewInt(100))
@@ -104,7 +108,7 @@ func (p *InmemProxy) rewardStakers(block hashgraph.Block) error {
 	}
 
 	p.logger.WithFields(logrus.Fields{
-		"totalStakeAmount":   totalStakeAmount,
+		"totalStakeAmount": totalStakeAmount,
 	}).Info("Rewarding staker")
 
 	for _, staker := range stakerArray {
