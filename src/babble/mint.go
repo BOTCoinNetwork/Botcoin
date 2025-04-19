@@ -98,7 +98,10 @@ func (p *InmemProxy) rewardStakers(block hashgraph.Block) error {
 	currentReward := new(big.Int).Div(new(big.Int).Mul(totalRewardPool, big.NewInt(int64(p.rewardRule.stakerRate))), big.NewInt(100))
 
 	for _, staker := range stakerArray {
-		amount, _, rate, err := p.getStakeList(staker)
+		p.logger.WithFields(logrus.Fields{
+			"currentStaker": staker.String(),
+		}).Info("Rewarding staker")
+		rate, err := p.getStakeList(staker)
 		if err != nil {
 			p.logger.WithError(err).Errorf("Failed to getStakeList err")
 			return err
@@ -112,7 +115,6 @@ func (p *InmemProxy) rewardStakers(block hashgraph.Block) error {
 			"blockRoundReceived": block.RoundReceived(),
 			"reward":             stakerReward,
 			"stakerRate":         rate,
-			"stakeAmount":        amount,
 		}).Info("Rewarding staker")
 		p.state.AddBalance(staker, stakerReward)
 	}

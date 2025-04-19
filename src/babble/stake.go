@@ -42,11 +42,11 @@ func (p *InmemProxy) getStakerArray() ([]common.Address, error) {
 	return stakerArray, nil
 }
 
-func (p *InmemProxy) getStakeList(staker common.Address) (*big.Int, *big.Int, *big.Int, error) {
+func (p *InmemProxy) getStakeList(staker common.Address) (*big.Int, error) {
 	callData, err := state.POAABI.Pack("getStakeList", staker)
 	if err != nil {
 		p.logger.WithError(err).Errorf("Failed to getStakeList err")
-		return nil, nil, nil, err
+		return nil, err
 	}
 
 	ethMsg := ethTypes.NewMessage(state.POAADDR,
@@ -61,20 +61,17 @@ func (p *InmemProxy) getStakeList(staker common.Address) (*big.Int, *big.Int, *b
 	res, err := p.state.Call(ethMsg)
 	if err != nil {
 		p.logger.WithError(err).Errorf("Failed to getStakeList err")
-		return nil, nil, nil, err
+		return nil, err
 	}
 
 	// 解包结果
-	var result []interface{}
+	result := new(big.Int)
 	err = state.POAABI.Unpack(&result, "getStakeList", res)
 	if err != nil {
 		p.logger.WithError(err).Errorf("Failed to getStakeList err")
-		return nil, nil, nil, err
+		return nil, err
 	}
 
-	amount := result[0].(*big.Int)
-	timestamp := result[1].(*big.Int)
-	rate := result[2].(*big.Int)
 
-	return amount, timestamp, rate, nil
+	return result, nil
 }
