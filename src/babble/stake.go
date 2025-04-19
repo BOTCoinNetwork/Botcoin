@@ -75,3 +75,74 @@ func (p *InmemProxy) getStakeList(staker common.Address) (*big.Int, error) {
 
 	return rate, nil
 }
+
+func (p *InmemProxy) checkStake(staker common.Address) (*big.Int, error) {
+	callData, err := state.POAABI.Pack("checkStake", staker)
+	if err != nil {
+		p.logger.WithError(err).Errorf("Failed to checkStake pack err")
+		return nil, err
+	}
+
+	ethMsg := ethTypes.NewMessage(state.POAADDR,
+		&state.POAADDR,
+		uint64(1),
+		big.NewInt(0),
+		p.state.GetGasLimit(),
+		big.NewInt(0),
+		callData,
+		false)
+
+	res, err := p.state.Call(ethMsg)
+	if err != nil {
+		p.logger.WithError(err).Errorf("Failed to checkStake Call err")
+		return nil, err
+	}
+
+	var result interface{}
+	err = state.POAABI.Unpack(&result, "checkStake", res)
+	if err != nil {
+		p.logger.WithError(err).Errorf("Failed to checkStake Unpack err")
+		return nil, err
+	}
+
+	amount := result.(*big.Int)
+
+	return amount, nil
+}
+
+func (p *InmemProxy) getTotalStaked() (*big.Int, error) {
+	// Pack the function call data
+	callData, err := state.POAABI.Pack("gettotalStaked")
+	if err != nil {
+		p.logger.WithError(err).Errorf("Failed to gettotalStaked err")
+		return nil, err
+	}
+
+	// Create ethereum message for contract call
+	ethMsg := ethTypes.NewMessage(state.POAADDR,
+		&state.POAADDR,
+		uint64(1),
+		big.NewInt(0),
+		p.state.GetGasLimit(),
+		big.NewInt(0),
+		callData,
+		false)
+
+	// Execute the call
+	res, err := p.state.Call(ethMsg)
+	if err != nil {
+		p.logger.WithError(err).Errorf("Failed to gettotalStaked err")
+		return nil, err
+	}
+
+	// Unpack the result
+	var result interface{}
+	err = state.POAABI.Unpack(&result, "gettotalStaked", res)
+	if err != nil {
+		return nil, err
+	}
+
+	amount := result.(*big.Int)
+
+	return amount, nil
+}

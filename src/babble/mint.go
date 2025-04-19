@@ -97,24 +97,35 @@ func (p *InmemProxy) rewardStakers(block hashgraph.Block) error {
 
 	currentReward := new(big.Int).Div(new(big.Int).Mul(totalRewardPool, big.NewInt(int64(p.rewardRule.stakerRate))), big.NewInt(100))
 
+	totalStakeAmount, err := p.getTotalStaked()
+	if err != nil {
+		p.logger.WithError(err).Errorf("Failed to getTotalStaked err")
+		return err
+	}
+
+	p.logger.WithFields(logrus.Fields{
+		"totalStakeAmount":   totalStakeAmount,
+	}).Info("Rewarding staker")
+
 	for _, staker := range stakerArray {
 		p.logger.WithFields(logrus.Fields{
 			"currentStaker": staker.String(),
 		}).Info("Rewarding staker")
-		rate, err := p.getStakeList(staker)
+		amount, err := p.checkStake(staker)
 		if err != nil {
-			p.logger.WithError(err).Errorf("Failed to getStakeList err")
+			p.logger.WithError(err).Errorf("Failed to checkStake err")
 			return err
 		}
 
-		stakerReward := new(big.Int).Div(new(big.Int).Mul(currentReward, rate), big.NewInt(10000))
+		stakerReward := new(big.Int).Div(new(big.Int).Mul(currentReward, amount), totalStakeAmount)
 
 		p.logger.WithFields(logrus.Fields{
 			"currentRewardPool":  currentReward,
 			"coinbase":           staker.String(),
 			"blockRoundReceived": block.RoundReceived(),
 			"reward":             stakerReward,
-			"stakerRate":         rate,
+			"stakerRate":         new(big.Int).Div(new(big.Int).Mul(amount, big.NewInt(100)), totalStakeAmount),
+			"stakeAmount":        amount,
 		}).Info("Rewarding staker")
 		p.state.AddBalance(staker, stakerReward)
 	}
