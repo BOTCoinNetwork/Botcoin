@@ -98,16 +98,14 @@ func (p *InmemProxy) checkStake(staker common.Address) (*big.Int, error) {
 		return nil, err
 	}
 
-	var result interface{}
+	var result = new(big.Int)
 	err = state.POAABI.Unpack(&result, "checkStake", res)
 	if err != nil {
 		p.logger.WithError(err).Errorf("Failed to checkStake Unpack err")
 		return nil, err
 	}
 
-	amount := result.(*big.Int)
-
-	return amount, nil
+	return result, nil
 }
 
 func (p *InmemProxy) getTotalStaked() (*big.Int, error) {
@@ -136,13 +134,11 @@ func (p *InmemProxy) getTotalStaked() (*big.Int, error) {
 	}
 
 	// Unpack the result
-	var result interface{}
+	var result = new(big.Int)
 	err = state.POAABI.Unpack(&result, "gettotalStaked", res)
 	if err != nil {
 		return nil, err
 	}
 
-	amount := result.(*big.Int)
-
-	return amount, nil
+	return result, nil
 }
