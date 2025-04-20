@@ -124,7 +124,6 @@ pragma solidity ^0.5.11;
 
         struct StakeInfo {
             uint256 amount;
-            uint256 timestamp;
         }
 
         mapping (address => StakeInfo) public stakeList;
@@ -723,8 +722,7 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
         totalStaked += msg.value;
     } else {
         stakeList[msg.sender] = StakeInfo({
-            amount: msg.value,
-            timestamp: 1745074067
+            amount: msg.value
         });
         totalStaked += msg.value;
         stakerArray.push(msg.sender);
