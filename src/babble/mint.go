@@ -1,11 +1,12 @@
 package babble
 
 import (
+	"math/big"
+
 	"github.com/BOTCoinNetwork/Botcoin/src/configuration"
 	"github.com/BOTCoinNetwork/babble/src/hashgraph"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/sirupsen/logrus"
-	"math/big"
 )
 
 type RewardRule struct {
@@ -61,6 +62,10 @@ func (p *InmemProxy) rewardValidators(block hashgraph.Block) error {
 
 	avgReward := new(big.Int).Div(currentReward, big.NewInt(int64(len(validatorSet))))
 
+	p.logger.WithFields(logrus.Fields{
+		"verifyCurrentRewardPool": currentReward,
+	}).Info("Rewarding verify")
+
 	for _, peer := range validatorSet {
 		pubKey, err := crypto.UnmarshalPubkey(peer.PubKeyBytes())
 		if err != nil {
@@ -70,11 +75,9 @@ func (p *InmemProxy) rewardValidators(block hashgraph.Block) error {
 
 		address := crypto.PubkeyToAddress(*pubKey)
 		p.logger.WithFields(logrus.Fields{
-			"currentRewardPool":  currentReward,
-			"coinbase":           address.String(),
-			"blockRoundReceived": block.RoundReceived(),
-			"reward":             avgReward,
-		}).Info("Rewarding validator")
+			"coinbase":     address.String(),
+			"verifyReward": avgReward,
+		}).Info("Rewarding verify")
 		p.state.AddBalance(address, avgReward)
 
 	}
@@ -108,7 +111,8 @@ func (p *InmemProxy) rewardStakers(block hashgraph.Block) error {
 	}
 
 	p.logger.WithFields(logrus.Fields{
-		"totalStakeAmount": totalStakeAmount,
+		"stakerCurrentRewardPool": currentReward,
+		"totalStakeAmount":        totalStakeAmount,
 	}).Info("Rewarding staker")
 
 	for _, staker := range stakerArray {
@@ -124,12 +128,10 @@ func (p *InmemProxy) rewardStakers(block hashgraph.Block) error {
 		stakerReward := new(big.Int).Div(new(big.Int).Mul(currentReward, amount), totalStakeAmount)
 
 		p.logger.WithFields(logrus.Fields{
-			"currentRewardPool":  currentReward,
-			"coinbase":           staker.String(),
-			"blockRoundReceived": block.RoundReceived(),
-			"reward":             stakerReward,
-			"stakerRate":         new(big.Int).Div(new(big.Int).Mul(amount, big.NewInt(100)), totalStakeAmount),
-			"stakeAmount":        amount,
+			"coinbase":     staker.String(),
+			"stakerReward": stakerReward,
+			"stakerRate%":   new(big.Float).Quo(new(big.Float).Mul(big.NewFloat(float64(amount.Int64())), big.NewFloat(100)), big.NewFloat(float64(totalStakeAmount.Int64()))),
+			"stakeAmount":  amount,
 		}).Info("Rewarding staker")
 		p.state.AddBalance(staker, stakerReward)
 	}

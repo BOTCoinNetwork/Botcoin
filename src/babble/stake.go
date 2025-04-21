@@ -71,7 +71,22 @@ func (p *InmemProxy) getStakeList(staker common.Address) (*big.Int, error) {
 		return nil, err
 	}
 
-	rate := result.(*big.Int)
+	results, ok := result.([]interface{})
+	if!ok {
+	    p.logger.WithError(err).Errorf("Failed to convert result to []interface{}")
+	    return nil, err
+	}
+
+	if len(results) < 2 {
+	    p.logger.WithError(err).Errorf("Result does not contain enough elements")
+	    return nil, err
+	}
+
+	rate, ok := results[1].(*big.Int)
+	if!ok {
+	    p.logger.WithError(err).Errorf("Failed to convert second element to *big.Int")
+	    return nil, err
+	}
 
 	return rate, nil
 }
