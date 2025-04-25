@@ -5,9 +5,12 @@ import (
 
 	"github.com/BOTCoinNetwork/Botcoin/src/configuration"
 	"github.com/BOTCoinNetwork/babble/src/hashgraph"
+	"github.com/BOTCoinNetwork/babble/src/peers"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/sirupsen/logrus"
 )
+
+type rewardData map[string]*big.Int
 
 type RewardRule struct {
 	halving       int
@@ -45,32 +48,37 @@ func (p *InmemProxy) getTotalRewardPool(block hashgraph.Block) *big.Int {
 	return currentReward
 }
 
-func (p *InmemProxy) rewardValidators(block hashgraph.Block) error {
+func (p *InmemProxy) rewardValidators(block hashgraph.Block, validators []*peers.Peer) (rewardData, error) {
 	// Check if it's time to distribute rewards
 	if p.checkRound(block) {
-		return nil
+		return nil, nil
+	}
+	if validators == nil || len(validators) == 0 {
+		p.logger.WithFields(logrus.Fields{
+			"validators": validators,
+		}).Info("validators")
+		return nil, nil
 	}
 
 	currentRewardPool := p.getTotalRewardPool(block)
-	validatorSet, err := p.babble.Node.GetValidatorSet(block.RoundReceived())
-	if err != nil {
-		p.logger.WithError(err).Errorf("Failed to GetValidatorSet err")
-		return err
-	}
 
 	currentReward := new(big.Int).Div(new(big.Int).Mul(currentRewardPool, big.NewInt(int64(p.rewardRule.validatorRate))), big.NewInt(100))
 
-	avgReward := new(big.Int).Div(currentReward, big.NewInt(int64(len(validatorSet))))
+	avgReward := new(big.Int).Div(currentReward, big.NewInt(int64(len(validators))))
+
+	rewardData := map[string]*big.Int{
+		"verifyCurrentReward": currentReward,
+	}
 
 	p.logger.WithFields(logrus.Fields{
-		"verifyCurrentRewardPool": currentReward,
+		"verifyCurrentReward": currentReward,
 	}).Info("Rewarding verify")
 
-	for _, peer := range validatorSet {
+	for _, peer := range validators {
 		pubKey, err := crypto.UnmarshalPubkey(peer.PubKeyBytes())
 		if err != nil {
 			p.logger.WithError(err).Errorf("Failed to UnmarshalPubkey err")
-			return err
+			return rewardData, err
 		}
 
 		address := crypto.PubkeyToAddress(*pubKey)
@@ -82,22 +90,22 @@ func (p *InmemProxy) rewardValidators(block hashgraph.Block) error {
 
 	}
 
-	return nil
+	return rewardData, nil
 }
 
-func (p *InmemProxy) rewardStakers(block hashgraph.Block) error {
+func (p *InmemProxy) rewardStakers(block hashgraph.Block) (rewardData, error) {
 	if p.checkRound(block) {
-		return nil
+		return nil, nil
 	}
 
 	stakerArray, err := p.getStakerArray()
 	if err != nil {
 		p.logger.WithError(err).Errorf("Failed to getStakerArray err")
-		return err
+		return nil, err
 	}
 
 	if len(stakerArray) == 0 {
-		return nil
+		return nil, nil
 	}
 
 	totalRewardPool := p.getTotalRewardPool(block)
@@ -105,14 +113,20 @@ func (p *InmemProxy) rewardStakers(block hashgraph.Block) error {
 	currentReward := new(big.Int).Div(new(big.Int).Mul(totalRewardPool, big.NewInt(int64(p.rewardRule.stakerRate))), big.NewInt(100))
 
 	totalStakeAmount, err := p.getTotalStaked()
+
+	rewardData := map[string]*big.Int{
+		"stakerCurrentReward": currentReward,
+		"totalStakeAmount":    totalStakeAmount,
+	}
+
 	if err != nil {
 		p.logger.WithError(err).Errorf("Failed to getTotalStaked err")
-		return err
+		return rewardData, err
 	}
 
 	p.logger.WithFields(logrus.Fields{
-		"stakerCurrentRewardPool": currentReward,
-		"totalStakeAmount":        totalStakeAmount,
+		"stakerCurrentReward": currentReward,
+		"totalStakeAmount":    totalStakeAmount,
 	}).Info("Rewarding staker")
 
 	for _, staker := range stakerArray {
@@ -122,7 +136,7 @@ func (p *InmemProxy) rewardStakers(block hashgraph.Block) error {
 		amount, err := p.checkStake(staker)
 		if err != nil {
 			p.logger.WithError(err).Errorf("Failed to checkStake err")
-			return err
+			return rewardData, err
 		}
 
 		stakerReward := new(big.Int).Div(new(big.Int).Mul(currentReward, amount), totalStakeAmount)
@@ -130,11 +144,11 @@ func (p *InmemProxy) rewardStakers(block hashgraph.Block) error {
 		p.logger.WithFields(logrus.Fields{
 			"coinbase":     staker.String(),
 			"stakerReward": stakerReward,
-			"stakerRate%":   new(big.Float).Quo(new(big.Float).Mul(big.NewFloat(float64(amount.Int64())), big.NewFloat(100)), big.NewFloat(float64(totalStakeAmount.Int64()))),
+			"stakerRate%":  new(big.Float).Quo(new(big.Float).Mul(big.NewFloat(float64(amount.Int64())), big.NewFloat(100)), big.NewFloat(float64(totalStakeAmount.Int64()))),
 			"stakeAmount":  amount,
 		}).Info("Rewarding staker")
 		p.state.AddBalance(staker, stakerReward)
 	}
 
-	return nil
+	return rewardData, nil
 }

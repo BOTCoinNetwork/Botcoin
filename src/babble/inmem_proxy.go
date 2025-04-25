@@ -1,11 +1,14 @@
 package babble
 
 import (
+	"math/big"
+
 	"github.com/BOTCoinNetwork/BVM/src/service"
 	"github.com/BOTCoinNetwork/BVM/src/state"
 	"github.com/BOTCoinNetwork/babble/src/babble"
 	"github.com/BOTCoinNetwork/babble/src/crypto/keys"
 	"github.com/BOTCoinNetwork/babble/src/hashgraph"
+	"github.com/BOTCoinNetwork/babble/src/peers"
 	"github.com/BOTCoinNetwork/babble/src/proxy"
 	ethCommon "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -40,9 +43,11 @@ func NewInmemProxy(state *state.State,
 	}
 }
 
-/*******************************************************************************
+/*
+******************************************************************************
 Implement Babble AppProxy Interface
-*******************************************************************************/
+******************************************************************************
+*/
 
 // SubmitCh is the channel through which the Service sends transactions to the
 // node.
@@ -58,12 +63,13 @@ func (p *InmemProxy) SubmitCh() chan []byte {
 // state-hash and internal transaction receips.
 func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, error) {
 
-	coinbaseAddress, err := p.getCoinbase(block)
+	coinbaseAddress, validators, err := p.getCoinbase(block)
 	if err != nil {
 		return proxy.CommitResponse{}, err
 	}
 
 	p.logger.WithFields(logrus.Fields{
+		"validators":    validators,
 		"coinbase":      coinbaseAddress.String(),
 		"blockIndex":    block.Index(),
 		"RoundReceived": block.RoundReceived(),
@@ -78,19 +84,60 @@ func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, e
 		}
 	}
 
-	err = p.rewardValidators(block)
-	if err != nil {
-		p.logger.WithError(err).Error("Failed to reward validators")
-	}
-
-	err = p.rewardStakers(block)
-	if err != nil {
-		p.logger.WithError(err).Error("Failed to reward stakers")
-	}
-
 	hash, err := p.state.Commit()
 	if err != nil {
 		return proxy.CommitResponse{}, err
+	}
+
+	rewardData_Validators, err := p.rewardValidators(block, validators)
+	if err != nil {
+		p.logger.WithError(err).Error("Failed to reward validators")
+	}
+	var currentReward = new(big.Int)
+	// create a new Transaction and add it to the block
+	if rewardData_Validators != nil {
+		currentReward = rewardData_Validators["verifyCurrentReward"]
+		p.logger.WithFields(logrus.Fields{
+			"verifyCurrentReward": currentReward,
+		}).Info("rewardData_Validators")
+	}
+
+	rewardData_Stake, err := p.rewardStakers(block)
+	if err != nil {
+		p.logger.WithError(err).Error("Failed to reward stakers")
+	}
+	// create a new Transaction and add it to the block
+	if rewardData_Stake != nil {
+
+		currentReward = currentReward.Add(currentReward, rewardData_Stake["stakerCurrentReward"])
+		p.logger.WithFields(logrus.Fields{
+			"stakerCurrentReward": currentReward,
+			"totalStakeAmount":    rewardData_Stake["totalStakeAmount"],
+		}).Info("rewardData_Stake")
+	}
+
+	// block.Body.MintRewards = currentReward.String()
+	// block.AppendTransactions([][]byte{bytesData})
+	if currentReward.Cmp(big.NewInt(0)) > 0 {
+		var totalStakeAmount = rewardData_Stake["totalStakeAmount"]
+
+		var mintInfo = hashgraph.MintInfo{
+			MintRewards:      currentReward.String(),
+			TotalStakeAmount: totalStakeAmount.String(),
+			PeersCount:       len(validators),
+		}
+
+		var mintTransactions = hashgraph.NewMintInternalTransaction(hashgraph.Mint_Rewards, mintInfo)
+		var mintReceipts = hashgraph.InternalTransactionReceipt{
+			InternalTransaction: mintTransactions,
+			Accepted:            true,
+		}
+		block.Body.InternalTransactions = append(block.Body.InternalTransactions, mintTransactions)
+		block.Body.InternalTransactionReceipts = append(block.Body.InternalTransactionReceipts, mintReceipts)
+
+		p.logger.WithFields(logrus.Fields{
+			"block.Body": block.Body,
+		}).Info("InternalTransactions")
 	}
 
 	internalTransactionReceipts := p.processInternalTransactions(block.InternalTransactions())
@@ -112,13 +159,15 @@ func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, e
 // process from the current Babble validator-set. We use the block hash, which
 // is pseudo-random, but equal for all validators, to select a validator from
 // the current validator-set.
-func (p *InmemProxy) getCoinbase(block hashgraph.Block) (ethCommon.Address, error) {
+func (p *InmemProxy) getCoinbase(block hashgraph.Block) (ethCommon.Address, []*peers.Peer, error) {
 	coinbaseAddress := ethCommon.Address{}
+	validators := []*peers.Peer{}
 
 	if p.babble != nil {
 		babbleValidators, err := p.babble.Node.GetValidatorSet(block.RoundReceived())
+
 		if err != nil {
-			return coinbaseAddress, err
+			return coinbaseAddress, babbleValidators, err
 		}
 
 		blockHash, _ := block.Hash()
@@ -128,13 +177,18 @@ func (p *InmemProxy) getCoinbase(block hashgraph.Block) (ethCommon.Address, erro
 
 		coinbasePubKey, err := crypto.UnmarshalPubkey(coinbaseValidator.PubKeyBytes())
 		if err != nil {
-			return coinbaseAddress, err
+			return coinbaseAddress, babbleValidators, err
 		}
 
+		validators = make([]*peers.Peer, len(babbleValidators))
+		copy(validators, babbleValidators)
+		if err != nil {
+			return coinbaseAddress, babbleValidators, err
+		}
 		coinbaseAddress = crypto.PubkeyToAddress(*coinbasePubKey)
 	}
 
-	return coinbaseAddress, nil
+	return coinbaseAddress, validators, nil
 }
 
 // processInternalTransactions decides if InternalTransactions should be
