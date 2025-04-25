@@ -6,6 +6,7 @@ github.com/BOTCoinNetwork/BVM v0.0.0-20250411081205-3cc576522faa h1:uHKJNJsrmq8y
 github.com/BOTCoinNetwork/BVM v0.0.0-20250411081205-3cc576522faa/go.mod h1:jmInyr19a0Xv+ywW5nB1rzhHJxDE7pC/nkLdxB7q4tM=
 github.com/BOTCoinNetwork/babble v0.0.0-20250410023141-8585e135fe91 h1:cnZHzNSmY0erc3Bb7YgaEyqi66hIW0b+IUC8fF92pKk=
 github.com/BOTCoinNetwork/babble v0.0.0-20250410023141-8585e135fe91/go.mod h1:nZgsi0abDkUXE18eme014DMVlPqM6UIGfgS8z7RrRhQ=
+github.com/BOTCoinNetwork/babble v0.0.0-20250425022131-5d25c4acd318 h1:y2XQgTIGQZeFETzoh8nq7e28ttU7U8aOZideSGJ5588=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/toml v1.5.0 h1:W5quZX/G/csjUnuI8SUYlsHs9M38FC7znL0lIO+DvMg=
 github.com/BurntSushi/toml v1.5.0/go.mod h1:ukJfTF/6rtPPRCnwkur4qwRxa8vTRFBF0uk2lLoLwho=
