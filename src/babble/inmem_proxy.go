@@ -121,7 +121,7 @@ func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, e
 	if currentReward.Cmp(big.NewInt(0)) > 0 {
 		var totalStakeAmount = rewardData_Stake["totalStakeAmount"]
 
-		var mintInfo = hashgraph.MintInfo{
+		var mintInfo = peers.Mint{
 			MintRewards:      currentReward.String(),
 			TotalStakeAmount: totalStakeAmount.String(),
 			PeersCount:       len(validators),
