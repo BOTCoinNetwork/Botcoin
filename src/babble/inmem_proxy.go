@@ -89,6 +89,28 @@ func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, e
 		return proxy.CommitResponse{}, err
 	}
 
+	internalTransactionReceipts := p.processInternalTransactions(block.InternalTransactions())
+
+	evictionReceipts := p.processEvictions(block)
+
+	receipts := append(internalTransactionReceipts, evictionReceipts...)
+
+	// reward ing
+	rewardReceipts := p.processRewardInternalTransactionsReceipts(block, validators)
+	receipts = append(receipts, rewardReceipts...)
+
+	res := proxy.CommitResponse{
+		StateHash:                   hash.Bytes(),
+		InternalTransactionReceipts: receipts,
+	}
+
+	return res, nil
+}
+
+func (p *InmemProxy) processRewardInternalTransactionsReceipts(block hashgraph.Block, validators []*peers.Peer) []hashgraph.InternalTransactionReceipt {
+
+	receipts := []hashgraph.InternalTransactionReceipt{}
+
 	rewardData_Validators, err := p.rewardValidators(block, validators)
 	if err != nil {
 		p.logger.WithError(err).Error("Failed to reward validators")
@@ -125,33 +147,19 @@ func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, e
 			MintRewards:      currentReward.String(),
 			TotalStakeAmount: totalStakeAmount.String(),
 			PeersCount:       len(validators),
+			RoundId:          block.RoundReceived(),
 		}
 
 		var mintTransactions = hashgraph.NewMintInternalTransaction(hashgraph.Mint_Rewards, mintInfo)
 		var mintReceipts = hashgraph.InternalTransactionReceipt{
 			InternalTransaction: mintTransactions,
-			Accepted:            true,
+			Accepted:            false,
 		}
 		block.Body.InternalTransactions = append(block.Body.InternalTransactions, mintTransactions)
-		block.Body.InternalTransactionReceipts = append(block.Body.InternalTransactionReceipts, mintReceipts)
-
-		p.logger.WithFields(logrus.Fields{
-			"block.Body": block.Body,
-		}).Info("InternalTransactions")
+		// block.Body.InternalTransactionReceipts = append(block.Body.InternalTransactionReceipts, mintReceipts)
+		return []hashgraph.InternalTransactionReceipt{mintReceipts}
 	}
-
-	internalTransactionReceipts := p.processInternalTransactions(block.InternalTransactions())
-
-	evictionReceipts := p.processEvictions(block)
-
-	receipts := append(internalTransactionReceipts, evictionReceipts...)
-
-	res := proxy.CommitResponse{
-		StateHash:                   hash.Bytes(),
-		InternalTransactionReceipts: receipts,
-	}
-
-	return res, nil
+	return receipts
 }
 
 // getCoinbase returns the coinbase address which will receive all the
