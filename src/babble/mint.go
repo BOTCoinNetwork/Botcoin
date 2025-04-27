@@ -70,10 +70,6 @@ func (p *InmemProxy) rewardValidators(block hashgraph.Block, validators []*peers
 		"verifyCurrentReward": currentReward,
 	}
 
-	p.logger.WithFields(logrus.Fields{
-		"verifyCurrentReward": currentReward,
-	}).Info("Rewarding verify")
-
 	for _, peer := range validators {
 		pubKey, err := crypto.UnmarshalPubkey(peer.PubKeyBytes())
 		if err != nil {
@@ -124,15 +120,8 @@ func (p *InmemProxy) rewardStakers(block hashgraph.Block) (rewardData, error) {
 		return rewardData, err
 	}
 
-	p.logger.WithFields(logrus.Fields{
-		"stakerCurrentReward": currentReward,
-		"totalStakeAmount":    totalStakeAmount,
-	}).Info("Rewarding staker")
-
 	for _, staker := range stakerArray {
-		p.logger.WithFields(logrus.Fields{
-			"currentStaker": staker.String(),
-		}).Info("Rewarding staker")
+
 		amount, err := p.checkStake(staker)
 		if err != nil {
 			p.logger.WithError(err).Errorf("Failed to checkStake err")
@@ -142,10 +131,10 @@ func (p *InmemProxy) rewardStakers(block hashgraph.Block) (rewardData, error) {
 		stakerReward := new(big.Int).Div(new(big.Int).Mul(currentReward, amount), totalStakeAmount)
 
 		p.logger.WithFields(logrus.Fields{
-			"coinbase":     staker.String(),
-			"stakerReward": stakerReward,
-			"stakerRate%":  new(big.Float).Quo(new(big.Float).Mul(big.NewFloat(float64(amount.Int64())), big.NewFloat(100)), big.NewFloat(float64(totalStakeAmount.Int64()))),
-			"stakeAmount":  amount,
+			"currentStaker": staker.String(),
+			"stakerReward":  stakerReward,
+			"stakerRate%":   new(big.Float).Quo(new(big.Float).Mul(big.NewFloat(float64(amount.Int64())), big.NewFloat(100)), big.NewFloat(float64(totalStakeAmount.Int64()))),
+			"stakeAmount":   amount,
 		}).Info("Rewarding staker")
 		p.state.AddBalance(staker, stakerReward)
 	}
