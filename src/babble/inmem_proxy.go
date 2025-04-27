@@ -115,13 +115,19 @@ func (p *InmemProxy) processRewardInternalTransactionsReceipts(block hashgraph.B
 	if err != nil {
 		p.logger.WithError(err).Error("Failed to reward validators")
 	}
-	var currentReward = new(big.Int)
+	var totalCurrentReward = new(big.Int)
+	var reward_Validators = new(big.Int)
+	var reward_Stake = new(big.Int)
+	var totalStakeAmount = new(big.Int)
 	// create a new Transaction and add it to the block
 	if rewardData_Validators != nil {
-		currentReward = rewardData_Validators["verifyCurrentReward"]
+		totalCurrentReward = rewardData_Validators["totalRewardPool"]
+		reward_Validators = rewardData_Validators["verifyCurrentReward"]
+
 		p.logger.WithFields(logrus.Fields{
-			"verifyCurrentReward": currentReward,
-		}).Info("rewardData_Validators")
+			"totalRewardPool":     totalCurrentReward,
+			"verifyCurrentReward": reward_Validators,
+		}).Info("Total_rewardData")
 	}
 
 	rewardData_Stake, err := p.rewardStakers(block)
@@ -130,24 +136,63 @@ func (p *InmemProxy) processRewardInternalTransactionsReceipts(block hashgraph.B
 	}
 	// create a new Transaction and add it to the block
 	if rewardData_Stake != nil {
-
-		currentReward = currentReward.Add(currentReward, rewardData_Stake["stakerCurrentReward"])
+		reward_Stake = rewardData_Stake["stakerCurrentReward"]
+		totalStakeAmount = rewardData_Stake["totalStakeAmount"]
 		p.logger.WithFields(logrus.Fields{
-			"stakerCurrentReward": currentReward,
-			"totalStakeAmount":    rewardData_Stake["totalStakeAmount"],
-		}).Info("rewardData_Stake")
+			"stakerCurrentReward": reward_Stake,
+			"totalStakeAmount":    totalStakeAmount,
+		}).Info("Total_rewardData")
 	}
 
 	// block.Body.MintRewards = currentReward.String()
 	// block.AppendTransactions([][]byte{bytesData})
-	if currentReward.Cmp(big.NewInt(0)) > 0 {
-		var totalStakeAmount = rewardData_Stake["totalStakeAmount"]
+	if totalCurrentReward.Cmp(big.NewInt(0)) > 0 {
+
+		peerRewards := map[string]peers.PeerReward{}
+
+		for _, peer := range validators {
+			pubKey, err := crypto.UnmarshalPubkey(peer.PubKeyBytes())
+			if err != nil {
+				p.logger.WithError(err).Errorf("Failed to UnmarshalPubkey err")
+			}
+
+			rewardAmount := new(big.Int).Div(reward_Validators, big.NewInt(int64(len(validators))))
+			address := crypto.PubkeyToAddress(*pubKey)
+			var addr = address.String()
+
+			var peerReward = peers.PeerReward{
+				VerifyReward: rewardAmount.String(),
+			}
+
+			p.logger.WithFields(logrus.Fields{
+				"verifyAddr":   addr,
+				"verifyReward": rewardAmount,
+			}).Info("Rewarding")
+
+			stakerAmount, err := p.checkStake(address)
+			if err == nil && stakerAmount.Cmp(big.NewInt(0)) > 0 {
+
+				stakeReward := new(big.Int).Div(new(big.Int).Mul(reward_Stake, stakerAmount), totalStakeAmount)
+				rewardAmount = rewardAmount.Add(rewardAmount, stakeReward)
+
+				peerReward.StakeReward = stakeReward.String()
+				peerReward.StakeAmount = stakerAmount.String()
+
+				p.logger.WithFields(logrus.Fields{
+					"stakerReward": stakeReward,
+					"stakerRate%":  new(big.Float).Quo(new(big.Float).Mul(big.NewFloat(float64(stakerAmount.Int64())), big.NewFloat(100)), big.NewFloat(float64(totalStakeAmount.Int64()))),
+				}).Info("Rewarding")
+			}
+
+			p.state.AddBalance(address, rewardAmount)
+			peerRewards[addr] = peerReward
+			// hashgraph.Store.SetMinthistory(block.RoundReceived(), )
+		}
 
 		var mintInfo = peers.Mint{
-			MintRewards:      currentReward.String(),
+			MintRewards:      totalCurrentReward.String(),
 			TotalStakeAmount: totalStakeAmount.String(),
 			PeersCount:       len(validators),
-			RoundId:          block.RoundReceived(),
 		}
 
 		var mintTransactions = hashgraph.NewMintInternalTransaction(hashgraph.Mint_Rewards, mintInfo)
