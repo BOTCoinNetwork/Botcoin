@@ -148,7 +148,7 @@ func (p *InmemProxy) getAllIndexSum(block hashgraph.Block, validators []*peers.P
 			return allIndexSum, rewardPeersMap
 		}
 
-		if index == nil {
+		if index.PubKeyHex == "" {
 			continue
 		}
 		pubKey, err := crypto.UnmarshalPubkey(validator.PubKeyBytes())
@@ -166,6 +166,10 @@ func (p *InmemProxy) getAllIndexSum(block hashgraph.Block, validators []*peers.P
 
 		allIndexSum += currentIndex - index.Index
 	}
+	p.logger.WithFields(logrus.Fields{
+		"rewardPeersMap": rewardPeersMap,
+	}).Info("rewardPeersMap")
+
 	return allIndexSum, rewardPeersMap
 }
 
@@ -281,7 +285,7 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 						"historyReward": historyReward,
 						"joinIndex":     v.index,
 						"currentIndex":  currentIndex,
-					})
+					}).Info("Rewarding")
 					peerReward.HistoryReward = historyReward.String()
 				}
 			}
