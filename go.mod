@@ -4,7 +4,7 @@ go 1.23.4
 
 require (
 	github.com/BOTCoinNetwork/BVM v0.0.0-20250411081205-3cc576522faa
-	github.com/BOTCoinNetwork/babble v0.0.0-20250426110717-ac29fd29b842
+	github.com/BOTCoinNetwork/babble v0.0.0-20250427093356-af4b4c998efe
 	github.com/BurntSushi/toml v1.5.0
 	github.com/docker/docker v28.0.4+incompatible
 	github.com/ethereum/go-ethereum v1.8.27

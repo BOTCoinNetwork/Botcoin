@@ -144,6 +144,18 @@ func (p *InmemProxy) processRewardInternalTransactionsReceipts(block hashgraph.B
 		}).Info("Total_rewardData")
 	}
 
+	rewardData_StablePeers, err := p.rewardStablePeer(block, validators)
+	if err != nil {
+		p.logger.WithError(err).Error("Failed to reward stable peers")
+	}
+	// create a new Transaction and add it to the block
+	if rewardData_StablePeers != nil {
+		currentReward = currentReward.Add(currentReward, rewardData_StablePeers["stablePeersCurrentReward"])
+		p.logger.WithFields(logrus.Fields{
+			"stablePeersCurrentReward": currentReward,
+		}).Info("rewardData_StablePeers")
+	}
+
 	// block.Body.MintRewards = currentReward.String()
 	// block.AppendTransactions([][]byte{bytesData})
 	if totalCurrentReward.Cmp(big.NewInt(0)) > 0 {

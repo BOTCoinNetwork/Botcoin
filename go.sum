@@ -8,6 +8,10 @@ github.com/BOTCoinNetwork/babble v0.0.0-20250409073636-a420e416cb6a h1:ngAC1bBxe
 github.com/BOTCoinNetwork/babble v0.0.0-20250409073636-a420e416cb6a/go.mod h1:nZgsi0abDkUXE18eme014DMVlPqM6UIGfgS8z7RrRhQ=
 github.com/BOTCoinNetwork/babble v0.0.0-20250426110717-ac29fd29b842 h1:PqBfZQLLniyzlNbLggZh+mjo8C/nxu6sinx5dzbifKw=
 github.com/BOTCoinNetwork/babble v0.0.0-20250426110717-ac29fd29b842/go.mod h1:nZgsi0abDkUXE18eme014DMVlPqM6UIGfgS8z7RrRhQ=
+github.com/BOTCoinNetwork/babble v0.0.0-20250426160506-f713d485dc36 h1:8pI1DF0eQDkT0ebdMDHyesXY2XEv0zCL88JJ01Q/+is=
+github.com/BOTCoinNetwork/babble v0.0.0-20250426160506-f713d485dc36/go.mod h1:nZgsi0abDkUXE18eme014DMVlPqM6UIGfgS8z7RrRhQ=
+github.com/BOTCoinNetwork/babble v0.0.0-20250427093356-af4b4c998efe h1:kHhB/0rk2xFimyOuQppv36XlOe2ON9lMn1M4GA5s40E=
+github.com/BOTCoinNetwork/babble v0.0.0-20250427093356-af4b4c998efe/go.mod h1:nZgsi0abDkUXE18eme014DMVlPqM6UIGfgS8z7RrRhQ=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/toml v1.5.0 h1:W5quZX/G/csjUnuI8SUYlsHs9M38FC7znL0lIO+DvMg=
 github.com/BurntSushi/toml v1.5.0/go.mod h1:ukJfTF/6rtPPRCnwkur4qwRxa8vTRFBF0uk2lLoLwho=

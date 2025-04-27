@@ -1,6 +1,7 @@
 package babble
 
 import (
+	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 
 	"github.com/BOTCoinNetwork/Botcoin/src/configuration"
@@ -100,6 +101,80 @@ func (p *InmemProxy) rewardStakers(block hashgraph.Block) (rewardData, error) {
 	if err != nil {
 		p.logger.WithError(err).Errorf("Failed to getTotalStaked err")
 		return rewardData, err
+	}
+
+	return rewardData, nil
+}
+
+type stablePeer struct {
+	addr  common.Address
+	index int
+}
+
+func (p *InmemProxy) rewardStablePeer(block hashgraph.Block, validators []*peers.Peer) (rewardData, error) {
+	if p.checkRound(block) {
+		return nil, nil
+	}
+
+	if validators == nil || len(validators) == 0 {
+		p.logger.WithFields(logrus.Fields{
+			"validators": validators,
+		}).Info("validators")
+		return nil, nil
+	}
+
+	currentIndex := block.Index()
+
+	currentRewardPool := p.getTotalRewardPool(block)
+
+	currentReward := new(big.Int).Div(new(big.Int).Mul(currentRewardPool, big.NewInt(int64(p.rewardRule.stableRate))), big.NewInt(100))
+
+	rewardData := map[string]*big.Int{
+		"stablePeersCurrentReward": currentReward,
+	}
+
+	allIndexSum := 0
+	rewardPeersMap := make(map[string]*stablePeer)
+
+	for _, validator := range validators {
+		index, err := p.babble.Store.GetPeerJoinIndex(validator.PubKeyHex)
+		if err != nil {
+			p.logger.WithError(err).Errorf("Failed to GetPeerJoinIndex err")
+			return nil, err
+		}
+
+		if index == nil {
+			continue
+		}
+		pubKey, err := crypto.UnmarshalPubkey(validator.PubKeyBytes())
+		if err != nil {
+			p.logger.WithError(err).Errorf("Failed to UnmarshalPubkey err")
+			return rewardData, err
+		}
+
+		address := crypto.PubkeyToAddress(*pubKey)
+
+		rewardPeersMap[address.String()] = &stablePeer{
+			addr:  address,
+			index: index.Index,
+		}
+
+		allIndexSum += currentIndex - index.Index
+	}
+
+	if allIndexSum == 0 {
+		return nil, nil
+	}
+
+	for _, v := range rewardPeersMap {
+		reward := new(big.Int).Div(new(big.Int).Mul(currentReward, big.NewInt(int64(currentIndex-v.index))), big.NewInt(int64(allIndexSum)))
+		p.logger.WithFields(logrus.Fields{
+			"stablePeer":   v.addr.String(),
+			"reward":       reward,
+			"joinIndex":    v.index,
+			"currentIndex": currentIndex,
+		})
+		p.state.AddBalance(v.addr, reward)
 	}
 
 	return rewardData, nil
