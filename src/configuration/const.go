@@ -58,6 +58,7 @@ const (
 	DefaultAccountBalance            = "1234567890000000000000"
 	DefaultContractAddress           = "abbaabbaabbaabbaabbaabbaabbaabbaabbaabba"
 	DefaultControllerContractAddress = "aabbaabbaabbaabbaabbaabbaabbaabbaabbaabb"
+	blackHoleAddress                 = "0000000000000000000000000000000000000bot"
 	DefaultValidatorRewardPool       = 2880000
 	DefaultValidatorRewardRound      = 28800
 	DefaultValidatorHalvingRound     = 30000000
