@@ -166,9 +166,9 @@ func (p *InmemProxy) getAllIndexSum(block hashgraph.Block, validators []*peers.P
 
 		allIndexSum += currentIndex - index.Index
 	}
-	p.logger.WithFields(logrus.Fields{
-		"rewardPeersMap": rewardPeersMap,
-	}).Info("rewardPeersMap")
+	// p.logger.WithFields(logrus.Fields{
+	// 	"rewardPeersMap": rewardPeersMap,
+	// }).Info("rewardPeersMap")
 
 	return allIndexSum, rewardPeersMap
 }
@@ -257,8 +257,8 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 				VerifyReward: rewardAmount.String(),
 			}
 			p.logger.WithFields(logrus.Fields{
-				"verifyAddr":   addr,
 				"verifyReward": rewardAmount,
+				"verifyAddr":   addr,
 			}).Info("Rewarding")
 
 			stakerAmount, err := p.checkStake(address)
@@ -294,8 +294,11 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 			peerRewards[addr] = peerReward
 
 			mintSet.PeerReward = peerRewards
-			p.babble.Store.SetMinthistory(currentIndex, mintSet)
+
 		}
+		// p.babble.Store.SetMinthistory(currentIndex, mintSet)
+		jsMint := peers.NewJSONMint(p.babble.Config.DataDir)
+		jsMint.SetMinthistoryForJson(currentIndex, mintSet)
 		return mint
 	}
 	return mint
