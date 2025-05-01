@@ -50,6 +50,21 @@ func (p *InmemProxy) getTotalRewardPool(block hashgraph.Block) *big.Int {
 	return currentReward
 }
 
+func (p *InmemProxy) validatorsForAddress(block hashgraph.Block, validators []*peers.Peer) []common.Address {
+
+	var vAddress []common.Address
+	for _, peer := range validators {
+		pubKey, err := crypto.UnmarshalPubkey(peer.PubKeyBytes())
+		if err != nil {
+			p.logger.WithError(err).Errorf("Failed to UnmarshalPubkey err")
+		}
+		address := crypto.PubkeyToAddress(*pubKey)
+		vAddress = append(vAddress, address)
+	}
+
+	return vAddress
+}
+
 func (p *InmemProxy) rewardValidators(block hashgraph.Block, validators []*peers.Peer) (rewardData, error) {
 	// Check if it's time to distribute rewards
 	if p.checkRound(block) {
@@ -74,7 +89,7 @@ func (p *InmemProxy) rewardValidators(block hashgraph.Block, validators []*peers
 	return rewardData, nil
 }
 
-func (p *InmemProxy) rewardStakers(block hashgraph.Block) (rewardData, error) {
+func (p *InmemProxy) rewardStakers(block hashgraph.Block, validatorsAddress []common.Address) (rewardData, error) {
 	if p.checkRound(block) {
 		return nil, nil
 	}
@@ -90,14 +105,23 @@ func (p *InmemProxy) rewardStakers(block hashgraph.Block) (rewardData, error) {
 	}
 
 	totalRewardPool := p.getTotalRewardPool(block)
-
 	currentReward := new(big.Int).Div(new(big.Int).Mul(totalRewardPool, big.NewInt(int64(p.rewardRule.stakerRate))), big.NewInt(100))
-
 	totalStakeAmount, err := p.getTotalStaked()
 
+	var onlineTotalStakeAmount = new(big.Int)
+	// sum online's totalStakeAmount
+	for _, vAddress := range validatorsAddress {
+
+		amount, err := p.checkStake(vAddress)
+		if err == nil {
+			onlineTotalStakeAmount.Add(onlineTotalStakeAmount, amount)
+		}
+	}
+
 	rewardData := map[string]*big.Int{
-		"stakerCurrentReward": currentReward,
-		"totalStakeAmount":    totalStakeAmount,
+		"stakerCurrentReward":    currentReward,
+		"totalStakeAmount":       totalStakeAmount,
+		"onlineTotalStakeAmount": onlineTotalStakeAmount,
 	}
 
 	if err != nil {
@@ -184,6 +208,9 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 	var reward_Stake = new(big.Int)
 	var reward_StablePeers = new(big.Int)
 	var totalStakeAmount = new(big.Int)
+	var onlineTotalStakeAmount = new(big.Int)
+
+	vAddress := p.validatorsForAddress(block, validators)
 
 	// create a new Transaction and add it to the block
 	if rewardData_Validators != nil {
@@ -198,7 +225,7 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 		}).Info("Total_rewardData")
 	}
 
-	rewardData_Stake, err := p.rewardStakers(block)
+	rewardData_Stake, err := p.rewardStakers(block, vAddress)
 	if err != nil {
 		p.logger.WithError(err).Error("Failed to reward stakers")
 	}
@@ -206,9 +233,12 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 	if rewardData_Stake != nil {
 		reward_Stake = rewardData_Stake["stakerCurrentReward"]
 		totalStakeAmount = rewardData_Stake["totalStakeAmount"]
+		onlineTotalStakeAmount = rewardData_Stake["onlineTotalStakeAmount"]
+
 		p.logger.WithFields(logrus.Fields{
-			"staker_CurrentReward": reward_Stake,
-			"totalStakeAmount":     totalStakeAmount,
+			"staker_CurrentReward":   reward_Stake,
+			"totalStakeAmount":       totalStakeAmount,
+			"onlineTotalStakeAmount": onlineTotalStakeAmount,
 		}).Info("Total_rewardData")
 	}
 
@@ -233,24 +263,17 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 	var mintSet = peers.MintSet{}
 	mintSet.Mint = mint
 
-	// block.Body.MintRewards = currentReward.String()
-	// block.AppendTransactions([][]byte{bytesData})
+	// Reward ing
 	if totalCurrentReward.Cmp(big.NewInt(0)) > 0 {
 
 		peerRewards := map[string]peers.PeerReward{}
 		allIndexSum, rewardPeersMap := p.getAllIndexSum(block, validators)
 		currentIndex := block.Index()
 
-		for _, peer := range validators {
-			pubKey, err := crypto.UnmarshalPubkey(peer.PubKeyBytes())
-			if err != nil {
-				p.logger.WithError(err).Errorf("Failed to UnmarshalPubkey err")
-			}
+		for _, addr := range vAddress {
 
+			addrString := addr.String()
 			rewardAmount := new(big.Int).Div(reward_Validators, big.NewInt(int64(len(validators))))
-			address := crypto.PubkeyToAddress(*pubKey)
-			var addr = address.String()
-
 			var peerReward = peers.PeerReward{
 				VerifyReward: rewardAmount.String(),
 			}
@@ -260,33 +283,33 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 			}
 			p.logger.WithFields(logrus.Fields{
 				"verifyReward": rewardAmount,
-				"verifyAddr":   addr,
+				"verifyAddr":   addrString,
 			}).Info("Rewarding")
 
-			stakerAmount, err := p.checkStake(address)
+			stakerAmount, err := p.checkStake(addr)
 			if err == nil && stakerAmount.Cmp(big.NewInt(0)) > 0 {
 
-				stakeReward := new(big.Int).Div(new(big.Int).Mul(reward_Stake, stakerAmount), totalStakeAmount)
+				stakeReward := new(big.Int).Div(new(big.Int).Mul(reward_Stake, stakerAmount), onlineTotalStakeAmount)
 				rewardAmount = rewardAmount.Add(rewardAmount, stakeReward)
 
 				peerReward.StakeReward = stakeReward.String()
 				peerReward.StakeAmount = stakerAmount.String()
 
-				// 计算 stakerAmount 占 totalStakeAmount 的百分比
+				// 计算 stakerAmount 占 onlineTotalStakeAmount 的百分比
 				stakerRate := new(big.Float).Quo(
 					new(big.Float).SetInt(stakerAmount).Mul(new(big.Float).SetInt(stakerAmount), big.NewFloat(100)),
-					new(big.Float).SetInt(totalStakeAmount),
+					new(big.Float).SetInt(onlineTotalStakeAmount),
 				)
 
 				p.logger.WithFields(logrus.Fields{
-					"stakeAmount":  stakerAmount,
-					"stakerRate%":  stakerRate.String(),
 					"stakerReward": stakeReward,
+					"stakerRate%":  stakerRate.String(),
+					"stakeAmount":  stakerAmount,
 				}).Info("Rewarding")
 			}
 
 			if allIndexSum > 0 {
-				v, ok := rewardPeersMap[addr]
+				v, ok := rewardPeersMap[addrString]
 				if ok {
 					historyReward := new(big.Int).Div(new(big.Int).Mul(reward_StablePeers, big.NewInt(int64(currentIndex-v.index))), big.NewInt(int64(allIndexSum)))
 					rewardAmount = rewardAmount.Add(rewardAmount, historyReward)
@@ -299,8 +322,8 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 				}
 			}
 
-			p.state.AddBalance(address, rewardAmount)
-			peerRewards[addr] = peerReward
+			p.state.AddBalance(addr, rewardAmount)
+			peerRewards[addrString] = peerReward
 
 			mintSet.PeerReward = peerRewards
 

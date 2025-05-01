@@ -1,10 +1,11 @@
 package babble
 
 import (
+	"math/big"
+
 	"github.com/BOTCoinNetwork/BVM/src/state"
 	"github.com/ethereum/go-ethereum/common"
 	ethTypes "github.com/ethereum/go-ethereum/core/types"
-	"math/big"
 )
 
 func (p *InmemProxy) getStakerArray() ([]common.Address, error) {
@@ -72,20 +73,20 @@ func (p *InmemProxy) getStakeList(staker common.Address) (*big.Int, error) {
 	}
 
 	results, ok := result.([]interface{})
-	if!ok {
-	    p.logger.WithError(err).Errorf("Failed to convert result to []interface{}")
-	    return nil, err
+	if !ok {
+		p.logger.WithError(err).Errorf("Failed to convert result to []interface{}")
+		return nil, err
 	}
 
 	if len(results) < 2 {
-	    p.logger.WithError(err).Errorf("Result does not contain enough elements")
-	    return nil, err
+		p.logger.WithError(err).Errorf("Result does not contain enough elements")
+		return nil, err
 	}
 
 	rate, ok := results[1].(*big.Int)
-	if!ok {
-	    p.logger.WithError(err).Errorf("Failed to convert second element to *big.Int")
-	    return nil, err
+	if !ok {
+		p.logger.WithError(err).Errorf("Failed to convert second element to *big.Int")
+		return nil, err
 	}
 
 	return rate, nil
