@@ -191,8 +191,10 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 		reward_Validators = rewardData_Validators["verifyCurrentReward"]
 
 		p.logger.WithFields(logrus.Fields{
-			"totalRewardPool":     totalCurrentReward,
-			"verifyCurrentReward": reward_Validators,
+			"totalRewardPool": totalCurrentReward,
+		}).Info("Total_rewardData")
+		p.logger.WithFields(logrus.Fields{
+			"verify_CurrentReward": reward_Validators,
 		}).Info("Total_rewardData")
 	}
 
@@ -205,8 +207,8 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 		reward_Stake = rewardData_Stake["stakerCurrentReward"]
 		totalStakeAmount = rewardData_Stake["totalStakeAmount"]
 		p.logger.WithFields(logrus.Fields{
-			"stakerCurrentReward": reward_Stake,
-			"totalStakeAmount":    totalStakeAmount,
+			"staker_CurrentReward": reward_Stake,
+			"totalStakeAmount":     totalStakeAmount,
 		}).Info("Total_rewardData")
 	}
 
@@ -218,8 +220,8 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 	if rewardData_StablePeers != nil {
 		reward_StablePeers = rewardData_StablePeers["stablePeersCurrentReward"]
 		p.logger.WithFields(logrus.Fields{
-			"stablePeersCurrentReward": reward_StablePeers,
-		}).Info("rewardData_StablePeers")
+			"history_CurrentReward": reward_StablePeers,
+		}).Info("Total_rewardData")
 	}
 
 	mint := peers.Mint{
@@ -270,9 +272,16 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 				peerReward.StakeReward = stakeReward.String()
 				peerReward.StakeAmount = stakerAmount.String()
 
+				// 计算 stakerAmount 占 totalStakeAmount 的百分比
+				stakerRate := new(big.Float).Quo(
+					new(big.Float).SetInt(stakerAmount).Mul(new(big.Float).SetInt(stakerAmount), big.NewFloat(100)),
+					new(big.Float).SetInt(totalStakeAmount),
+				)
+
 				p.logger.WithFields(logrus.Fields{
+					"stakeAmount":  stakerAmount,
+					"stakerRate%":  stakerRate.String(),
 					"stakerReward": stakeReward,
-					"stakerRate%":  new(big.Float).Quo(new(big.Float).Mul(big.NewFloat(float64(stakerAmount.Int64())), big.NewFloat(100)), big.NewFloat(float64(totalStakeAmount.Int64()))),
 				}).Info("Rewarding")
 			}
 
