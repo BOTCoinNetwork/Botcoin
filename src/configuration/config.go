@@ -105,6 +105,9 @@ func (c *Config) ToBabbleConfig() *babble_config.Config {
 	// served by the EVM-Lite API server automatically.
 	babbleConfig.ServiceAddr = ""
 
+	// AutomaticEviction is enabled by default. It ensures that Babble will
+	babbleConfig.AutomaticEviction = true
+
 	return babbleConfig
 }
 
