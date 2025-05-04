@@ -67,10 +67,11 @@ func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, e
 	}
 
 	p.logger.WithFields(logrus.Fields{
-		"validators":    validators,
-		"coinbase":      coinbaseAddress.String(),
-		"blockIndex":    block.Index(),
-		"RoundReceived": block.RoundReceived(),
+		"validators":        validators,
+		"coinbase":          coinbaseAddress.String(),
+		"blockIndex":        block.Index(),
+		"RoundReceived":     block.RoundReceived(),
+		"AutomaticEviction": p.babble.Config.AutomaticEviction,
 	}).Info("Commit========Block Start============")
 
 	blockHashBytes, err := block.Hash()
