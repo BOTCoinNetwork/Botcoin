@@ -3,8 +3,8 @@ github.com/AndreasBriese/bbloom v0.0.0-20190306092124-e2d15f34fcf9 h1:HD8gA2tkBy
 github.com/AndreasBriese/bbloom v0.0.0-20190306092124-e2d15f34fcf9/go.mod h1:bOvUY6CB00SOBii9/FifXqc0awNKxLFCL/+pkDPuyl8=
 github.com/BOTCoinNetwork/BVM v0.0.0-20250411081205-3cc576522faa h1:uHKJNJsrmq8yXORcL0CWzVd1Vq3UHlwuaeRQcpJOkR8=
 github.com/BOTCoinNetwork/BVM v0.0.0-20250411081205-3cc576522faa/go.mod h1:jmInyr19a0Xv+ywW5nB1rzhHJxDE7pC/nkLdxB7q4tM=
-github.com/BOTCoinNetwork/babble v0.8.6-0.20250504171906-d568dc9a56e5 h1:z2wClvEygvO7yxx9cUMLJfgw38+ficXo13mQzOd9FX8=
-github.com/BOTCoinNetwork/babble v0.8.6-0.20250504171906-d568dc9a56e5/go.mod h1:VhPUqZn00nm/BiuyJuMwpsP2/io0GH3gmmx5Yd3VAts=
+github.com/BOTCoinNetwork/babble v0.8.6-0.20250504182423-9ab786420321 h1:Z1ZTodniO0r1qRQkNGw7s88HZanByVRcxxLK9d+5Bbg=
+github.com/BOTCoinNetwork/babble v0.8.6-0.20250504182423-9ab786420321/go.mod h1:VhPUqZn00nm/BiuyJuMwpsP2/io0GH3gmmx5Yd3VAts=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/toml v1.5.0/go.mod h1:ukJfTF/6rtPPRCnwkur4qwRxa8vTRFBF0uk2lLoLwho=
 github.com/Microsoft/go-winio v0.6.2/go.mod h1:yd8OoFMLzJbo9gZq8j5qaps8bJ9aShtEA8Ipt1oGCvU=
