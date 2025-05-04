@@ -4,7 +4,7 @@ go 1.23.4
 
 require (
 	github.com/BOTCoinNetwork/BVM v0.0.0-20250411081205-3cc576522faa
-	github.com/BOTCoinNetwork/babble v0.8.6-0.20250504182423-9ab786420321
+	github.com/BOTCoinNetwork/babble v0.8.6-0.20250504190835-4ff5bdf793b9 
 	github.com/BurntSushi/toml v1.5.0
 	github.com/docker/docker v28.0.4+incompatible
 	github.com/ethereum/go-ethereum v1.8.27
@@ -16,7 +16,7 @@ require (
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
 )
 
-// replace github.com/BOTCoinNetwork/babble v0.8.6-0.20250504161442-8810aa6e896f => ../babble
+// replace github.com/BOTCoinNetwork/babble v0.8.6-0.20250504182423-9ab786420321 => ../babble
 
 require (
 	github.com/AdaLogics/go-fuzz-headers v0.0.0-20240806141605-e8a1dd7889d6 // indirect
