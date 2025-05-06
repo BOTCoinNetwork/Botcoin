@@ -31,6 +31,12 @@ func NewInmemProxy(state *state.State,
 	logger *logrus.Entry,
 	rule *RewardRule) *InmemProxy {
 
+	jsonMint := peers.NewJSONMint(babble.Config.DataDir)
+	err := jsonMint.InitMintSetJsonfile()
+	if err != nil {
+		logger.Errorf("Failed to UnmarshalPubkey err %v", err)
+	}
+
 	return &InmemProxy{
 		service:    service,
 		state:      state,
