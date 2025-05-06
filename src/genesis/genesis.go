@@ -68,7 +68,7 @@ func GenerateGenesisJSON(outDir, keystore string, peers []*peers.Peer, alloc *Al
 	}
 
 	genesispoa := POA{Code: StandardPOAContractByteCode,
-		Address: controllerAddress,
+		Address: contractAddress,
 		Abi:     StandardPOAContractABI,
 		Storage: storageJSON,
 	}

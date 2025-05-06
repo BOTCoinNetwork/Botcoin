@@ -97,7 +97,7 @@ func buildConfig(cmd *cobra.Command, args []string) error {
 		peers,
 		nil,
 		configuration.DefaultContractAddress,
-		configuration.DefaultControllerContractAddress)
+		configuration.BlackHoleAddress)
 	if err != nil {
 		return err
 	}
