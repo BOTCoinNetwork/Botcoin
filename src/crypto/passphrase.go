@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/rand"
+	"os"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/console"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,_"
@@ -14,22 +15,26 @@ const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456
 // PromptPassphrase prompts the user for a passphrase.  Set confirmation to true
 // to require the user to confirm the passphrase.
 func PromptPassphrase(confirmation bool) (string, error) {
-	passphrase, err := console.Stdin.PromptPassword("Passphrase: ")
+	fmt.Print("Passphrase: ")
+	passphrase, err := terminal.ReadPassword(int(os.Stdin.Fd()))
 	if err != nil {
 		return "", fmt.Errorf("Failed to read passphrase: %v", err)
 	}
+	fmt.Println()
 
 	if confirmation {
-		confirm, err := console.Stdin.PromptPassword("Repeat passphrase: ")
+		fmt.Print("Repeat passphrase: ")
+		confirm, err := terminal.ReadPassword(int(os.Stdin.Fd()))
 		if err != nil {
 			return "", fmt.Errorf("Failed to read passphrase confirmation: %v", err)
 		}
-		if passphrase != confirm {
+		fmt.Println()
+		if string(passphrase) != string(confirm) { // 将[]byte转换为string后再比较
 			return "", fmt.Errorf("Passphrases do not match")
 		}
 	}
 
-	return passphrase, nil
+	return string(passphrase), nil
 }
 
 // GetPassphrase obtains a passphrase given by the user.  It first checks the
@@ -49,7 +54,7 @@ func GetPassphrase(passwordFile string, confirmation bool) (string, error) {
 	return PromptPassphrase(confirmation)
 }
 
-//RandomPassphrase generates a random passphrase
+// RandomPassphrase generates a random passphrase
 func RandomPassphrase(n int) string {
 	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,_"
 
