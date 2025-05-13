@@ -16,18 +16,6 @@ verbose = "{{.Verbose}}"
 # The IP:PORT of the HTTP API service (defaults to :8080)
 api-listen = "{{.APIAddr}}"
 
-validator-reward-pool = "{{.ValidatorRewardPool}}"
-
-validator-reward-round = "{{.ValidatorRewardRound}}"
-
-validator-halving-round = "{{.ValidatorHalvingRound}}"
-
-validator-rate = "{{.ValidatorRate}}"
-
-staker-rate = "{{.StakerRate}}"
-
-stable-rate = "{{.StableRate}}"
-
 [babble]
 
   # IP:PORT on the local machine where Babble will bind its internal gossip 
@@ -71,6 +59,15 @@ stable-rate = "{{.StableRate}}"
   
   # minimum gasprice of transactions submitted through this node (eg 1T) (default "0")  
   min-gas-price = {{.Eth.MinGasPrice}}
+
+[mint]
+  validator-reward-round = "{{.ValidatorRewardRound}}"
+  validator-reward-pool = "{{.ValidatorRewardPool}}"
+  validator-halving-round = "{{.ValidatorHalvingRound}}"
+
+  validator-rate = "{{.ValidatorRate}}"
+  staker-rate = "{{.StakerRate}}"
+  stable-rate = "{{.StableRate}}"  
 `
 
 // GlobalTOML converts the global Config object into a TOML string

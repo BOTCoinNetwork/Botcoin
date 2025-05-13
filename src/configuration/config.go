@@ -131,11 +131,11 @@ type BaseConfig struct {
 
 	logger *logrus.Logger
 
-	// Validator reward pool
-	ValidatorRewardPool int `mapstructure:"validator-reward-pool"`
-
 	// Validator reward round
 	ValidatorRewardRound int `mapstructure:"validator-reward-round"`
+
+	// Validator reward pool
+	ValidatorRewardPool int `mapstructure:"validator-reward-pool"`
 
 	// Validator halving round
 	ValidatorHalvingRound int `mapstructure:"validator-halving-round"`
