@@ -30,6 +30,7 @@ func newRunCmd() *cobra.Command {
 			common.DebugMessage(fmt.Sprintf("Base Config: %+v", configuration.Global.BaseConfig))
 			common.DebugMessage(fmt.Sprintf("Babble Config: %+v", configuration.Global.Babble))
 			common.DebugMessage(fmt.Sprintf("Eth Config: %+v", configuration.Global.Eth))
+			common.DebugMessage(fmt.Sprintf("Mint Config: %+v", configuration.Global.Mint))
 			return nil
 		},
 
@@ -45,9 +46,6 @@ func bindFlags(cmd *cobra.Command) {
 	// Config and data directories
 	cmd.Flags().StringP("config", "c", configuration.Global.ConfigDir, "configuration directory")
 	cmd.Flags().StringP("data", "d", configuration.Global.DataDir, "data directory")
-	cmd.Flags().Int("validator-reward-round", configuration.Global.ValidatorRewardRound, "validator reward round")
-	cmd.Flags().Int("validator-reward-pool", configuration.Global.ValidatorRewardPool, "validator reward pool")
-	cmd.Flags().Int("validator-halving-round", configuration.Global.ValidatorHalvingRound, "validator halving round")
 
 	// EVM-Lite and Babble share the same API address
 	cmd.Flags().String("api-listen", configuration.Global.APIAddr, "IP:PORT of HTTP API service")
@@ -68,6 +66,12 @@ func bindFlags(cmd *cobra.Command) {
 	// Eth config
 	cmd.Flags().Int("eth.cache", configuration.Global.Eth.Cache, "megabytes of memory allocated to internal caching (min 16MB / database forced)")
 	cmd.Flags().String("eth.min-gas-price", configuration.Global.Eth.MinGasPrice, "minimum gasprice of transactions submitted through this node (ex 1K, 1M, 1G, etc.)")
+
+	// mint
+	cmd.Flags().Int("mint.validator-reward-round", configuration.Global.Mint.ValidatorRewardRound, "validator reward round")
+	cmd.Flags().Int("mint.validator-reward-pool", configuration.Global.Mint.ValidatorRewardPool, "validator reward pool")
+	cmd.Flags().Int("mint.validator-halving-round", configuration.Global.Mint.ValidatorHalvingRound, "validator halving round")
+
 }
 
 /*******************************************************************************
@@ -88,7 +92,7 @@ func runMonet(cmd *cobra.Command, args []string) error {
 	babble := babble.NewInmemBabble(
 		configuration.Global.ToBabbleConfig(),
 		configuration.Global.Logger("babble-proxy"),
-		babble.NewRewardRule(&configuration.Global.BaseConfig))
+		babble.NewRewardRule(configuration.Global.Mint))
 
 	engine, err := engine.NewEngine(*configuration.Global.ToEVMLConfig(), babble)
 	if err != nil {

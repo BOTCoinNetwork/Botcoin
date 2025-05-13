@@ -61,13 +61,13 @@ api-listen = "{{.APIAddr}}"
   min-gas-price = {{.Eth.MinGasPrice}}
 
 [mint]
-  validator-reward-round = "{{.ValidatorRewardRound}}"
-  validator-reward-pool = "{{.ValidatorRewardPool}}"
-  validator-halving-round = "{{.ValidatorHalvingRound}}"
+  validator-reward-round = "{{.Mint.ValidatorRewardRound}}"
+  validator-reward-pool = "{{.Mint.ValidatorRewardPool}}"
+  validator-halving-round = "{{.Mint.ValidatorHalvingRound}}"
 
-  validator-rate = "{{.ValidatorRate}}"
-  staker-rate = "{{.StakerRate}}"
-  stable-rate = "{{.StableRate}}"  
+  validator-rate = "{{.Mint.ValidatorRate}}"
+  staker-rate = "{{.Mint.StakerRate}}"
+  stable-rate = "{{.Mint.StableRate}}"  
 `
 
 // GlobalTOML converts the global Config object into a TOML string

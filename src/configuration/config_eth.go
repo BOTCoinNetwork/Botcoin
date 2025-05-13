@@ -2,7 +2,7 @@ package configuration
 
 var (
 	defaultCache       = 128
-	defaultMinGasPrice = "10"
+	defaultMinGasPrice = "100000000000000"
 )
 
 // EthConfig contains the configuration relative to the accounts, EVM, trie/db,
