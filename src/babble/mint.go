@@ -50,7 +50,7 @@ func (p *InmemProxy) getTotalRewardPool(block hashgraph.Block) *big.Int {
 	return currentReward
 }
 
-func (p *InmemProxy) validatorsForAddress(block hashgraph.Block, validators []*peers.Peer) []common.Address {
+func (p *InmemProxy) stringAddress(validators []*peers.Peer) []common.Address {
 
 	var vAddress []common.Address
 	for _, peer := range validators {
@@ -65,17 +65,7 @@ func (p *InmemProxy) validatorsForAddress(block hashgraph.Block, validators []*p
 	return vAddress
 }
 
-func (p *InmemProxy) rewardValidators(block hashgraph.Block, validators []*peers.Peer) (rewardData, error) {
-	// Check if it's time to distribute rewards
-	if p.checkRound(block) {
-		return nil, nil
-	}
-	if validators == nil || len(validators) == 0 {
-		p.logger.WithFields(logrus.Fields{
-			"validators": validators,
-		}).Info("validators")
-		return nil, nil
-	}
+func (p *InmemProxy) rewardValidators(block hashgraph.Block) (rewardData, error) {
 
 	totalRewardPool := p.getTotalRewardPool(block)
 
@@ -90,9 +80,6 @@ func (p *InmemProxy) rewardValidators(block hashgraph.Block, validators []*peers
 }
 
 func (p *InmemProxy) rewardStakers(block hashgraph.Block, validatorsAddress []common.Address) (rewardData, error) {
-	if p.checkRound(block) {
-		return nil, nil
-	}
 
 	stakerArray, err := p.getStakerArray()
 	if err != nil {
@@ -137,17 +124,7 @@ type stablePeer struct {
 	index int
 }
 
-func (p *InmemProxy) rewardStablePeer(block hashgraph.Block, validators []*peers.Peer) (rewardData, error) {
-	if p.checkRound(block) {
-		return nil, nil
-	}
-
-	if validators == nil || len(validators) == 0 {
-		p.logger.WithFields(logrus.Fields{
-			"validators": validators,
-		}).Info("validators")
-		return nil, nil
-	}
+func (p *InmemProxy) rewardStablePeer(block hashgraph.Block) (rewardData, error) {
 
 	currentRewardPool := p.getTotalRewardPool(block)
 
@@ -160,45 +137,55 @@ func (p *InmemProxy) rewardStablePeer(block hashgraph.Block, validators []*peers
 	return rewardData, nil
 }
 
-func (p *InmemProxy) getAllIndexSum(block hashgraph.Block, validators []*peers.Peer) (int, map[string]*stablePeer) {
+func (p *InmemProxy) getAllAbleValidatorsAndHistorys(block hashgraph.Block, validators []*peers.Peer) ([]common.Address, map[string]*stablePeer, int) {
 	currentIndex := block.Index()
 	allIndexSum := 0
-	rewardPeersMap := make(map[string]*stablePeer)
+	historysPeersMap := make(map[string]*stablePeer)
+	validatorsPeers := []common.Address{}
 
 	for _, validator := range validators {
-		index, err := p.babble.Store.GetPeerJoinIndex(validator.PubKeyHex)
+		peerIndex, err := p.babble.Store.GetPeerJoinIndex(validator.PubKeyHex)
 		if err != nil {
 			p.logger.WithError(err).Errorf("Failed to GetPeerJoinIndex err")
-			return allIndexSum, rewardPeersMap
+			return validatorsPeers, historysPeersMap, allIndexSum
 		}
 
-		if index.PubKeyHex == "" {
+		if peerIndex.PubKeyHex == "" {
 			continue
 		}
 		pubKey, err := crypto.UnmarshalPubkey(validator.PubKeyBytes())
 		if err != nil {
 			p.logger.WithError(err).Errorf("Failed to UnmarshalPubkey err")
-			return allIndexSum, rewardPeersMap
+			return validatorsPeers, historysPeersMap, allIndexSum
 		}
 
 		address := crypto.PubkeyToAddress(*pubKey)
 
-		rewardPeersMap[address.String()] = &stablePeer{
+		historysPeersMap[address.String()] = &stablePeer{
 			addr:  address,
-			index: index.Index,
+			index: peerIndex.Index,
 		}
 
-		allIndexSum += currentIndex - index.Index
-	}
-	// p.logger.WithFields(logrus.Fields{
-	// 	"rewardPeersMap": rewardPeersMap,
-	// }).Info("rewardPeersMap")
+		allIndexSum += currentIndex - peerIndex.Index
 
-	return allIndexSum, rewardPeersMap
+		if currentIndex-peerIndex.Index >= configuration.Global.Mint.ValidatorRewardRound {
+			validatorsPeers = append(validatorsPeers, address)
+		}
+	}
+
+	return validatorsPeers, historysPeersMap, allIndexSum
 }
 
 func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer) peers.Mint {
-	rewardData_Validators, err := p.rewardValidators(block, validators)
+
+	// Check if it's time to distribute rewards
+	if p.checkRound(block) {
+		return peers.Mint{}
+	}
+
+	ableValidators, ableHistorys, allIndexSum := p.getAllAbleValidatorsAndHistorys(block, validators)
+
+	rewardData_Validators, err := p.rewardValidators(block)
 	if err != nil {
 		p.logger.WithError(err).Error("Failed to reward validators")
 	}
@@ -209,8 +196,6 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 	var reward_StablePeers = new(big.Int)
 	var totalStakeAmount = new(big.Int)
 	var onlineTotalStakeAmount = new(big.Int)
-
-	vAddress := p.validatorsForAddress(block, validators)
 
 	// create a new Transaction and add it to the block
 	if rewardData_Validators != nil {
@@ -225,7 +210,9 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 		}).Info("Total_rewardData")
 	}
 
-	rewardData_Stake, err := p.rewardStakers(block, vAddress)
+	// stakersAddress must be use validators
+	stakersAddress := p.stringAddress(validators)
+	rewardData_Stake, err := p.rewardStakers(block, stakersAddress)
 	if err != nil {
 		p.logger.WithError(err).Error("Failed to reward stakers")
 	}
@@ -242,7 +229,7 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 		}).Info("Total_rewardData")
 	}
 
-	rewardData_StablePeers, err := p.rewardStablePeer(block, validators)
+	rewardData_StablePeers, err := p.rewardStablePeer(block)
 	if err != nil {
 		p.logger.WithError(err).Error("Failed to reward stable peers")
 	}
@@ -254,10 +241,14 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 		}).Info("Total_rewardData")
 	}
 
+	vsLen := len(ableValidators)
+	if len(validators) > vsLen {
+		vsLen = len(validators)
+	}
 	mint := peers.Mint{
 		MintRewards:      totalCurrentReward.String(),
 		TotalStakeAmount: totalStakeAmount.String(),
-		PeersCount:       len(validators),
+		PeersCount:       vsLen,
 	}
 
 	var mintSet = peers.MintSet{}
@@ -267,13 +258,13 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 	if totalCurrentReward.Cmp(big.NewInt(0)) > 0 {
 
 		peerRewards := map[string]peers.PeerReward{}
-		allIndexSum, rewardPeersMap := p.getAllIndexSum(block, validators)
+
 		currentIndex := block.Index()
 
-		for _, addr := range vAddress {
+		for _, addr := range ableValidators {
 
 			addrString := addr.String()
-			rewardAmount := new(big.Int).Div(reward_Validators, big.NewInt(int64(len(validators))))
+			rewardAmount := new(big.Int).Div(reward_Validators, big.NewInt(int64(len(ableValidators))))
 			var peerReward = peers.PeerReward{
 				VerifyReward: rewardAmount.String(),
 			}
@@ -309,7 +300,7 @@ func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer
 			}
 
 			if allIndexSum > 0 {
-				v, ok := rewardPeersMap[addrString]
+				v, ok := ableHistorys[addrString]
 				if ok {
 					historyReward := new(big.Int).Div(new(big.Int).Mul(reward_StablePeers, big.NewInt(int64(currentIndex-v.index))), big.NewInt(int64(allIndexSum)))
 					rewardAmount = rewardAmount.Add(rewardAmount, historyReward)
