@@ -28,6 +28,8 @@ type Config struct {
 
 	// Options for Babble
 	Babble *BabbleConfig `mapstructure:"babble"`
+
+	Mint *MintConfig `mapstructure:"mint"`
 }
 
 // DefaultConfig returns the default configuration for a MONET node
@@ -36,6 +38,7 @@ func DefaultConfig() *Config {
 		BaseConfig: DefaultBaseConfig(),
 		Eth:        DefaultEthConfig(),
 		Babble:     DefaultBabbleConfig(),
+		Mint:       DefaultMintConfig(),
 	}
 }
 
@@ -130,37 +133,13 @@ type BaseConfig struct {
 	APIAddr string `mapstructure:"api-listen"`
 
 	logger *logrus.Logger
-
-	// Validator reward round
-	ValidatorRewardRound int `mapstructure:"validator-reward-round"`
-
-	// Validator reward pool
-	ValidatorRewardPool int `mapstructure:"validator-reward-pool"`
-
-	// Validator halving round
-	ValidatorHalvingRound int `mapstructure:"validator-halving-round"`
-
-	// validator rate
-	ValidatorRate int `mapstructure:"validator-rate"`
-
-	// staker rate
-	StakerRate int `mapstructure:"staker-rate"`
-
-	// stable rate
-	StableRate int `mapstructure:"stable-rate"`
 }
 
 // DefaultBaseConfig returns the default top-level configuration for EVM-Babble
 func DefaultBaseConfig() BaseConfig {
 	return BaseConfig{
-		ConfigDir:             DefaultConfigDir(),
-		DataDir:               DefaultDataDir(),
-		APIAddr:               DefaultAPIAddr,
-		ValidatorRewardPool:   DefaultValidatorRewardPool,
-		ValidatorRewardRound:  DefaultValidatorRewardRound,
-		ValidatorHalvingRound: DefaultValidatorHalvingRound,
-		ValidatorRate:         DefaultValidatorRate,
-		StakerRate:            DefaultStakerRate,
-		StableRate:            DefaultStableRate,
+		ConfigDir: DefaultConfigDir(),
+		DataDir:   DefaultDataDir(),
+		APIAddr:   DefaultAPIAddr,
 	}
 }

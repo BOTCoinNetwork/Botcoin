@@ -23,7 +23,7 @@ type RewardRule struct {
 	stableRate    int
 }
 
-func NewRewardRule(config *configuration.BaseConfig) *RewardRule {
+func NewRewardRule(config *configuration.MintConfig) *RewardRule {
 	return &RewardRule{
 		halving:     config.ValidatorHalvingRound,
 		rewardRound: config.ValidatorRewardRound,

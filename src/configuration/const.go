@@ -55,20 +55,14 @@ const (
 
 // Genesis Constants
 const (
-	DefaultAccountBalance        = "10000000000000000000000"
-	DefaultContractAddress       = "aabbaabbaabbaabbaabbaabbaabbaabbaabbaabb"
-	BlackHoleAddress             = "0000000000000000000000000000000000000bot"
-	DefaultValidatorRewardRound  = 7200
-	DefaultValidatorRewardPool   = 5000000
-	DefaultValidatorHalvingRound = 15000000
-	DefaultValidatorRate         = 60
-	DefaultStakerRate            = 35
-	DefaultStableRate            = 5
-	GenesisContract              = "contract0.sol"
-	GenesisABI                   = "contract0.abi"
-	ControllerContract           = "contract1.sol"
-	ControllerABI                = "contract1.abi"
-	CompileResultFile            = "compile.toml"
+	DefaultAccountBalance  = "100000000000000000000000"
+	DefaultContractAddress = "aabbaabbaabbaabbaabbaabbaabbaabbaabbaabb"
+	BlackHoleAddress       = "0000000000000000000000000000000000000bot"
+	GenesisContract        = "contract0.sol"
+	GenesisABI             = "contract0.abi"
+	ControllerContract     = "contract1.sol"
+	ControllerABI          = "contract1.abi"
+	CompileResultFile      = "compile.toml"
 )
 
 // DefaultConfigDir returns the full path of the config directory where static
