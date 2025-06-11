@@ -4,7 +4,7 @@ go 1.23.4
 
 require (
 	github.com/BOTCoinNetwork/BVM v0.0.0-20250510091230-b87aca0f8bf7
-	github.com/BOTCoinNetwork/babble v0.8.6-0.20250611014751-b59306fa9531
+	github.com/BOTCoinNetwork/babble v0.8.6-0.20250611084652-12e2a2ed90e5
 	github.com/BurntSushi/toml v1.5.0
 	github.com/docker/docker v28.0.4+incompatible
 	github.com/ethereum/go-ethereum v1.9.0
@@ -17,7 +17,7 @@ require (
 	golang.org/x/crypto v0.38.0
 )
 
-// replace github.com/BOTCoinNetwork/babble v0.8.6-0.20250611014751-b59306fa9531 => ../babble
+// replace github.com/BOTCoinNetwork/babble v0.8.6-0.20250611084652-12e2a2ed90e5 => ../babble
 
 // replace github.com/BOTCoinNetwork/BVM v0.0.0-20250411081205-3cc576522faa => ../BVM
 
