@@ -4,8 +4,8 @@ github.com/Azure/go-ansiterm v0.0.0-20250102033503-faa5f7b0171c h1:udKWzYgxTojEK
 github.com/Azure/go-ansiterm v0.0.0-20250102033503-faa5f7b0171c/go.mod h1:xomTg63KZ2rFqZQzSB4Vz2SUXa1BpHTVz9L5PTmPC4E=
 github.com/BOTCoinNetwork/BVM v0.0.0-20250510091230-b87aca0f8bf7 h1:lPY+RiZ+KgcKoREDHAscTWecI2HqRA7EMKpD8ZONpQs=
 github.com/BOTCoinNetwork/BVM v0.0.0-20250510091230-b87aca0f8bf7/go.mod h1:IO0258P4kJ+BLBaLmZTT89rS8Z8aS0rIC6e+tiIZjWA=
-github.com/BOTCoinNetwork/babble v0.8.6-0.20250617025258-71b261432185 h1:T3eW/wW5Bt+E18RJG+nRoXiEilw9s1MYu1x5tPtGZH0=
-github.com/BOTCoinNetwork/babble v0.8.6-0.20250617025258-71b261432185/go.mod h1:w7KxGrImFpCbk6DKE1ULsMWKToreNIsJSC88qOn/nGs=
+github.com/BOTCoinNetwork/babble v0.8.6-0.20250617142737-9d69d2ac74de h1:YI0SKg+HK8flXw43eLr4/YtwjbSFvSdYLrihl7p+ipk=
+github.com/BOTCoinNetwork/babble v0.8.6-0.20250617142737-9d69d2ac74de/go.mod h1:w7KxGrImFpCbk6DKE1ULsMWKToreNIsJSC88qOn/nGs=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/toml v1.5.0 h1:W5quZX/G/csjUnuI8SUYlsHs9M38FC7znL0lIO+DvMg=
 github.com/BurntSushi/toml v1.5.0/go.mod h1:ukJfTF/6rtPPRCnwkur4qwRxa8vTRFBF0uk2lLoLwho=
