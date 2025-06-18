@@ -75,14 +75,14 @@ func readConfig(cmd *cobra.Command) error {
 	}
 
 	// Read from configuration file if there is one.
-	viper.SetConfigName("monetd")                       // name of config file (without extension)
+	viper.SetConfigName(configuration.DatabasePrxName)  // name of config file (without extension)
 	viper.AddConfigPath(configuration.Global.ConfigDir) // search config directory
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		common.DebugMessage(fmt.Sprintf("Using config file: %s", viper.ConfigFileUsed()))
+		common.ErrorMessage(fmt.Sprintf("Using config file: %s", viper.ConfigFileUsed()))
 	} else if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-		common.DebugMessage(fmt.Sprintf("No config file botcoin.toml found in %s\n", configuration.Global.DataDir))
+		common.ErrorMessage(fmt.Sprintf("No config file botcoin.toml found in %s\n", configuration.Global.DataDir))
 	} else {
 		return err
 	}
