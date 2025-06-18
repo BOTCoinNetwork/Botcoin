@@ -19,14 +19,14 @@ RootCmd
 
 // RootCmd is the root command for botcoin
 var RootCmd = &cobra.Command{
-	Use:   "monetd",
-	Short: "monet daemon",
+	Use:   "botcoin",
+	Short: "botcoin daemon",
 	Long: `
 Botcoin is the daemon component of the Botcoin; a distributed
 smart-contract platform based on the Ethereum Virtual Machine and Babble 
 consensus.  
 	
-See the documentation at https://docs.monet.network/ for further information.
+See the documentation at https://botcoin.network/docs/html/index.html for further information.
 `,
 	TraverseChildren: true,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) (err error) {
