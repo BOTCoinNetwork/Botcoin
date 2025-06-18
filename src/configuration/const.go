@@ -16,7 +16,8 @@ const (
 	POADir    = "poa"
 
 	// data
-	DatabaseDir = "botcoin-data"
+	DatabasePrxName = "botcoin"
+	DatabaseDir     = DatabasePrxName + "-data"
 
 	// keystore
 	KeyStoreDir = "keystore"
