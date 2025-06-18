@@ -9,14 +9,14 @@ import (
 
 var (
 	defaultNodeAddr        = fmt.Sprintf("%s:%d", common.GetMyIP(), 1337)
-	defaultHeartbeat       = 200 * time.Millisecond
+	defaultHeartbeat       = 600 * time.Millisecond
 	defaultTCPTimeout      = 3000 * time.Millisecond
-	defaultCacheSize       = 50000
-	defaultSyncLimit       = 1000
+	defaultCacheSize       = 5000 // defaultCacheSize must be more than defaultSyncLimit 10x
+	defaultSyncLimit       = 300
 	defaultBootstrap       = true
 	defaultMaxPool         = 2
 	defaultMaintenanceMode = false
-	defaultSuspendLimit    = 300
+	defaultSuspendLimit    = 500
 )
 
 // BabbleConfig contains the configuration for the Babble node used by botcoin.

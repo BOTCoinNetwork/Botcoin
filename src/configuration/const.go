@@ -10,13 +10,13 @@ import (
 // Directory Constants
 const (
 	// config
-	ConfigDir = "monetd-config"
+	ConfigDir = "botcoin-config"
 	BabbleDir = "babble"
 	EthDir    = "eth"
 	POADir    = "poa"
 
 	// data
-	DatabaseDir = "monetd-data"
+	DatabaseDir = "botcoin-data"
 
 	// keystore
 	KeyStoreDir = "keystore"
@@ -24,8 +24,8 @@ const (
 
 // Monetd Configuration Directory
 const (
-	MonetdTomlDirDot  = ".monet"
-	MonetdTomlDirCaps = "Monet"
+	MonetdTomlDirDot  = ".botcoin"
+	MonetdTomlDirCaps = "BOTCOIN"
 )
 
 // Filename constants
@@ -33,7 +33,7 @@ const (
 	PeersJSON        = "peers.json"
 	PeersGenesisJSON = "peers.genesis.json"
 	GenesisJSON      = "genesis.json"
-	MonetTomlFile    = "monetd.toml"
+	MonetTomlFile    = "botcoin.toml"
 	EthDB            = "eth-db"
 	BabbleDB         = "babble-db"
 	WalletTomlFile   = "wallet.toml"
@@ -90,11 +90,11 @@ func DefaultMonetDir() string {
 	home := homeDir()
 	if home != "" {
 		if runtime.GOOS == "darwin" {
-			return filepath.Join(home, "Library", "Monet")
+			return filepath.Join(home, "Library", MonetdTomlDirCaps)
 		} else if runtime.GOOS == "windows" {
-			return filepath.Join(home, "AppData", "Roaming", "Monet")
+			return filepath.Join(home, "AppData", "Roaming", MonetdTomlDirCaps)
 		} else {
-			return filepath.Join(home, ".monet")
+			return filepath.Join(home, MonetdTomlDirDot)
 		}
 	}
 	return ""
