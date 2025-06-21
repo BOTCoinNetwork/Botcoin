@@ -17,7 +17,7 @@ require (
 	golang.org/x/crypto v0.38.0
 )
 
-// replace github.com/BOTCoinNetwork/babble v0.8.6-0.20250617025258-71b261432185 => ../babble
+replace github.com/BOTCoinNetwork/babble v0.8.6-0.20250618164747-cfac8cd1f977 => ../babble
 
 // replace github.com/BOTCoinNetwork/BVM v0.0.0-20250411081205-3cc576522faa => ../BVM
 
