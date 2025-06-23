@@ -1,5 +1,12 @@
 #!/bin/bash
 
+cd "$(dirname "$0")" || exit 1
+
+if [ ! -d "./cmd/botcoin" ]; then
+    echo "Error: cmd/botcoin directory not found!"
+    exit 1
+fi
+
 # clear log
 echo "Backing up log files..."
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
