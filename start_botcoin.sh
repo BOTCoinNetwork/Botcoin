@@ -2,12 +2,16 @@
 
 # stop
 echo "Stopping botcoin service..."
-systemctl stop botcoin
+systemctl stop botcoin || true 
 # Waiting
-while systemctl is-active --quiet botcoin; do
+for i in {1..10}; do
+    if ! systemctl is-active --quiet botcoin; then
+        break
+    fi
     sleep 1
-    echo "Waiting for botcoin service to stop..."
+    echo "Waiting for botcoin service to stop... ($i/10)"
 done
+
 echo "Stopping existing botcoin processes..."
 pkill -9 -f "botcoin" && echo "Killed botcoin processes" || echo "No botcoin processes found"
 echo "Stopping processes on port 8080..."
