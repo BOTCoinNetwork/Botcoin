@@ -3,11 +3,11 @@
 # clear log
 echo "Backing up log files..."
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-[ -f "/www/wwwroot/Botcoin/cmd/botcoin/out.log" ] && mv "/www/wwwroot/Botcoin/cmd/botcoin/out.log" "/www/wwwroot/Botcoin/cmd/botcoin/out.log.$TIMESTAMP"
-[ -f "/www/wwwroot/Botcoin/cmd/botcoin/info.log" ] && mv "/www/wwwroot/Botcoin/cmd/botcoin/info.log" "/www/wwwroot/Botcoin/cmd/botcoin/info.log.$TIMESTAMP"
+[ -f "./cmd/botcoin/out.log" ] && mv "./cmd/botcoin/out.log" "/www/wwwroot/Botcoin/cmd/botcoin/out.log.$TIMESTAMP"
+[ -f "./cmd/botcoin/info.log" ] && mv "./cmd/botcoin/info.log" "/www/wwwroot/Botcoin/cmd/botcoin/info.log.$TIMESTAMP"
 
 echo "Cleaning up log files..."
-rm -f /www/wwwroot/Botcoin/cmd/botcoin/out.log /www/wwwroot/Botcoin/cmd/botcoin/info.log
+rm -f ./cmd/botcoin/out.log ./cmd/botcoin/info.log
 
 # start
 echo "Starting botcoin service..."
