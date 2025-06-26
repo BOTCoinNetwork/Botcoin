@@ -92,14 +92,6 @@ func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, e
 			"block.Index":         block.Index(),
 			"block.RoundReceived": block.RoundReceived(),
 		}).Info("block.Transactions")
-		p.logger.WithFields(logrus.Fields{
-			"tx":                  tx,
-			"i":                   i + 1,
-			"blockHash":           blockHash.String(),
-			"block.Transactions":  len(block.Transactions()),
-			"block.Index":         block.Index(),
-			"block.RoundReceived": block.RoundReceived(),
-		}).Debug("block.Transactions")
 		if err := p.state.ApplyTransaction(tx, i, blockHash, coinbaseAddress); err != nil {
 			p.logger.WithError(err).Errorf("Failed to apply tx %d of %d", i+1, len(block.Transactions()))
 		}
