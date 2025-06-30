@@ -92,8 +92,6 @@ pragma solidity ^0.5.11;
             string _message
         );
 
-        address public nodeMgr;
-
         struct WhitelistPerson {
           address person;
           uint  flags;
@@ -122,6 +120,7 @@ pragma solidity ^0.5.11;
         mapping (address => bytes32) monikerList;
         mapping (address => NomineeElection) evictionList;
         address[] evictionArray;
+        address public nodeMgr;
 
         struct StakeInfo {
             uint256 amount;
