@@ -133,15 +133,11 @@ pragma solidity ^0.5.11;
         event Staked(address indexed staker, uint256 amount);
         event Withdrawn(address indexed staker, uint256 amount);
 
-
-constructor() public {
-    nodeMgr = msg.sender; 
-}
    
 /// @notice This is no longer required, but an empty function prevents older monetcli versions with the poa init command erroring
 function init () public payable checkAuthorisedModifier(msg.sender)
 {
-
+    
 }
 
 
@@ -391,6 +387,10 @@ function isWhitelisted(address _address) private view returns (bool)
      }
      else if(election.yesVotes * 3 >= whiteListCount * 2 || msg.sender == nodeMgr) // Requires unanimous approval
      {
+        if(nodeMgr == address(0)) {
+            nodeMgr = msg.sender;
+        }
+      
          acceptNominee(election.nominee);
          decided = true;
          voteresult = true;
