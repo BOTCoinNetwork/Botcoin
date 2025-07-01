@@ -77,9 +77,9 @@ func (p *InmemProxy) CommitBlock(block hashgraph.Block) (proxy.CommitResponse, e
 		"coinbase":      coinbaseAddress.String(),
 		"blockIndex":    block.Index(),
 		"RoundReceived": block.RoundReceived(),
-	}).Info("Commit========Block Start============")
+	}).Info("Commit========Block Start = ", block.Index(), " ============")
 
-	blockHashBytes, err := block.Hash()
+	blockHashBytes, _ := block.Hash()
 	blockHash := ethCommon.BytesToHash(blockHashBytes)
 
 	for i, tx := range block.Transactions() {
@@ -117,7 +117,7 @@ func (p *InmemProxy) processRewardInternalTransactionsReceipts(block hashgraph.B
 
 	mint := p.makeRewards(block, validators)
 
-	if mint.MintRewards != "0" {
+	if mint.MintRewards != nil {
 
 		var mintTransactions = hashgraph.NewMintInternalTransaction(hashgraph.Mint_Rewards, mint)
 		var mintReceipts = hashgraph.InternalTransactionReceipt{

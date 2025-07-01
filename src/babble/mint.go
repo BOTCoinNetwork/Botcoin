@@ -65,71 +65,66 @@ func (p *InmemProxy) validatorsForAddress(block hashgraph.Block, validators []*p
 	return vAddress
 }
 
-func (p *InmemProxy) rewardValidators(block hashgraph.Block, validators []*peers.Peer) (rewardData, error) {
-	// Check if it's time to distribute rewards
-	if p.checkRound(block) {
-		return nil, nil
-	}
-	if validators == nil || len(validators) == 0 {
+func (p *InmemProxy) rewardValidators(block hashgraph.Block, validators []*peers.Peer, currentRewardPool *big.Int) (rewardData, error) {
+	if len(validators) == 0 {
 		p.logger.WithFields(logrus.Fields{
 			"validators": validators,
 		}).Info("validators")
 		return nil, nil
 	}
 
-	totalRewardPool := p.getTotalRewardPool(block)
+	// totalRewardPool := p.getTotalRewardPool(block)
 
-	currentReward := new(big.Int).Div(new(big.Int).Mul(totalRewardPool, big.NewInt(int64(p.rewardRule.validatorRate))), big.NewInt(100))
+	currentReward := new(big.Int).Div(new(big.Int).Mul(currentRewardPool, big.NewInt(int64(p.rewardRule.validatorRate))), big.NewInt(100))
 
 	rewardData := map[string]*big.Int{
 		"verifyCurrentReward": currentReward,
-		"totalRewardPool":     totalRewardPool,
 	}
 
 	return rewardData, nil
 }
 
-func (p *InmemProxy) rewardStakers(block hashgraph.Block, validatorsAddress []common.Address) (rewardData, error) {
-	if p.checkRound(block) {
-		return nil, nil
-	}
+func (p *InmemProxy) rewardStakers(currentRewardPool *big.Int) (rewardData, map[string]peers.PeerReward, error) {
 
+	peerRewards := make(map[string]peers.PeerReward)
 	stakerArray, err := p.getStakerArray()
 	if err != nil {
 		p.logger.WithError(err).Errorf("Failed to getStakerArray err")
-		return nil, err
+		return nil, peerRewards, err
 	}
 
 	if len(stakerArray) == 0 {
-		return nil, nil
+		return nil, peerRewards, nil
 	}
 
-	totalRewardPool := p.getTotalRewardPool(block)
-	currentReward := new(big.Int).Div(new(big.Int).Mul(totalRewardPool, big.NewInt(int64(p.rewardRule.stakerRate))), big.NewInt(100))
+	currentReward := new(big.Int).Div(new(big.Int).Mul(currentRewardPool, big.NewInt(int64(p.rewardRule.stakerRate))), big.NewInt(100))
 	totalStakeAmount, err := p.getTotalStaked()
 
-	var onlineTotalStakeAmount = new(big.Int)
-	// sum online's totalStakeAmount
-	for _, vAddress := range validatorsAddress {
+	// sum online's
+	for _, vAddress := range stakerArray {
 
-		amount, err := p.checkStake(vAddress)
+		stakerAmount, err := p.checkStake(vAddress)
 		if err == nil {
-			onlineTotalStakeAmount.Add(onlineTotalStakeAmount, amount)
+			stakeReward := new(big.Int).Div(new(big.Int).Mul(currentReward, stakerAmount), totalStakeAmount)
+
+			peerRewards[vAddress.Hex()] = peers.PeerReward{
+				StakeAmount: stakerAmount,
+				StakeReward: stakeReward,
+			}
 		}
 	}
 
 	rewardData := map[string]*big.Int{
-		"stakerCurrentReward":    currentReward,
-		"totalStakeAmount":       totalStakeAmount,
-		"onlineTotalStakeAmount": onlineTotalStakeAmount,
+		"stakerCurrentReward": currentReward,
+		"totalStakeAmount":    totalStakeAmount,
 	}
 
 	if err != nil {
 		p.logger.WithError(err).Errorf("Failed to getTotalStaked err")
-		return rewardData, err
+		return rewardData, peerRewards, err
 	}
 
-	return rewardData, nil
+	return rewardData, peerRewards, nil
 }
 
 type stablePeer struct {
@@ -137,19 +132,16 @@ type stablePeer struct {
 	index int
 }
 
-func (p *InmemProxy) rewardStablePeer(block hashgraph.Block, validators []*peers.Peer) (rewardData, error) {
-	if p.checkRound(block) {
-		return nil, nil
-	}
+func (p *InmemProxy) rewardStablePeer(block hashgraph.Block, validators []*peers.Peer, currentRewardPool *big.Int) (rewardData, error) {
 
-	if validators == nil || len(validators) == 0 {
+	if len(validators) == 0 {
 		p.logger.WithFields(logrus.Fields{
 			"validators": validators,
 		}).Info("validators")
 		return nil, nil
 	}
 
-	currentRewardPool := p.getTotalRewardPool(block)
+	// currentRewardPool := p.getTotalRewardPool(block)
 
 	currentReward := new(big.Int).Div(new(big.Int).Mul(currentRewardPool, big.NewInt(int64(p.rewardRule.stableRate))), big.NewInt(100))
 
@@ -198,140 +190,161 @@ func (p *InmemProxy) getAllIndexSum(block hashgraph.Block, validators []*peers.P
 }
 
 func (p *InmemProxy) makeRewards(block hashgraph.Block, validators []*peers.Peer) peers.Mint {
-	rewardData_Validators, err := p.rewardValidators(block, validators)
+
+	// Check if it's time to distribute rewards
+	if p.checkRound(block) {
+		return peers.Mint{}
+	}
+
+	totalCurrentReward := p.getTotalRewardPool(block)
+	if totalCurrentReward.Cmp(big.NewInt(0)) <= 0 {
+		return peers.Mint{}
+	}
+	p.logger.WithFields(logrus.Fields{
+		"totalRewardPool": totalCurrentReward,
+	}).Info("Total_rewardData")
+
+	rewardData_Validators, err := p.rewardValidators(block, validators, totalCurrentReward)
 	if err != nil {
 		p.logger.WithError(err).Error("Failed to reward validators")
 	}
 
-	var totalCurrentReward = new(big.Int)
 	var reward_Validators = new(big.Int)
 	var reward_Stake = new(big.Int)
-	var reward_StablePeers = new(big.Int)
+	var reward_History = new(big.Int)
 	var totalStakeAmount = new(big.Int)
-	var onlineTotalStakeAmount = new(big.Int)
 
 	vAddress := p.validatorsForAddress(block, validators)
 
-	// create a new Transaction and add it to the block
-	if rewardData_Validators != nil {
-		totalCurrentReward = rewardData_Validators["totalRewardPool"]
-		reward_Validators = rewardData_Validators["verifyCurrentReward"]
+	// Reward for Stake
+	rewardData_Stake, peerRewards, err := p.rewardStakers(totalCurrentReward)
+	if err != nil {
+		p.logger.WithError(err).Error("Failed to reward stakers")
+	}
+
+	if rewardData_Stake != nil {
+		reward_Stake = rewardData_Stake["stakerCurrentReward"]
+		totalStakeAmount = rewardData_Stake["totalStakeAmount"]
 
 		p.logger.WithFields(logrus.Fields{
-			"totalRewardPool": totalCurrentReward,
+			"staker_CurrentReward": reward_Stake,
+			"totalStakeAmount":     totalStakeAmount,
 		}).Info("Total_rewardData")
+	}
+
+	// Reward for anyone Validators
+	if rewardData_Validators != nil {
+		reward_Validators = rewardData_Validators["verifyCurrentReward"]
+
 		p.logger.WithFields(logrus.Fields{
 			"verify_CurrentReward": reward_Validators,
 		}).Info("Total_rewardData")
 	}
 
-	rewardData_Stake, err := p.rewardStakers(block, vAddress)
-	if err != nil {
-		p.logger.WithError(err).Error("Failed to reward stakers")
-	}
-	// create a new Transaction and add it to the block
-	if rewardData_Stake != nil {
-		reward_Stake = rewardData_Stake["stakerCurrentReward"]
-		totalStakeAmount = rewardData_Stake["totalStakeAmount"]
-		onlineTotalStakeAmount = rewardData_Stake["onlineTotalStakeAmount"]
-
-		p.logger.WithFields(logrus.Fields{
-			"staker_CurrentReward":   reward_Stake,
-			"totalStakeAmount":       totalStakeAmount,
-			"onlineTotalStakeAmount": onlineTotalStakeAmount,
-		}).Info("Total_rewardData")
-	}
-
-	rewardData_StablePeers, err := p.rewardStablePeer(block, validators)
+	// Reward for some validators, With History
+	rewardData_StablePeers, err := p.rewardStablePeer(block, validators, totalCurrentReward)
 	if err != nil {
 		p.logger.WithError(err).Error("Failed to reward stable peers")
 	}
-	// create a new Transaction and add it to the block
+
 	if rewardData_StablePeers != nil {
-		reward_StablePeers = rewardData_StablePeers["stablePeersCurrentReward"]
+		reward_History = rewardData_StablePeers["stablePeersCurrentReward"]
 		p.logger.WithFields(logrus.Fields{
-			"history_CurrentReward": reward_StablePeers,
+			"history_CurrentReward": reward_History,
 		}).Info("Total_rewardData")
 	}
 
 	mint := peers.Mint{
-		MintRewards:      totalCurrentReward.String(),
-		TotalStakeAmount: totalStakeAmount.String(),
+		MintRewards:      totalCurrentReward,
+		TotalStakeAmount: totalStakeAmount,
 		PeersCount:       len(validators),
 	}
 
 	var mintSet = peers.MintSet{}
 	mintSet.Mint = mint
 
+	allIndexSum, rewardPeersMap := p.getAllIndexSum(block, validators)
+	currentIndex := block.Index()
+
+	for _, addr := range vAddress {
+
+		addrString := addr.String()
+		peerReward := peerRewards[addrString]
+		if peerReward.StakeAmount == nil {
+			peerReward = peers.PeerReward{}
+		}
+
+		this_Validator_RewardAmount := new(big.Int).Div(reward_Validators, big.NewInt(int64(len(validators))))
+		peerReward.VerifyReward = this_Validator_RewardAmount
+
+		if allIndexSum > 0 {
+			v, ok := rewardPeersMap[addrString]
+			if ok {
+				tihs_History_RewardAmount := new(big.Int).Div(new(big.Int).Mul(reward_History, big.NewInt(int64(currentIndex-v.index))), big.NewInt(int64(allIndexSum)))
+				peerReward.HistoryReward = tihs_History_RewardAmount
+			}
+		}
+
+		peerRewards[addrString] = peerReward
+
+	}
+	// All peerRewards
+	mintSet.PeerReward = peerRewards
+
 	// Reward ing
-	if totalCurrentReward.Cmp(big.NewInt(0)) > 0 {
+	for addr, peerReward := range peerRewards {
 
-		peerRewards := map[string]peers.PeerReward{}
-		allIndexSum, rewardPeersMap := p.getAllIndexSum(block, validators)
-		currentIndex := block.Index()
+		tishaddr_Can_Reward := new(big.Int)
 
-		for _, addr := range vAddress {
+		// Validator Reward
+		if peerReward.VerifyReward != nil && peerReward.VerifyReward.Cmp(big.NewInt(0)) > 0 {
+			tishaddr_Can_Reward = tishaddr_Can_Reward.Add(tishaddr_Can_Reward, peerReward.VerifyReward)
 
-			addrString := addr.String()
-			rewardAmount := new(big.Int).Div(reward_Validators, big.NewInt(int64(len(validators))))
-			var peerReward = peers.PeerReward{
-				VerifyReward: rewardAmount.String(),
-			}
-
-			peerReward = peers.PeerReward{
-				VerifyReward: rewardAmount.String(),
-			}
 			p.logger.WithFields(logrus.Fields{
-				"verifyReward": rewardAmount,
-				"verifyAddr":   addrString,
+				"verifyReward": peerReward.VerifyReward,
+				"verifyAddr":   addr,
 			}).Info("Rewarding")
+		}
 
-			stakerAmount, err := p.checkStake(addr)
-			if err == nil && stakerAmount.Cmp(big.NewInt(0)) > 0 {
-
-				stakeReward := new(big.Int).Div(new(big.Int).Mul(reward_Stake, stakerAmount), onlineTotalStakeAmount)
-				rewardAmount = rewardAmount.Add(rewardAmount, stakeReward)
-
-				peerReward.StakeReward = stakeReward.String()
-				peerReward.StakeAmount = stakerAmount.String()
-
-				// 计算 stakerAmount 占 onlineTotalStakeAmount 的百分比
-				stakerRate := new(big.Float).Quo(
-					new(big.Float).SetInt(stakerAmount).Mul(new(big.Float).SetInt(stakerAmount), big.NewFloat(100)),
-					new(big.Float).SetInt(onlineTotalStakeAmount),
-				)
+		// History Reward
+		if allIndexSum > 0 && peerReward.HistoryReward != nil && peerReward.HistoryReward.Cmp(big.NewInt(0)) > 0 {
+			v, ok := rewardPeersMap[addr]
+			if ok {
+				tishaddr_Can_Reward = tishaddr_Can_Reward.Add(tishaddr_Can_Reward, peerReward.HistoryReward)
 
 				p.logger.WithFields(logrus.Fields{
-					"stakerReward": stakeReward,
-					"stakerRate%":  stakerRate.String(),
-					"stakeAmount":  stakerAmount,
+					"historyReward": peerReward.HistoryReward,
+					"joinIndex":     v.index,
+					"currentIndex":  currentIndex,
 				}).Info("Rewarding")
 			}
-
-			if allIndexSum > 0 {
-				v, ok := rewardPeersMap[addrString]
-				if ok {
-					historyReward := new(big.Int).Div(new(big.Int).Mul(reward_StablePeers, big.NewInt(int64(currentIndex-v.index))), big.NewInt(int64(allIndexSum)))
-					rewardAmount = rewardAmount.Add(rewardAmount, historyReward)
-					p.logger.WithFields(logrus.Fields{
-						"historyReward": historyReward,
-						"joinIndex":     v.index,
-						"currentIndex":  currentIndex,
-					}).Info("Rewarding")
-					peerReward.HistoryReward = historyReward.String()
-				}
-			}
-
-			p.state.AddBalance(addr, rewardAmount)
-			peerRewards[addrString] = peerReward
-
-			mintSet.PeerReward = peerRewards
-
 		}
-		// p.babble.Store.SetMinthistory(currentIndex, mintSet)
-		jsMint := peers.NewJSONMint(p.babble.Config.DataDir)
-		jsMint.SetMinthistoryForJson(currentIndex, mintSet)
-		return mint
+
+		// Stake Reward
+		if peerReward.StakeReward != nil && peerReward.StakeReward.Cmp(big.NewInt(0)) > 0 {
+
+			tishaddr_Can_Reward = tishaddr_Can_Reward.Add(tishaddr_Can_Reward, peerReward.StakeReward)
+
+			//  stakerAmount on totalStakeAmount percent
+			stakerRate := new(big.Float).Quo(
+				new(big.Float).SetInt(peerReward.StakeAmount).Mul(new(big.Float).SetInt(peerReward.StakeAmount), big.NewFloat(100)),
+				new(big.Float).SetInt(totalStakeAmount),
+			)
+
+			p.logger.WithFields(logrus.Fields{
+				"stakerReward": peerReward.StakeReward,
+				"stakerRate":   stakerRate.String() + "%",
+				"stakerAmount": peerReward.StakeAmount,
+			}).Info("Rewarding")
+		}
+
+		Address := common.HexToAddress(addr)
+		p.state.AddBalance(Address, tishaddr_Can_Reward)
 	}
+
+	// p.babble.Store.SetMinthistory(currentIndex, mintSet)
+	jsMint := peers.NewJSONMint(p.babble.Config.DataDir)
+	jsMint.SetMinthistoryForJson(currentIndex, mintSet)
+
 	return mint
 }
