@@ -721,7 +721,7 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
  }
 
  /// @notice stake BOC
- function stake() public payable checkAuthorisedModifier(msg.sender)
+ function stake() public payable
  {
     require(msg.value >= 100000 * 1e18, "Must stake >= 100000 BOC");
 
@@ -740,7 +740,7 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
  }
 
 /// @notice Withdrawing and pledging BOC
-function withdraw(uint256 value) public checkAuthorisedModifier(msg.sender)
+function withdraw(uint256 value) public
 {
     uint256 currentStake = stakeList[msg.sender].amount;
     require(currentStake >= value, "Insufficient stake");
