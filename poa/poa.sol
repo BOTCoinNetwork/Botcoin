@@ -724,7 +724,8 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
  function stake() public payable checkAuthorisedModifier(msg.sender)
  {
     require(msg.value >= 100000 * 1e18, "Must stake >= 100000 BOC");
-
+    require(msg.value % 1e18 == 0, "Stake amount must be whole tokens without decimals");
+    
     if (stakeList[msg.sender].amount > 0) {
         stakeList[msg.sender].amount += msg.value;
         totalStaked += msg.value;
