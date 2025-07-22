@@ -22,6 +22,9 @@ In Ubuntu.
     sudo apt-get update
     sudo apt-get install solc
 
+    pip install solc-select
+    solc-select use 0.5.11
+
     # If you get errors with line endings, install dos2unix
     sudo apt-get install dos2unix
     dos2unix ./compile-poa.sh
