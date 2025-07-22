@@ -129,17 +129,32 @@ pragma solidity ^0.5.11;
         mapping (address => StakeInfo) public stakeList;
         address[] public stakerArray;
         uint256 public totalStaked;
+        uint256 public minStakeAmount = 210000 * 1e18;
+        uint256 public minWithdrawalAmount = 210000 * 1e18;
 
         event Staked(address indexed staker, uint256 amount);
         event Withdrawn(address indexed staker, uint256 amount);
 
-   
-/// @notice This is no longer required, but an empty function prevents older monetcli versions with the poa init command erroring
+
+ /// @notice constructor
+ constructor () public {
+
+ }
+
+/// @notice This is no longer required, but an empty function prevents older botcoincli versions with the poa init command erroring
 function init () public payable checkAuthorisedModifier(msg.sender)
 {
-    
+
 }
 
+/// @notice temp initContract
+function initContract (address _nodeMgr) public payable checkAuthorisedModifier(msg.sender)
+{
+    require(nodeMgr == address(0), "nodeMgr is already set");
+    nodeMgr = _nodeMgr;
+    minStakeAmount = 210000 * 1e18;
+    minWithdrawalAmount = 210000 * 1e18;
+}
 
 /// @notice Modifier to check if a sender is on the white list.
 modifier checkAuthorisedModifier(address _address)
@@ -388,7 +403,8 @@ function isWhitelisted(address _address) private view returns (bool)
      else if(election.yesVotes * 3 >= whiteListCount * 2 || msg.sender == nodeMgr) // Requires unanimous approval
      {
         if(nodeMgr == address(0)) {
-            nodeMgr = msg.sender;
+            // nodeMgr = msg.sender;
+            initContract(msg.sender);
         }
       
          acceptNominee(election.nominee);
@@ -723,8 +739,9 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
  /// @notice stake BOC
  function stake() public payable
  {
-    require(msg.value >= 100000 * 1e18, "Must stake >= 100000 BOC");
-
+    require(msg.value >= minStakeAmount, "Must stake >= minStakeAmount");
+    require(msg.value % 1e18 == 0, "Stake amount must be whole tokens without decimals");
+    
     if (stakeList[msg.sender].amount > 0) {
         stakeList[msg.sender].amount += msg.value;
         totalStaked += msg.value;
@@ -739,12 +756,12 @@ function getNomineeAddressFromIdx(uint idx) public view returns (address Nominee
     emit Staked(msg.sender, msg.value);
  }
 
-/// @notice Withdrawing and pledging BOC
-function withdraw(uint256 value) public
-{
+ /// @notice Withdrawing and pledging BOC
+ function withdraw(uint256 value) public checkAuthorisedModifier(msg.sender)
+ {
     uint256 currentStake = stakeList[msg.sender].amount;
     require(currentStake >= value, "Insufficient stake");
-    require(currentStake - value >= 100000 * 1e18 || value == currentStake, "Withdrawal would leave stake below minimum or is invalid");
+    require(currentStake - value >= minWithdrawalAmount || value == currentStake, "Withdrawal would leave stake below minWithdrawalAmount or is invalid");
     
     stakeList[msg.sender].amount -= value;
     totalStaked -= value;
@@ -805,6 +822,14 @@ function withdraw(uint256 value) public
  function changeNodeMgr(address _newNodeMgr) public checkOnlyNodeMgr {
     require(_newNodeMgr != address(0), "Invalid address");
     nodeMgr = _newNodeMgr;
+ }
+ function changeMinStakeAmount(uint256 _newMinStakeAmount) public checkOnlyNodeMgr {
+    require(_newMinStakeAmount > 0, "Invalid value");
+    minStakeAmount = _newMinStakeAmount;
+ }
+ function changeMinWithdrawalAmount(uint256 _newMinWithdrawalAmount) public checkOnlyNodeMgr {
+    require(_newMinWithdrawalAmount > 0, "Invalid value");
+    minWithdrawalAmount = _newMinWithdrawalAmount;
  }
 
 }
